@@ -114,15 +114,15 @@ def new_win():
     page2 = Frame(main_window)
     page3 = Frame(main_window)
     page4 = Frame(main_window)
-    attendace_record = Frame(main_window)
+    attendance_record = Frame(main_window)
 
-    for frame in (page1, page2, page3, page4, attendace_record):
+    for frame in (page1, page2, page3, page4, attendance_record):
         frame.grid(row=0, column=0, sticky='nsew')
 
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(attendace_record)
+    show_frame(attendance_record)
 
     # ============= Page 1 =========
 
@@ -235,7 +235,7 @@ def new_win():
         # Attendace Record Button
     att_rec_btn = PhotoImage(file = "pic/attendance_rec.png")
     pg4_button_att_rec = customtkinter.CTkButton(master=page4,image=att_rec_btn, text="" ,
-                                                corner_radius=30, fg_color="#cc9900",hover_color="#fdca34", command=lambda: show_frame(attendace_record))
+                                                corner_radius=30, fg_color="#cc9900",hover_color="#fdca34", command=lambda: show_frame(attendance_record))
     pg4_button_att_rec.place(x=100, y=469, height=178,width=330)
 
         # About Button
@@ -265,20 +265,20 @@ def new_win():
     # ============= Attendace Record =========
 
         # open background image
-    attendace_record.att_rec_image = Image.open('pic/8.png')
-    attendace_record.att_rec_resize_image = attendace_record.att_rec_image.resize((1362, 692))
-    attendace_record.photo = ImageTk.PhotoImage(attendace_record.att_rec_resize_image)
-    attendace_record.att_rec_bg_img_lb = Label(attendace_record, image = attendace_record.photo)
-    attendace_record.att_rec_bg_img_lb.pack()
+    attendance_record.att_rec_image = Image.open('pic/8.png')
+    attendance_record.att_rec_resize_image = attendance_record.att_rec_image.resize((1362, 692))
+    attendance_record.photo = ImageTk.PhotoImage(attendance_record.att_rec_resize_image)
+    attendance_record.att_rec_bg_img_lb = Label(attendance_record, image = attendance_record.photo)
+    attendance_record.att_rec_bg_img_lb.pack()
 
         # Mathematics Faculty Button
     # math_fac_btn = PhotoImage(file = "pic/math_faculty.png")
-    # att_rec_button_math_fac = customtkinter.CTkButton(master=attendace_record,image=math_fac_btn, text="" ,
+    # att_rec_button_math_fac = customtkinter.CTkButton(master=attendance_record,image=math_fac_btn, text="" ,
     #                                             corner_radius=20,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(page2))
     # att_rec_button_math_fac.place(x=254, y=254, height=99,width=413)
 
     math_fac_btn = PhotoImage(file = "pic/btn_math_faculty.png")
-    att_rec_button_math_fac = Button(attendace_record,image=math_fac_btn, borderwidth=0, bg='#ffffff',command=lambda: show_frame(page2))
+    att_rec_button_math_fac = Button(attendance_record,image=math_fac_btn, borderwidth=0, bg='#ffffff',command=lambda: show_frame(page2))
     att_rec_button_math_fac.place(x=254, y=254)
     
     main_window.mainloop()
