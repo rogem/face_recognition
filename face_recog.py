@@ -272,14 +272,14 @@ def new_win():
     attendance_record.att_rec_bg_img_lb.pack()
 
         # Mathematics Faculty Button
-    # math_fac_btn = PhotoImage(file = "pic/math_faculty.png")
-    # att_rec_button_math_fac = customtkinter.CTkButton(master=attendance_record,image=math_fac_btn, text="" ,
-    #                                             corner_radius=20,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(page2))
-    # att_rec_button_math_fac.place(x=254, y=254, height=99,width=413)
+    math_fac_btn = PhotoImage(file = "pic/math_faculty.png")
+    att_rec_button_math_fac = customtkinter.CTkButton(master=attendance_record,image=math_fac_btn, text="" ,
+                                                corner_radius=20,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(page2))
+    att_rec_button_math_fac.place(x=254, y=254, height=99,width=413)
 
-    math_fac_btn = PhotoImage(file = "pic/btn_math_faculty.png")
-    att_rec_button_math_fac = Button(attendance_record,image=math_fac_btn, borderwidth=0, bg='#ffffff',command=lambda: show_frame(page2))
-    att_rec_button_math_fac.place(x=254, y=254)
+    # math_fac_btn = PhotoImage(file = "pic/btn_math_faculty.png")
+    # att_rec_button_math_fac = Button(attendance_record,image=math_fac_btn, borderwidth=0, bg='#ffffff',command=lambda: show_frame(page2))
+    # att_rec_button_math_fac.place(x=254, y=254)
     
     main_window.mainloop()
 
