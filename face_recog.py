@@ -3,6 +3,8 @@ from tkinter import font, ttk, messagebox
 from PIL import ImageTk, Image 
 import time
 import customtkinter
+import os
+import openpyxl
 
 w=Tk()
 
@@ -115,16 +117,17 @@ def new_win():
     page3 = Frame(main_window)
     page4 = Frame(main_window)
     attendance_record = Frame(main_window)
+    faculty_information = Frame(main_window)
 
-    for frame in (page1, page2, page3, page4, attendance_record):
+    for frame in (page1, page2, page3, page4, attendance_record,faculty_information):
         frame.grid(row=0, column=0, sticky='nsew')
 
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(attendance_record)
+    show_frame(faculty_information)
 
-    # ============= Page 1 =========
+    # ============= Page 1 Frame =========
 
         # open background image
     page1.pg1_image = Image.open('pic/2.png')
@@ -143,7 +146,7 @@ def new_win():
     pg1_button_bio = Button(page1,image=biometric_img_btn, borderwidth=0,bg='#1f2a76', command=lambda: show_frame(page2))
     pg1_button_bio.place(x=99, y=256)
 
-    # ============= Page 2 =========
+    # ============= Page 2 Frame =========
 
         # open background image
     page2.pg2_image = Image.open('pic/3.png')
@@ -162,7 +165,7 @@ def new_win():
     pg2_button_admin = Button(page2,image=admin_img_btn, borderwidth=0, bg='#1f2a76',command=lambda: show_frame(page3))
     pg2_button_admin.place(x=99, y=422)
 
-    # ======== Page 3 ===========
+    # ======== Page 3 Admin Sign In Frame ===========
 
         # open background image
     page3.pg3_image = Image.open('pic/4.png')
@@ -211,7 +214,7 @@ def new_win():
     check_button = Checkbutton(page3, text="show password",bg="#1f2a76", command=show_password, font="Arial", activebackground="#1f2a76",)
     check_button.place(x=116,y=520)
 
-    # ============= Page 4 =========
+    # ============= Page 4 Home  Frame =========
 
         # open background image
     page4.pg4_image = Image.open('pic/7.png')
@@ -219,17 +222,11 @@ def new_win():
     page4.photo = ImageTk.PhotoImage(page4.pg4_resize_image)
     page4.pg4_bg_img_lb = Label(page4, image = page4.photo)
     page4.pg4_bg_img_lb.pack()
-    
-        # Faculty Information Button
-    faculty_info_btn = PhotoImage(file = "pic/faculty_info.png")
-    pg4_button_faculty = customtkinter.CTkButton(master=page4,image=faculty_info_btn, text="" ,
-                                                corner_radius=20, fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(page2))
-    pg4_button_faculty.place(x=100, y=314, height=134,width=562)
 
         # Faculty Information Button
     faculty_info_btn = PhotoImage(file = "pic/faculty_info.png")
     pg4_button_faculty = customtkinter.CTkButton(master=page4,image=faculty_info_btn, text="" ,
-                                                corner_radius=30, fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(page2))
+                                                corner_radius=30, fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(faculty_information))
     pg4_button_faculty.place(x=100, y=314, height=134,width=562)
 
         # Attendace Record Button
@@ -262,7 +259,7 @@ def new_win():
                                                 corner_radius=30, fg_color="#f0f0f0",hover_color="#6699cc", command=lambda: show_frame(page2))
     pg4_button_logout.place(x=1075, y=469, height=178,width=197)
 
-    # ============= Attendace Record =========
+    # ============= Attendace Record Frame =========
 
         # open background image
     attendance_record.att_rec_image = Image.open('pic/8.png')
@@ -294,6 +291,21 @@ def new_win():
     att_rec_button_app_psyc_fac = customtkinter.CTkButton(master=attendance_record,image=app_psyc_fac_btn, text="" ,
                                                 corner_radius=20,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(page2))
     att_rec_button_app_psyc_fac.place(x=731, y=394, height=99,width=413)
+
+    # ============= Faculty Information Frame =========
+
+        # open background image
+    faculty_information.fac_inf_image = Image.open('pic/10.png')
+    faculty_information.fac_inf_resize_image = faculty_information.fac_inf_image.resize((1362, 692))
+    faculty_information.photo = ImageTk.PhotoImage(faculty_information.fac_inf_resize_image)
+    faculty_information.fac_inf_bg_img_lb = Label(faculty_information, image = faculty_information.photo)
+    faculty_information.fac_inf_bg_img_lb.pack()
+
+    nationality_combobox = ttk.Combobox(user_info_frame, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
+
+    # clg_dep_label = Label(faculty_information, text="College Department")
+    # clg_dep_label.place(x=200, y=200)
+    
 
     main_window.mainloop()
 
