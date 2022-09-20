@@ -3,7 +3,6 @@ from tkinter import font, ttk, messagebox
 from PIL import ImageTk, Image 
 import time
 import customtkinter
-import os
 import openpyxl
 
 w=Tk()
@@ -301,11 +300,37 @@ def new_win():
     faculty_information.fac_inf_bg_img_lb = Label(faculty_information, image = faculty_information.photo)
     faculty_information.fac_inf_bg_img_lb.pack()
 
-    nationality_combobox = ttk.Combobox(user_info_frame, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
-
-    # clg_dep_label = Label(faculty_information, text="College Department")
-    # clg_dep_label.place(x=200, y=200)
+        # ComboBox College Department
+    department_combobox = ttk.Combobox(faculty_information, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
+    department_combobox.place(x=382, y=202, width=200)
     
+        # Entry Employee Number
+    employee_num_fac_inf = Entry(faculty_information)
+    employee_num_fac_inf.place(x=319, y=284, width=125)
+
+        # ComboBox Gender
+    gender_combobox_fac_inf = ttk.Combobox(faculty_information, values=["Male", "Female"])
+    gender_combobox_fac_inf.place(x=319, y=316, width=125)
+
+        # Entry E-mail
+    email_fac_inf = Entry(faculty_information)
+    email_fac_inf.place(x=319, y=348, width=125)
+
+        # Entry Address
+    address_fac_inf = Entry(faculty_information)
+    address_fac_inf.place(x=319, y=380, width=125)
+
+        # Entry Employee Name
+    employee_name_fac_inf = Entry(faculty_information)
+    employee_name_fac_inf.place(x=560, y=284, width=125)
+
+        # Entry Age
+    age_fac_inf = Entry(faculty_information)
+    age_fac_inf.place(x=560, y=316, width=125)
+
+        # Entry Contact Number
+    con_num_fac_inf = Entry(faculty_information)
+    con_num_fac_inf.place(x=560, y=348, width=125)
 
     main_window.mainloop()
 
