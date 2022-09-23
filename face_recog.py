@@ -1,9 +1,13 @@
+import tkinter
 from tkinter import *
-from tkinter import font, ttk, messagebox
+from tkinter import font, ttk, messagebox, simpledialog
 from PIL import ImageTk, Image 
 import time
 import customtkinter
-import openpyxl
+import os
+import openpyxl, xlrd
+from openpyxl import Workbook
+import pathlib
 
 w=Tk()
 
@@ -308,29 +312,126 @@ def new_win():
     employee_num_fac_inf = Entry(faculty_information)
     employee_num_fac_inf.place(x=319, y=284, width=125)
 
-        # ComboBox Gender
-    gender_combobox_fac_inf = ttk.Combobox(faculty_information, values=["Male", "Female"])
-    gender_combobox_fac_inf.place(x=319, y=316, width=125)
-
-        # Entry E-mail
-    email_fac_inf = Entry(faculty_information)
-    email_fac_inf.place(x=319, y=348, width=125)
-
-        # Entry Address
-    address_fac_inf = Entry(faculty_information)
-    address_fac_inf.place(x=319, y=380, width=125)
-
         # Entry Employee Name
     employee_name_fac_inf = Entry(faculty_information)
     employee_name_fac_inf.place(x=560, y=284, width=125)
+
+        # ComboBox Gender
+    gender_combobox_fac_inf = ttk.Combobox(faculty_information, values=["Male", "Female"])
+    gender_combobox_fac_inf.place(x=319, y=316, width=125)
 
         # Entry Age
     age_fac_inf = Entry(faculty_information)
     age_fac_inf.place(x=560, y=316, width=125)
 
+        # Entry E-mail
+    email_fac_inf = Entry(faculty_information)
+    email_fac_inf.place(x=319, y=348, width=125)
+
         # Entry Contact Number
     con_num_fac_inf = Entry(faculty_information)
     con_num_fac_inf.place(x=560, y=348, width=125)
+
+        # Entry Address
+    address_fac_inf = Entry(faculty_information)
+    address_fac_inf.place(x=319, y=380, width=125)
+
+        # Add Faculty Button
+    def Save_Data():
+        save_college_department = department_combobox.get()
+        save_employee_number = employee_num_fac_inf.get()
+        save_gender = gender_combobox_fac_inf.get()
+        save_email = email_fac_inf.get()
+        save_address = address_fac_inf.get()
+        save_employee_name = employee_name_fac_inf.get()
+        save_age = age_fac_inf.get()
+        save_contact_number = con_num_fac_inf.get()
+
+        if save_college_department and save_employee_number and save_gender and save_email and save_address and save_employee_name and save_age and save_contact_number:
+
+            print("College Department:", save_college_department)
+            print("Employee No.: ", save_employee_number, "Employee Name: ", save_employee_name)
+            print("Gender: ", save_gender, "Age: ", save_age)
+            print("Email: ", save_email, "Contact Number: ", save_contact_number)
+            print("Address:", save_address)
+            print("------------------------------------------")
+
+            filepath = pathlib.Path("data/faculty_data.xlsx")
+            if filepath.exists():
+                pass 
+            else:
+                filepath = Workbook()
+                sheet = filepath.active
+                sheet["A1"] = "Employee No."
+                sheet["B1"] = "Email"
+                sheet["C1"] = "Employee Name"
+                sheet["D1"] = "Gender"
+                sheet["E1"] = "Age"
+                sheet["F1"] = "Contact Number"
+                sheet["G1"] = "Address"
+                sheet["H1"] = "College Department"
+
+                filepath.save("data/faculty_data.xlsx")
+
+            file = openpyxl.load_workbook('data/faculty_data.xlsx')
+            sheet = file.active
+
+            for i in range(2,(sheet.max_row)+1):
+                if((save_employee_number==sheet['A'+str(i)].value) and (save_email==sheet['B'+str(i)].value)):
+                    # Found = True
+                    messagebox.showinfo("Error", "Employee Number or Email Exists!!")
+                    break
+                else:
+                    # Found = False
+                    messagebox.showinfo("Success", "Data Added!")
+                    lastRow = str((sheet.max_row)+1)
+                    sheet['A'+lastRow] = save_employee_number
+                    sheet['B'+lastRow] = save_email
+                    sheet['C'+lastRow] = save_employee_name
+                    sheet['D'+lastRow] = save_gender
+                    sheet['E'+lastRow] = save_age
+                    sheet['F'+lastRow] = save_contact_number
+                    sheet['G'+lastRow] = save_address
+                    sheet['H'+lastRow] = save_college_department
+
+            # if(Found==True):
+            #     messagebox.showinfo("Error", "Employee Number or Email Exists!!")
+            # else:
+            #     messagebox.showinfo("Success", "Data Added!")
+            #     lastRow = str((sheet.max_row)+1)
+            #     sheet['A'+lastRow] = save_employee_number
+            #     sheet['B'+lastRow] = save_email
+            #     sheet['C'+lastRow] = save_employee_name
+            #     sheet['D'+lastRow] = save_gender
+            #     sheet['E'+lastRow] = save_age
+            #     sheet['F'+lastRow] = save_contact_number
+            #     sheet['G'+lastRow] = save_address
+            #     sheet['H'+lastRow] = save_college_department
+
+            file.save('data/faculty_data.xlsx')
+
+
+            # if not os.path.exist(filepath):
+            #     workbook  = openpyxl.workbook()
+            #     sheet = workbook.active
+            #     heading =["Employee No.","Email","Employee Name","College Department",
+            #                 "Gender","Age","Contact Number","Address"]
+            #     sheet.append(heading)
+            #     workbook.save(filepath)
+            # workbook = openpyxl.load_workbook(filepath)
+            # sheet = workbook.active
+            # sheet.append([save_employee_number, save_email, save_employee_name, save_college_department,
+            #                 save_gender, save_age, save_contact_number, save_address])
+            # workbook.save(filepath)
+
+        else:
+            messagebox.showwarning(title="Error", message="Fill up all the data are required.")
+
+
+    add_fac_btn = PhotoImage(file = "pic/btn_add_faculty.png")
+    add_button_fac_inf = customtkinter.CTkButton(master=faculty_information,image=add_fac_btn, text="" ,
+                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= Save_Data)
+    add_button_fac_inf.place(x=383, y=506, height=32,width=131)
 
     main_window.mainloop()
 
