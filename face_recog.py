@@ -1,4 +1,3 @@
-import tkinter
 from tkinter import *
 from tkinter import font, ttk, messagebox, simpledialog
 from PIL import ImageTk, Image 
@@ -347,14 +346,26 @@ def new_win():
         save_age = age_fac_inf.get()
         save_contact_number = con_num_fac_inf.get()
 
+        def clear():
+     
+            # clear the content of text entry box
+            department_combobox.delete(0, END)
+            employee_num_fac_inf.delete(0, END)
+            gender_combobox_fac_inf.delete(0, END)
+            email_fac_inf.delete(0, END)
+            address_fac_inf.delete(0, END)
+            employee_name_fac_inf.delete(0, END)
+            age_fac_inf.delete(0, END)
+            con_num_fac_inf.delete(0, END)
+
         if save_college_department and save_employee_number and save_gender and save_email and save_address and save_employee_name and save_age and save_contact_number:
 
-            print("College Department:", save_college_department)
-            print("Employee No.: ", save_employee_number, "Employee Name: ", save_employee_name)
-            print("Gender: ", save_gender, "Age: ", save_age)
-            print("Email: ", save_email, "Contact Number: ", save_contact_number)
-            print("Address:", save_address)
-            print("------------------------------------------")
+            # print("College Department:", save_college_department)
+            # print("Employee No.: ", save_employee_number, "Employee Name: ", save_employee_name)
+            # print("Gender: ", save_gender, "Age: ", save_age)
+            # print("Email: ", save_email, "Contact Number: ", save_contact_number)
+            # print("Address:", save_address)
+            # print("------------------------------------------")
 
             filepath = pathlib.Path("data/faculty_data.xlsx")
             if filepath.exists():
@@ -373,42 +384,34 @@ def new_win():
 
                 filepath.save("data/faculty_data.xlsx")
 
-            file = openpyxl.load_workbook('data/faculty_data.xlsx')
-            sheet = file.active
+            file = openpyxl.load_workbook("data/faculty_data.xlsx")
+            sheet1 = file.active
 
-            for i in range(2,(sheet.max_row)+1):
-                if((save_employee_number==sheet['A'+str(i)].value) and (save_email==sheet['B'+str(i)].value)):
-                    # Found = True
-                    messagebox.showinfo("Error", "Employee Number or Email Exists!!")
+            Found = False
+
+            for i in range(2,(sheet1.max_row)+1):
+                if((save_employee_number==sheet1['A'+str(i)].value) and (save_email==sheet1['B'+str(i)].value)):
+                    Found = True
                     break
                 else:
-                    # Found = False
-                    messagebox.showinfo("Success", "Data Added!")
-                    lastRow = str((sheet.max_row)+1)
-                    sheet['A'+lastRow] = save_employee_number
-                    sheet['B'+lastRow] = save_email
-                    sheet['C'+lastRow] = save_employee_name
-                    sheet['D'+lastRow] = save_gender
-                    sheet['E'+lastRow] = save_age
-                    sheet['F'+lastRow] = save_contact_number
-                    sheet['G'+lastRow] = save_address
-                    sheet['H'+lastRow] = save_college_department
+                    Found = False
+                
+            if(Found==True):
+                messagebox.showinfo("Error", "Employee Number or Email Exists!!")
+            else:
+                messagebox.showinfo("Success", "Data Added!")
+                lastRow = str((sheet1.max_row)+1)
+                sheet1['A'+lastRow] = save_employee_number
+                sheet1['B'+lastRow] = save_email
+                sheet1['C'+lastRow] = save_employee_name
+                sheet1['D'+lastRow] = save_gender
+                sheet1['E'+lastRow] = save_age
+                sheet1['F'+lastRow] = save_contact_number
+                sheet1['G'+lastRow] = save_address
+                sheet1['H'+lastRow] = save_college_department
 
-            # if(Found==True):
-            #     messagebox.showinfo("Error", "Employee Number or Email Exists!!")
-            # else:
-            #     messagebox.showinfo("Success", "Data Added!")
-            #     lastRow = str((sheet.max_row)+1)
-            #     sheet['A'+lastRow] = save_employee_number
-            #     sheet['B'+lastRow] = save_email
-            #     sheet['C'+lastRow] = save_employee_name
-            #     sheet['D'+lastRow] = save_gender
-            #     sheet['E'+lastRow] = save_age
-            #     sheet['F'+lastRow] = save_contact_number
-            #     sheet['G'+lastRow] = save_address
-            #     sheet['H'+lastRow] = save_college_department
-
-            file.save('data/faculty_data.xlsx')
+            file.save("data/faculty_data.xlsx")
+            clear()
 
 
             # if not os.path.exist(filepath):
