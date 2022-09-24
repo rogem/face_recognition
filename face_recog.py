@@ -335,18 +335,8 @@ def new_win():
     address_fac_inf = Entry(faculty_information)
     address_fac_inf.place(x=319, y=380, width=125)
 
-        # Add Faculty Button
-    def Save_Data():
-        save_college_department = department_combobox.get()
-        save_employee_number = employee_num_fac_inf.get()
-        save_gender = gender_combobox_fac_inf.get()
-        save_email = email_fac_inf.get()
-        save_address = address_fac_inf.get()
-        save_employee_name = employee_name_fac_inf.get()
-        save_age = age_fac_inf.get()
-        save_contact_number = con_num_fac_inf.get()
-
-        def clear():
+        # Clear Text Field
+    def clear():
      
             # clear the content of text entry box
             department_combobox.delete(0, END)
@@ -357,6 +347,17 @@ def new_win():
             employee_name_fac_inf.delete(0, END)
             age_fac_inf.delete(0, END)
             con_num_fac_inf.delete(0, END)
+
+        # Add Faculty Button
+    def Save_Data():
+        save_college_department = department_combobox.get()
+        save_employee_number = employee_num_fac_inf.get()
+        save_gender = gender_combobox_fac_inf.get()
+        save_email = email_fac_inf.get()
+        save_address = address_fac_inf.get()
+        save_employee_name = employee_name_fac_inf.get()
+        save_age = age_fac_inf.get()
+        save_contact_number = con_num_fac_inf.get()
 
         if save_college_department and save_employee_number and save_gender and save_email and save_address and save_employee_name and save_age and save_contact_number:
 
@@ -413,28 +414,27 @@ def new_win():
             file.save("data/faculty_data.xlsx")
             clear()
 
-
-            # if not os.path.exist(filepath):
-            #     workbook  = openpyxl.workbook()
-            #     sheet = workbook.active
-            #     heading =["Employee No.","Email","Employee Name","College Department",
-            #                 "Gender","Age","Contact Number","Address"]
-            #     sheet.append(heading)
-            #     workbook.save(filepath)
-            # workbook = openpyxl.load_workbook(filepath)
-            # sheet = workbook.active
-            # sheet.append([save_employee_number, save_email, save_employee_name, save_college_department,
-            #                 save_gender, save_age, save_contact_number, save_address])
-            # workbook.save(filepath)
-
         else:
             messagebox.showwarning(title="Error", message="Fill up all the data are required.")
-
 
     add_fac_btn = PhotoImage(file = "pic/btn_add_faculty.png")
     add_button_fac_inf = customtkinter.CTkButton(master=faculty_information,image=add_fac_btn, text="" ,
                                                 corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= Save_Data)
-    add_button_fac_inf.place(x=383, y=506, height=32,width=131)
+    add_button_fac_inf.place(x=380, y=506, height=32,width=131)
+
+        # Update Button
+    def Update():
+        print("update")
+    update_btn = PhotoImage(file = "pic/btn_update.png")
+    add_button_update = customtkinter.CTkButton(master=faculty_information,image=update_btn, text="" ,
+                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= Update)
+    add_button_update.place(x=212, y=506, height=32,width=131)
+
+        # Reset Button
+    reset_btn = PhotoImage(file = "pic/btn_reset.png")
+    add_button_reset = customtkinter.CTkButton(master=faculty_information,image=reset_btn, text="" ,
+                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
+    add_button_reset.place(x=548, y=506, height=32,width=131)
 
     main_window.mainloop()
 
