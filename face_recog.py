@@ -40,66 +40,66 @@ image_a=ImageTk.PhotoImage(Image.open('pic/dot2.png'))
 image_b=ImageTk.PhotoImage(Image.open('pic/dot1.png'))
 
 
-# for i in range(5):
-#     # loading text
-#     label2=Label(w, text='Loading', fg='white', bg='#dab015') #decorate it 
-#     label2.configure(font=("Calibri", 17))
-#     label2.place(x=10,y=465)
-#     # background image
-#     label = Label(w, image = photo)
-#     label.pack()
-#     # loading dot animation
-#     l1=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=90, y=480)
-#     l2=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=110, y=480)
-#     l3=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=130, y=480)
-#     l4=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=150, y=480)
-#     w.update_idletasks()
-#     time.sleep(0.5)
+for i in range(5):
+    # loading text
+    label2=Label(w, text='Loading', fg='white', bg='#dab015') #decorate it 
+    label2.configure(font=("Calibri", 17))
+    label2.place(x=10,y=465)
+    # background image
+    label = Label(w, image = photo)
+    label.pack()
+    # loading dot animation
+    l1=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=90, y=480)
+    l2=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=110, y=480)
+    l3=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=130, y=480)
+    l4=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=150, y=480)
+    w.update_idletasks()
+    time.sleep(0.5)
 
-#     # loading text
-#     label2=Label(w, text='Loading', fg='white', bg='#dab015') #decorate it 
-#     label2.configure(font=("Calibri", 17))
-#     label2.place(x=10,y=465)
-#     # background image
-#     label = Label(w, image = photo)
-#     label.pack()
-#     # loading dot animation
-#     l1=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=90, y=480)
-#     l2=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=110, y=480)
-#     l3=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=130, y=480)
-#     l4=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=150, y=480)
-#     w.update_idletasks()
-#     time.sleep(0.5)
+    # loading text
+    label2=Label(w, text='Loading', fg='white', bg='#dab015') #decorate it 
+    label2.configure(font=("Calibri", 17))
+    label2.place(x=10,y=465)
+    # background image
+    label = Label(w, image = photo)
+    label.pack()
+    # loading dot animation
+    l1=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=90, y=480)
+    l2=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=110, y=480)
+    l3=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=130, y=480)
+    l4=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=150, y=480)
+    w.update_idletasks()
+    time.sleep(0.5)
 
-#     # loading text
-#     label2=Label(w, text='Loading', fg='white', bg='#dab015') #decorate it 
-#     label2.configure(font=("Calibri", 17))
-#     label2.place(x=10,y=465)
-#     # background image
-#     label = Label(w, image = photo)
-#     label.pack()
-#     # loading dot animation
-#     l1=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=90, y=480)
-#     l2=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=110, y=480)
-#     l3=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=130, y=480)
-#     l4=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=150, y=480)
-#     w.update_idletasks()
-#     time.sleep(0.5)
+    # loading text
+    label2=Label(w, text='Loading', fg='white', bg='#dab015') #decorate it 
+    label2.configure(font=("Calibri", 17))
+    label2.place(x=10,y=465)
+    # background image
+    label = Label(w, image = photo)
+    label.pack()
+    # loading dot animation
+    l1=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=90, y=480)
+    l2=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=110, y=480)
+    l3=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=130, y=480)
+    l4=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=150, y=480)
+    w.update_idletasks()
+    time.sleep(0.5)
 
-#     # loading text
-#     label2=Label(w, text='Loading', fg='white', bg='#dab015') #decorate it 
-#     label2.configure(font=("Calibri", 17))
-#     label2.place(x=10,y=465)
-#     # background image
-#     label = Label(w, image = photo)
-#     label.pack()
-#     # loading dot animation
-#     l1=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=90, y=480)
-#     l2=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=110, y=480)
-#     l3=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=130, y=480)
-#     l4=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=150, y=480)
-#     w.update_idletasks()
-#     time.sleep(0.5)
+    # loading text
+    label2=Label(w, text='Loading', fg='white', bg='#dab015') #decorate it 
+    label2.configure(font=("Calibri", 17))
+    label2.place(x=10,y=465)
+    # background image
+    label = Label(w, image = photo)
+    label.pack()
+    # loading dot animation
+    l1=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=90, y=480)
+    l2=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=110, y=480)
+    l3=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=130, y=480)
+    l4=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=150, y=480)
+    w.update_idletasks()
+    time.sleep(0.5)
 
 #new window to open
 def new_win():
@@ -127,7 +127,7 @@ def new_win():
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(faculty_information)
+    show_frame(page1)
 
     # ============= Page 1 Frame =========
 
@@ -335,18 +335,76 @@ def new_win():
     address_fac_inf = Entry(faculty_information)
     address_fac_inf.place(x=319, y=380, width=125)
 
+        # Search Entry
+    def filterTreeView(*args):
+        ItemOnTreeView = data_table.get_children()
+
+        search = search_ent_val.get()
+
+        for eachItem in ItemOnTreeView:
+            if search in data_table.item(eachItem)['values'][2]:
+                search_val = data_table.item(eachItem)['values']
+                data_table.delete(eachItem)
+
+                data_table.insert("", 1, values=search_val)
+
+    search_ent_val = StringVar()
+
+    search_fac_inf = Entry(faculty_information, textvariable = search_ent_val)
+    search_fac_inf.place(x=850, y=202, width=200)
+
+    search_ent_val.trace("w", filterTreeView)
+
+        # open and connect the excel to tha data table
+    openfile = openpyxl.load_workbook("data/faculty_data.xlsx")
+    select_sheet1 = openfile.active
+
+    list_col_header = select_sheet1.iter_rows(min_row=1,max_row=1,values_only=True)
+    list_data_set = select_sheet1.iter_rows(min_row=2,values_only=True)
+    list_col_header = [r for r in list_col_header]
+    list_data_set = [r for r in list_data_set]
+    openfile.close()
+
+        # Data Table "TreeView"
+    scrollbarx = Scrollbar(faculty_information, orient=HORIZONTAL)
+    scrollbarx.place(x=730, y=584, width=465)
+    scrollbary = Scrollbar(faculty_information, orient=VERTICAL)
+    scrollbary.place(x=1180, y=284, height=300)
+
+    style = ttk.Style()
+    style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
+
+    data_table = ttk.Treeview(faculty_information, selectmode = 'browse')
+    data_table.place(x=730, y=284, width=450, height=300)
+    data_table.configure(yscrollcommand=scrollbary.set, xscrollcommand=scrollbarx.set)
+
+    scrollbarx.configure(command=data_table.xview)
+    scrollbary.configure(command=data_table.yview)
+
+    data_table['height'] = 8
+    data_table['show'] = 'headings'
+    data_table["columns"] = list_col_header[0]
+
+    # Display the Heading 
+    for i in list_col_header[0]:
+        data_table.column(i, width = 100, anchor = 'c')
+    for i in list_col_header[0]:
+        data_table.heading(i, text = i)
+
+    # Display the list Data
+    for data in list_data_set:
+        data_table.insert("", 'end', iid = data[0], values = data)
+
         # Clear Text Field
     def clear():
-     
-            # clear the content of text entry box
-            department_combobox.delete(0, END)
-            employee_num_fac_inf.delete(0, END)
-            gender_combobox_fac_inf.delete(0, END)
-            email_fac_inf.delete(0, END)
-            address_fac_inf.delete(0, END)
-            employee_name_fac_inf.delete(0, END)
-            age_fac_inf.delete(0, END)
-            con_num_fac_inf.delete(0, END)
+        department_combobox.delete(0, END)
+        employee_num_fac_inf.delete(0, END)
+        gender_combobox_fac_inf.delete(0, END)
+        email_fac_inf.delete(0, END)
+        address_fac_inf.delete(0, END)
+        employee_name_fac_inf.delete(0, END)
+        age_fac_inf.delete(0, END)
+        con_num_fac_inf.delete(0, END)
 
         # Add Faculty Button
     def Save_Data():
