@@ -354,7 +354,7 @@ def new_win():
 
         # Insert Data
     def insert(Employee_No,Email,Employee_Name,Gender,Age,Contact_Number,Address,College_Department):
-        conn = sqlite3.connec("data.db")
+        conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
@@ -365,7 +365,7 @@ def new_win():
         conn.commit()
 
     def read():
-        conn = sqlite3.connect("data.db")
+        conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
