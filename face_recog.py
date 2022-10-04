@@ -4,9 +4,10 @@ from PIL import ImageTk, Image
 import time
 import customtkinter
 import os
-import openpyxl, xlrd
-from openpyxl import Workbook
-import pathlib
+import sqlite3
+# import openpyxl, xlrd
+# from openpyxl import Workbook
+# import pathlib
 
 w=Tk()
 
@@ -40,66 +41,66 @@ image_a=ImageTk.PhotoImage(Image.open('pic/dot2.png'))
 image_b=ImageTk.PhotoImage(Image.open('pic/dot1.png'))
 
 
-for i in range(5):
-    # loading text
-    label2=Label(w, text='Loading', fg='white', bg='#dab015') #decorate it 
-    label2.configure(font=("Calibri", 17))
-    label2.place(x=10,y=465)
-    # background image
-    label = Label(w, image = photo)
-    label.pack()
-    # loading dot animation
-    l1=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=90, y=480)
-    l2=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=110, y=480)
-    l3=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=130, y=480)
-    l4=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=150, y=480)
-    w.update_idletasks()
-    time.sleep(0.5)
+# for i in range(5):
+#     # loading text
+#     label2=Label(w, text='Loading', fg='white', bg='#dab015') #decorate it 
+#     label2.configure(font=("Calibri", 17))
+#     label2.place(x=10,y=465)
+#     # background image
+#     label = Label(w, image = photo)
+#     label.pack()
+#     # loading dot animation
+#     l1=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=90, y=480)
+#     l2=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=110, y=480)
+#     l3=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=130, y=480)
+#     l4=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=150, y=480)
+#     w.update_idletasks()
+#     time.sleep(0.5)
 
-    # loading text
-    label2=Label(w, text='Loading', fg='white', bg='#dab015') #decorate it 
-    label2.configure(font=("Calibri", 17))
-    label2.place(x=10,y=465)
-    # background image
-    label = Label(w, image = photo)
-    label.pack()
-    # loading dot animation
-    l1=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=90, y=480)
-    l2=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=110, y=480)
-    l3=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=130, y=480)
-    l4=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=150, y=480)
-    w.update_idletasks()
-    time.sleep(0.5)
+#     # loading text
+#     label2=Label(w, text='Loading', fg='white', bg='#dab015') #decorate it 
+#     label2.configure(font=("Calibri", 17))
+#     label2.place(x=10,y=465)
+#     # background image
+#     label = Label(w, image = photo)
+#     label.pack()
+#     # loading dot animation
+#     l1=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=90, y=480)
+#     l2=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=110, y=480)
+#     l3=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=130, y=480)
+#     l4=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=150, y=480)
+#     w.update_idletasks()
+#     time.sleep(0.5)
 
-    # loading text
-    label2=Label(w, text='Loading', fg='white', bg='#dab015') #decorate it 
-    label2.configure(font=("Calibri", 17))
-    label2.place(x=10,y=465)
-    # background image
-    label = Label(w, image = photo)
-    label.pack()
-    # loading dot animation
-    l1=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=90, y=480)
-    l2=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=110, y=480)
-    l3=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=130, y=480)
-    l4=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=150, y=480)
-    w.update_idletasks()
-    time.sleep(0.5)
+#     # loading text
+#     label2=Label(w, text='Loading', fg='white', bg='#dab015') #decorate it 
+#     label2.configure(font=("Calibri", 17))
+#     label2.place(x=10,y=465)
+#     # background image
+#     label = Label(w, image = photo)
+#     label.pack()
+#     # loading dot animation
+#     l1=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=90, y=480)
+#     l2=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=110, y=480)
+#     l3=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=130, y=480)
+#     l4=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=150, y=480)
+#     w.update_idletasks()
+#     time.sleep(0.5)
 
-    # loading text
-    label2=Label(w, text='Loading', fg='white', bg='#dab015') #decorate it 
-    label2.configure(font=("Calibri", 17))
-    label2.place(x=10,y=465)
-    # background image
-    label = Label(w, image = photo)
-    label.pack()
-    # loading dot animation
-    l1=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=90, y=480)
-    l2=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=110, y=480)
-    l3=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=130, y=480)
-    l4=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=150, y=480)
-    w.update_idletasks()
-    time.sleep(0.5)
+#     # loading text
+#     label2=Label(w, text='Loading', fg='white', bg='#dab015') #decorate it 
+#     label2.configure(font=("Calibri", 17))
+#     label2.place(x=10,y=465)
+#     # background image
+#     label = Label(w, image = photo)
+#     label.pack()
+#     # loading dot animation
+#     l1=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=90, y=480)
+#     l2=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=110, y=480)
+#     l3=Label(w, image=image_b, border=0, relief=SUNKEN).place(x=130, y=480)
+#     l4=Label(w, image=image_a, border=0, relief=SUNKEN).place(x=150, y=480)
+#     w.update_idletasks()
+#     time.sleep(0.5)
 
 #new window to open
 def new_win():
@@ -111,6 +112,7 @@ def new_win():
     main_window.title('main window')
     # main_window.geometry('1000x500')
     main_window.state('zoomed')
+    main_window.resizable(False,False)
     # main_window.rowconfigure(0, weight=2)
     # main_window.columnconfigure(1, weight=1)
     
@@ -127,7 +129,7 @@ def new_win():
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(page1)
+    show_frame(faculty_information)
 
     # ============= Page 1 Frame =========
 
@@ -335,66 +337,6 @@ def new_win():
     address_fac_inf = Entry(faculty_information)
     address_fac_inf.place(x=319, y=380, width=125)
 
-        # Search Entry
-    def filterTreeView(*args):
-        ItemOnTreeView = data_table.get_children()
-
-        search = search_ent_val.get()
-
-        for eachItem in ItemOnTreeView:
-            if search in data_table.item(eachItem)['values'][2]:
-                search_val = data_table.item(eachItem)['values']
-                data_table.delete(eachItem)
-
-                data_table.insert("", 1, values=search_val)
-
-    search_ent_val = StringVar()
-
-    search_fac_inf = Entry(faculty_information, textvariable = search_ent_val)
-    search_fac_inf.place(x=850, y=202, width=200)
-
-    search_ent_val.trace("w", filterTreeView)
-
-        # open and connect the excel to tha data table
-    openfile = openpyxl.load_workbook("data/faculty_data.xlsx")
-    select_sheet1 = openfile.active
-
-    list_col_header = select_sheet1.iter_rows(min_row=1,max_row=1,values_only=True)
-    list_data_set = select_sheet1.iter_rows(min_row=2,values_only=True)
-    list_col_header = [r for r in list_col_header]
-    list_data_set = [r for r in list_data_set]
-    openfile.close()
-
-        # Data Table "TreeView"
-    scrollbarx = Scrollbar(faculty_information, orient=HORIZONTAL)
-    scrollbarx.place(x=730, y=584, width=465)
-    scrollbary = Scrollbar(faculty_information, orient=VERTICAL)
-    scrollbary.place(x=1180, y=284, height=300)
-
-    style = ttk.Style()
-    style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
-
-    data_table = ttk.Treeview(faculty_information, selectmode = 'browse')
-    data_table.place(x=730, y=284, width=450, height=300)
-    data_table.configure(yscrollcommand=scrollbary.set, xscrollcommand=scrollbarx.set)
-
-    scrollbarx.configure(command=data_table.xview)
-    scrollbary.configure(command=data_table.yview)
-
-    data_table['height'] = 8
-    data_table['show'] = 'headings'
-    data_table["columns"] = list_col_header[0]
-
-    # Display the Heading 
-    for i in list_col_header[0]:
-        data_table.column(i, width = 100, anchor = 'c')
-    for i in list_col_header[0]:
-        data_table.heading(i, text = i)
-
-    # Display the list Data
-    for data in list_data_set:
-        data_table.insert("", 'end', iid = data[0], values = data)
-
         # Clear Text Field
     def clear():
         department_combobox.delete(0, END)
@@ -406,74 +348,131 @@ def new_win():
         age_fac_inf.delete(0, END)
         con_num_fac_inf.delete(0, END)
 
+    def reverse(tuples):
+        new_tup = tuples[::-1]
+        return new_tup
+
+        # Insert Data
+    def insert(Employee_No,Email,Employee_Name,Gender,Age,Contact_Number,Address,College_Department):
+        conn = sqlite3.connec("data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("""CREATE TABLE IF NOT EXISTS 
+            faculty_data(Employee_No INTEGER, Email TEXT, Employee_Name TEXT,
+            Gender TEXT,Age INTEGER,Contact_Number INTEGER,Address TEXT,College_Department TEXT)""")
+        
+        cursor.execute("INSERT INTO faculty_data VALUES ('" + str(Employee_No) + "','" + str(Email) + "','" + str(Employee_Name) + "','" + str(Gender) + "','" + str(Age) + "','" + str(Contact_Number) + "','" + str(Address) + "','" + str(College_Department) + "')")
+        conn.commit()
+
+    def read():
+        conn = sqlite3.connect("data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("""CREATE TABLE IF NOT EXISTS 
+            faculty_data(Employee_No INTEGER, Email TEXT, Employee_Name TEXT,
+            Gender TEXT,Age INTEGER,Contact_Number INTEGER,Address TEXT,College_Department TEXT)""")
+
+        cursor.execute("SELECT * FROM faculty_data")
+        results = cursor.fetchall()
+        conn.commit()
+        return results
+
         # Add Faculty Button
     def Save_Data():
-        save_college_department = department_combobox.get()
         save_employee_number = employee_num_fac_inf.get()
-        save_gender = gender_combobox_fac_inf.get()
         save_email = email_fac_inf.get()
-        save_address = address_fac_inf.get()
         save_employee_name = employee_name_fac_inf.get()
+        save_gender = gender_combobox_fac_inf.get()
         save_age = age_fac_inf.get()
         save_contact_number = con_num_fac_inf.get()
+        save_address = address_fac_inf.get()
+        save_college_department = department_combobox.get()
 
-        if save_college_department and save_employee_number and save_gender and save_email and save_address and save_employee_name and save_age and save_contact_number:
-
-            # print("College Department:", save_college_department)
-            # print("Employee No.: ", save_employee_number, "Employee Name: ", save_employee_name)
-            # print("Gender: ", save_gender, "Age: ", save_age)
-            # print("Email: ", save_email, "Contact Number: ", save_contact_number)
-            # print("Address:", save_address)
-            # print("------------------------------------------")
-
-            filepath = pathlib.Path("data/faculty_data.xlsx")
-            if filepath.exists():
-                pass 
-            else:
-                filepath = Workbook()
-                sheet = filepath.active
-                sheet["A1"] = "Employee No."
-                sheet["B1"] = "Email"
-                sheet["C1"] = "Employee Name"
-                sheet["D1"] = "Gender"
-                sheet["E1"] = "Age"
-                sheet["F1"] = "Contact Number"
-                sheet["G1"] = "Address"
-                sheet["H1"] = "College Department"
-
-                filepath.save("data/faculty_data.xlsx")
-
-            file = openpyxl.load_workbook("data/faculty_data.xlsx")
-            sheet1 = file.active
-
-            Found = False
-
-            for i in range(2,(sheet1.max_row)+1):
-                if((save_employee_number==sheet1['A'+str(i)].value) and (save_email==sheet1['B'+str(i)].value)):
-                    Found = True
-                    break
-                else:
-                    Found = False
-                
-            if(Found==True):
-                messagebox.showinfo("Error", "Employee Number or Email Exists!!")
-            else:
-                messagebox.showinfo("Success", "Data Added!")
-                lastRow = str((sheet1.max_row)+1)
-                sheet1['A'+lastRow] = save_employee_number
-                sheet1['B'+lastRow] = save_email
-                sheet1['C'+lastRow] = save_employee_name
-                sheet1['D'+lastRow] = save_gender
-                sheet1['E'+lastRow] = save_age
-                sheet1['F'+lastRow] = save_contact_number
-                sheet1['G'+lastRow] = save_address
-                sheet1['H'+lastRow] = save_college_department
-
-            file.save("data/faculty_data.xlsx")
+        if save_employee_number == "" or save_employee_number == " ":
+            messagebox.showinfo("Error", "Employee Number is Empty!!")
+        if save_email == "" or save_email == " ":
+            messagebox.showinfo("Error", "Email is Empty!!")
+        if save_employee_name == "" or save_employee_name == " ":
+            messagebox.showinfo("Error", "Employee Name is Empty!!")
+        if save_gender == "" or save_gender == " ":
+            messagebox.showinfo("Error", "Gender is Empty!!")
+        if save_age == "" or save_age == " ":
+            messagebox.showinfo("Error", "Age is Empty!!")
+        if save_contact_number == "" or save_contact_number == " ":
+            messagebox.showinfo("Error", "Employee Number is Empty!!")
+        if save_address == "" or save_address == " ":
+            messagebox.showinfo("Error", "Employee Number is Empty!!")
+        if save_college_department == "" or save_college_department == " ":
+            messagebox.showinfo("Error", "Employee Number is Empty!!")
+        else:
+            messagebox.showinfo("Messgae", "Data Added!!")
+            insert(str(save_employee_number),str(save_email),str(save_employee_name),str(save_gender),str(save_age),str(save_contact_number),str(save_address),str(save_college_department))
             clear()
 
-        else:
-            messagebox.showwarning(title="Error", message="Fill up all the data are required.")
+        for result in reverse(read()):
+            data_table.insert(parent='', index='end', iid=0, text='', values=(result), tag="orow")
+        data_table.tag_configure('orow', background='#EEEEEE')
+        
+
+
+        # if save_college_department and save_employee_number and save_gender and save_email and save_address and save_employee_name and save_age and save_contact_number:
+
+        #     # print("College Department:", save_college_department)
+        #     # print("Employee No.: ", save_employee_number, "Employee Name: ", save_employee_name)
+        #     # print("Gender: ", save_gender, "Age: ", save_age)
+        #     # print("Email: ", save_email, "Contact Number: ", save_contact_number)
+        #     # print("Address:", save_address)
+        #     # print("------------------------------------------")
+
+        #     filepath = pathlib.Path("data/faculty_data.xlsx")
+        #     if filepath.exists():
+        #         pass 
+        #     else:
+        #         filepath = Workbook()
+        #         sheet = filepath.active
+        #         sheet["A1"] = "Employee No."
+        #         sheet["B1"] = "Email"
+        #         sheet["C1"] = "Employee Name"
+        #         sheet["D1"] = "Gender"
+        #         sheet["E1"] = "Age"
+        #         sheet["F1"] = "Contact Number"
+        #         sheet["G1"] = "Address"
+        #         sheet["H1"] = "College Department"
+
+        #         filepath.save("data/faculty_data.xlsx")
+
+        #     file = openpyxl.load_workbook("data/faculty_data.xlsx")
+        #     sheet1 = file.active
+        #     global Found
+        #     Found = True
+
+        #     for i in range(2,(sheet1.max_row)+1):
+        #         global Found
+        #         if((save_employee_number==sheet1['A'+str(i)].value) and (save_email==sheet1['B'+str(i)].value)):
+        #             Found = True
+        #             break
+        #         else:
+        #             Found = False
+                
+        #     if(Found==True):
+        #         messagebox.showinfo("Error", "Employee Number or Email Exists!!")
+        #     else:
+        #         messagebox.showinfo("Success", "Data Added!")
+        #         lastRow = str((sheet1.max_row)+1)
+        #         sheet1['A'+lastRow] = save_employee_number
+        #         sheet1['B'+lastRow] = save_email
+        #         sheet1['C'+lastRow] = save_employee_name
+        #         sheet1['D'+lastRow] = save_gender
+        #         sheet1['E'+lastRow] = save_age
+        #         sheet1['F'+lastRow] = save_contact_number
+        #         sheet1['G'+lastRow] = save_address
+        #         sheet1['H'+lastRow] = save_college_department
+
+        #     file.save("data/faculty_data.xlsx")
+        #     clear()
+
+        # else:
+        #     messagebox.showwarning(title="Error", message="Fill up all the data are required.")
 
     add_fac_btn = PhotoImage(file = "pic/btn_add_faculty.png")
     add_button_fac_inf = customtkinter.CTkButton(master=faculty_information,image=add_fac_btn, text="" ,
@@ -493,6 +492,107 @@ def new_win():
     add_button_reset = customtkinter.CTkButton(master=faculty_information,image=reset_btn, text="" ,
                                                 corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
     add_button_reset.place(x=548, y=506, height=32,width=131)
+
+         # Search Entry
+    # def filterTreeView(*args):
+    #     ItemOnTreeView = data_table.get_children()
+
+    #     search = search_ent_val.get()
+
+    #     for eachItem in ItemOnTreeView:
+    #         if search in data_table.item(eachItem)['values'][2]:
+    #             search_val = data_table.item(eachItem)['values']
+    #             data_table.delete(eachItem)
+
+    #             data_table.insert("", 1, values=search_val)
+
+    # search_ent_val = StringVar()
+
+    # search_fac_inf = Entry(faculty_information, textvariable = search_ent_val)
+    # search_fac_inf.place(x=850, y=202, width=200)
+
+    # search_ent_val.trace("w", filterTreeView)
+
+    #     # open and connect the excel to tha data table
+    # openfile = openpyxl.load_workbook("data/faculty_data.xlsx")
+    # select_sheet1 = openfile.active
+
+    # list_col_header = select_sheet1.iter_rows(min_row=1,max_row=1,values_only=True)
+    # list_data_set = select_sheet1.iter_rows(min_row=2,values_only=True)
+    # list_col_header = [r for r in list_col_header]
+    # list_data_set = [r for r in list_data_set]
+    # openfile.close()
+
+         # Data Table "TreeView"
+    scrollbarx = Scrollbar(faculty_information, orient=HORIZONTAL)
+    scrollbarx.place(x=730, y=584, width=465)
+    scrollbary = Scrollbar(faculty_information, orient=VERTICAL)
+    scrollbary.place(x=1180, y=284, height=300)
+
+    style = ttk.Style()
+    style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
+
+    data_table = ttk.Treeview(faculty_information, selectmode = 'browse')
+    data_table.place(x=730, y=284, width=450, height=300)
+    data_table.configure(yscrollcommand=scrollbary.set, xscrollcommand=scrollbarx.set)
+
+    scrollbarx.configure(command=data_table.xview)
+    scrollbary.configure(command=data_table.yview)
+
+    data_table['columns'] = ("Employee No.","Email","Employee Name","Gender","Age","Contact Number","Address","College Department")
+    # Format Columns
+    data_table.column("#0", width=0, stretch=NO)
+    data_table.column("Employee No.", anchor=CENTER, width=150)
+    data_table.column("Email", anchor=CENTER, width=100)
+    data_table.column("Employee Name", anchor=CENTER, width=200)
+    data_table.column("Gender", anchor=CENTER, width=100)
+    data_table.column("Age", anchor=CENTER, width=100)
+    data_table.column("Contact Number", anchor=CENTER, width=200)
+    data_table.column("Address", anchor=CENTER, width=300)
+    data_table.column("College Department", anchor=CENTER, width=150)
+
+    # Create Headings
+    data_table.heading("Employee No.", text="Employee No.", anchor=W)
+    data_table.heading("Email", text="Email", anchor=W)
+    data_table.heading("Employee Name", text="Employee Name", anchor=W)
+    data_table.heading("Gender", text="Gender", anchor=W)
+    data_table.heading("Age", text="Age", anchor=W)
+    data_table.heading("Contact Number", text="Contact Number", anchor=W)
+    data_table.heading("Address", text="Address", anchor=W)
+    data_table.heading("College Department", text="College Department", anchor=W)
+
+    for result in reverse(read()):
+        data_table.insert(parent='', index='end', iid=0, text='', values=(result), tag="orow")
+    data_table.tag_configure('orow', background='#EEEEEE')
+
+    # scrollbarx = Scrollbar(faculty_information, orient=HORIZONTAL)
+    # scrollbarx.place(x=730, y=584, width=465)
+    # scrollbary = Scrollbar(faculty_information, orient=VERTICAL)
+    # scrollbary.place(x=1180, y=284, height=300)
+
+    # style = ttk.Style()
+    # style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
+
+    # data_table = ttk.Treeview(faculty_information, selectmode = 'browse')
+    # data_table.place(x=730, y=284, width=450, height=300)
+    # data_table.configure(yscrollcommand=scrollbary.set, xscrollcommand=scrollbarx.set)
+
+    # scrollbarx.configure(command=data_table.xview)
+    # scrollbary.configure(command=data_table.yview)
+
+    # data_table['height'] = 8
+    # data_table['show'] = 'headings'
+    # data_table["columns"] = list_col_header[0]
+
+    # # Display the Heading 
+    # for i in list_col_header[0]:
+    #     data_table.column(i, width = 100, anchor = 'c')
+    # for i in list_col_header[0]:
+    #     data_table.heading(i, text = i)
+
+    # # Display the list Data
+    # for data in list_data_set:
+    #     data_table.insert("", 'end', iid = data[0], values = data)
 
     main_window.mainloop()
 
