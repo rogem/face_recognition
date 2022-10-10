@@ -347,6 +347,23 @@ def new_win():
         employee_name_fac_inf.delete(0, END)
         age_fac_inf.delete(0, END)
         con_num_fac_inf.delete(0, END)
+        # department_combobox.set("")
+        # employee_num_fac_inf.set("")
+        # gender_combobox_fac_inf.set("")
+        # email_fac_inf.set("")
+        # address_fac_inf.set("")
+        # employee_name_fac_inf.set("")
+        # age_fac_inf.set("")
+        # con_num_fac_inf.set("")
+
+    def refreshTable():
+        for data in data_table.get_children():
+            data_table.delete(data)
+
+        for result in reverse(read()):
+            data_table.insert(parent='', index='end', iid=result, text="", values=(result), tag="orow")
+        data_table.tag_configure('orow', background='#EEEEEE')
+
 
     def reverse(tuples):
         new_tup = tuples[::-1]
@@ -358,24 +375,48 @@ def new_win():
         cursor = conn.cursor()
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
-            faculty_data(Employee_No INTEGER, Email TEXT, Employee_Name TEXT,
-            Gender TEXT,Age INTEGER,Contact_Number INTEGER,Address TEXT,College_Department TEXT)""")
+            faculty_data(Employee_No TEXT, Email TEXT, Employee_Name TEXT,
+            Gender TEXT,Age TEXT,Contact_Number TEXT,Address TEXT,College_Department TEXT)""")
         
         cursor.execute("INSERT INTO faculty_data VALUES ('" + str(Employee_No) + "','" + str(Email) + "','" + str(Employee_Name) + "','" + str(Gender) + "','" + str(Age) + "','" + str(Contact_Number) + "','" + str(Address) + "','" + str(College_Department) + "')")
         conn.commit()
 
+        # Read Data on the sql
     def read():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
-            faculty_data(Employee_No INTEGER, Email TEXT, Employee_Name TEXT,
-            Gender TEXT,Age INTEGER,Contact_Number INTEGER,Address TEXT,College_Department TEXT)""")
+            faculty_data(Employee_No TEXT, Email TEXT, Employee_Name TEXT,
+            Gender TEXT,Age TEXT,Contact_Number TEXT,Address TEXT,College_Department TEXT)""")
 
         cursor.execute("SELECT * FROM faculty_data")
         results = cursor.fetchall()
         conn.commit()
         return results
+
+    def delete(data):
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("""CREATE TABLE IF NOT EXISTS 
+            faculty_data(Employee_No TEXT, Email TEXT, Employee_Name TEXT,
+            Gender TEXT,Age TEXT,Contact_Number TEXT,Address TEXT,College_Department TEXT)""")
+
+        cursor.execute("DELETE FROM faculty_data WHERE Employee_No ='" + srt(data) + "'")
+        conn.commit()
+
+        # Update data sql
+    def update(Employee_No,Email,Employee_Name,Gender,Age,Contact_Number,Address,College_Department,idEmployee_No):
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("""CREATE TABLE IF NOT EXISTS 
+            faculty_data(Employee_No TEXT, Email TEXT, Employee_Name TEXT,
+            Gender TEXT,Age TEXT,Contact_Number TEXT,Address TEXT,College_Department TEXT)""")
+
+        cursor.execute("UPDATE faculty_data SET Employee_No = '" + str(Employee_No) + "', Email = '" + str(Email) + "', Employee_Name = '" + str(Employee_Name) + "', Gender = '" + str(Gender) + "', Age = '" + str(Age) + "', Contact_Number = '" + str(Contact_Number) + "', Address = '" + str(Address) + "', College_Department = '" + str(College_Department) + "' WHERE Employee_No = '"+ str(idEmployee_No)+"'")
+        conn.commit()
 
         # Add Faculty Button
     def Save_Data():
@@ -388,35 +429,133 @@ def new_win():
         save_address = address_fac_inf.get()
         save_college_department = department_combobox.get()
 
-        if save_employee_number == "" or save_employee_number == " ":
-            messagebox.showinfo("Error", "Employee Number is Empty!!")
-        if save_email == "" or save_email == " ":
-            messagebox.showinfo("Error", "Email is Empty!!")
-        if save_employee_name == "" or save_employee_name == " ":
-            messagebox.showinfo("Error", "Employee Name is Empty!!")
-        if save_gender == "" or save_gender == " ":
-            messagebox.showinfo("Error", "Gender is Empty!!")
-        if save_age == "" or save_age == " ":
-            messagebox.showinfo("Error", "Age is Empty!!")
-        if save_contact_number == "" or save_contact_number == " ":
-            messagebox.showinfo("Error", "Employee Number is Empty!!")
-        if save_address == "" or save_address == " ":
-            messagebox.showinfo("Error", "Employee Number is Empty!!")
-        if save_college_department == "" or save_college_department == " ":
-            messagebox.showinfo("Error", "Employee Number is Empty!!")
+        if save_employee_number == "" or save_email == "" or save_employee_name == "" or save_gender == "" or save_age == "" or save_contact_number == "" or save_address == "" or save_college_department == "":
+            messagebox.showinfo("Error", "Please fill up the blank entry!!")
+            return
         else:
-            messagebox.showinfo("Messgae", "Data Added!!")
-            insert(str(save_employee_number),str(save_email),str(save_employee_name),str(save_gender),str(save_age),str(save_contact_number),str(save_address),str(save_college_department))
+            try:
+                messagebox.showinfo("Messgae", "Data Added!!")
+                insert(str(save_employee_number),str(save_email),str(save_employee_name),str(save_gender),str(save_age),str(save_contact_number),str(save_address),str(save_college_department))
+                
+            except:
+                messagebox.showinfo("Error", "Employee Number, Email or Contact Number Already Exist")
+                return
             clear()
+        refreshTable()
 
-        for result in reverse(read()):
-            data_table.insert(parent='', index='end', iid=0, text='', values=(result), tag="orow")
-        data_table.tag_configure('orow', background='#EEEEEE')
-        
+    add_fac_btn = PhotoImage(file = "pic/btn_add_faculty.png")
+    add_button_fac_inf = customtkinter.CTkButton(master=faculty_information,image=add_fac_btn, text="" ,
+                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= Save_Data)
+    add_button_fac_inf.place(x=380, y=506, height=32,width=131)
 
+    def select_row(e):
+        clear()
+
+        selected = data_table.focus()
+        values = data_table.item(selected, 'values')
+
+        employee_num_fac_inf.insert(0, values[0])
+        email_fac_inf.insert(0, values[1])
+        employee_name_fac_inf.insert(0, values[2])
+        gender_combobox_fac_inf.insert(0, values[3])
+        age_fac_inf.insert(0, values[4])
+        con_num_fac_inf.insert(0, values[5])
+        address_fac_inf.insert(0, values[6])
+        department_combobox.insert(0, values[7])
+
+        # for nm in data_table.selection():
+        #     content = data_table.item(nm,'values')
+        #     employee_num_fac_inf.insert(ttk.END,content[1])
+        #     email_fac_inf.insert(ttk.END,content[2])
+        #     employee_name_fac_inf.insert(ttk.END,content[3])
+        #     gender_combobox_fac_inf.insert(ttk.END,content[4])
+        #     age_fac_inf.insert(ttk.END,content[5])
+        #     con_num_fac_inf.insert(ttk.END,content[6])
+        #     address_fac_inf.insert(ttk.END,content[7])
+        #     department_combobox.insert(ttk.END,content[8])
+
+        # Updating Selected Data
+    def Update_Data():
+
+        save_employee_number = employee_num_fac_inf.get()
+        save_email = email_fac_inf.get()
+        save_employee_name = employee_name_fac_inf.get()
+        save_gender = gender_combobox_fac_inf.get()
+        save_age = age_fac_inf.get()
+        save_contact_number = con_num_fac_inf.get()
+        save_address = address_fac_inf.get()
+        save_college_department = department_combobox.get()
+
+        selected_item = data_table.selection()[0]
+        update_name = str(data_table.item(selected_item)['values'][0])
+        update(save_employee_number,save_email,save_employee_name,save_gender,save_age,save_contact_number,save_address,save_college_department,update_name)
+            
+        refreshTable()
+
+        # Update Button
+    def Update():
+        print("update")
+    update_btn = PhotoImage(file = "pic/btn_update.png")
+    button_update = customtkinter.CTkButton(master=faculty_information,image=update_btn, text="" ,
+                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= Update_Data)
+    button_update.place(x=212, y=506, height=32,width=131)
+
+        # Reset Button
+    reset_btn = PhotoImage(file = "pic/btn_reset.png")
+    button_reset = customtkinter.CTkButton(master=faculty_information,image=reset_btn, text="" ,
+                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
+    button_reset.place(x=548, y=506, height=32,width=131)
+
+         # Data Table "TreeView"
+    scrollbarx = Scrollbar(faculty_information, orient=HORIZONTAL)
+    scrollbarx.place(x=730, y=584, width=465)
+    scrollbary = Scrollbar(faculty_information, orient=VERTICAL)
+    scrollbary.place(x=1180, y=284, height=300)
+
+    style = ttk.Style()
+    style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
+
+    data_table = ttk.Treeview(faculty_information)
+    data_table.place(x=730, y=284, width=450, height=300)
+    data_table.configure(yscrollcommand=scrollbary.set, xscrollcommand=scrollbarx.set)
+
+    scrollbarx.configure(command=data_table.xview)
+    scrollbary.configure(command=data_table.yview)
+
+    data_table['columns'] = ("Employee No.","Email","Employee Name","Gender","Age","Contact Number","Address","College Department")
+    # Format Columns
+    data_table.column("#0", width=0, stretch=NO)
+    data_table.column("Employee No.", anchor=W, width=150)
+    data_table.column("Email", anchor=W, width=100)
+    data_table.column("Employee Name", anchor=W, width=200)
+    data_table.column("Gender", anchor=W, width=100)
+    data_table.column("Age", anchor=W, width=100)
+    data_table.column("Contact Number", anchor=W, width=200)
+    data_table.column("Address", anchor=W, width=300)
+    data_table.column("College Department", anchor=W, width=150)
+
+    # Create Headings
+    data_table.heading("Employee No.", text="Employee No.", anchor=CENTER)
+    data_table.heading("Email", text="Email", anchor=CENTER)
+    data_table.heading("Employee Name", text="Employee Name", anchor=CENTER)
+    data_table.heading("Gender", text="Gender", anchor=CENTER)
+    data_table.heading("Age", text="Age", anchor=CENTER)
+    data_table.heading("Contact Number", text="Contact Number", anchor=CENTER)
+    data_table.heading("Address", text="Address", anchor=CENTER)
+    data_table.heading("College Department", text="College Department", anchor=CENTER)
+
+    data_table.bind("<ButtonRelease-1>", select_row)
+
+    refreshTable()
+
+    main_window.mainloop()
+
+w.destroy()
+new_win()
+w.mainloop()
 
         # if save_college_department and save_employee_number and save_gender and save_email and save_address and save_employee_name and save_age and save_contact_number:
-
+ 
         #     # print("College Department:", save_college_department)
         #     # print("Employee No.: ", save_employee_number, "Employee Name: ", save_employee_name)
         #     # print("Gender: ", save_gender, "Age: ", save_age)
@@ -474,24 +613,6 @@ def new_win():
         # else:
         #     messagebox.showwarning(title="Error", message="Fill up all the data are required.")
 
-    add_fac_btn = PhotoImage(file = "pic/btn_add_faculty.png")
-    add_button_fac_inf = customtkinter.CTkButton(master=faculty_information,image=add_fac_btn, text="" ,
-                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= Save_Data)
-    add_button_fac_inf.place(x=380, y=506, height=32,width=131)
-
-        # Update Button
-    def Update():
-        print("update")
-    update_btn = PhotoImage(file = "pic/btn_update.png")
-    add_button_update = customtkinter.CTkButton(master=faculty_information,image=update_btn, text="" ,
-                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= Update)
-    add_button_update.place(x=212, y=506, height=32,width=131)
-
-        # Reset Button
-    reset_btn = PhotoImage(file = "pic/btn_reset.png")
-    add_button_reset = customtkinter.CTkButton(master=faculty_information,image=reset_btn, text="" ,
-                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
-    add_button_reset.place(x=548, y=506, height=32,width=131)
 
          # Search Entry
     # def filterTreeView(*args):
@@ -523,47 +644,6 @@ def new_win():
     # list_data_set = [r for r in list_data_set]
     # openfile.close()
 
-         # Data Table "TreeView"
-    scrollbarx = Scrollbar(faculty_information, orient=HORIZONTAL)
-    scrollbarx.place(x=730, y=584, width=465)
-    scrollbary = Scrollbar(faculty_information, orient=VERTICAL)
-    scrollbary.place(x=1180, y=284, height=300)
-
-    style = ttk.Style()
-    style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
-
-    data_table = ttk.Treeview(faculty_information, selectmode = 'browse')
-    data_table.place(x=730, y=284, width=450, height=300)
-    data_table.configure(yscrollcommand=scrollbary.set, xscrollcommand=scrollbarx.set)
-
-    scrollbarx.configure(command=data_table.xview)
-    scrollbary.configure(command=data_table.yview)
-
-    data_table['columns'] = ("Employee No.","Email","Employee Name","Gender","Age","Contact Number","Address","College Department")
-    # Format Columns
-    data_table.column("#0", width=0, stretch=NO)
-    data_table.column("Employee No.", anchor=CENTER, width=150)
-    data_table.column("Email", anchor=CENTER, width=100)
-    data_table.column("Employee Name", anchor=CENTER, width=200)
-    data_table.column("Gender", anchor=CENTER, width=100)
-    data_table.column("Age", anchor=CENTER, width=100)
-    data_table.column("Contact Number", anchor=CENTER, width=200)
-    data_table.column("Address", anchor=CENTER, width=300)
-    data_table.column("College Department", anchor=CENTER, width=150)
-
-    # Create Headings
-    data_table.heading("Employee No.", text="Employee No.", anchor=W)
-    data_table.heading("Email", text="Email", anchor=W)
-    data_table.heading("Employee Name", text="Employee Name", anchor=W)
-    data_table.heading("Gender", text="Gender", anchor=W)
-    data_table.heading("Age", text="Age", anchor=W)
-    data_table.heading("Contact Number", text="Contact Number", anchor=W)
-    data_table.heading("Address", text="Address", anchor=W)
-    data_table.heading("College Department", text="College Department", anchor=W)
-
-    for result in reverse(read()):
-        data_table.insert(parent='', index='end', iid=0, text='', values=(result), tag="orow")
-    data_table.tag_configure('orow', background='#EEEEEE')
 
     # scrollbarx = Scrollbar(faculty_information, orient=HORIZONTAL)
     # scrollbarx.place(x=730, y=584, width=465)
@@ -593,9 +673,3 @@ def new_win():
     # # Display the list Data
     # for data in list_data_set:
     #     data_table.insert("", 'end', iid = data[0], values = data)
-
-    main_window.mainloop()
-
-w.destroy()
-new_win()
-w.mainloop()
