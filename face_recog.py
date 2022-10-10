@@ -305,38 +305,6 @@ def new_win():
     faculty_information.fac_inf_bg_img_lb = Label(faculty_information, image = faculty_information.photo)
     faculty_information.fac_inf_bg_img_lb.pack()
 
-        # ComboBox College Department
-    department_combobox = ttk.Combobox(faculty_information, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
-    department_combobox.place(x=382, y=202, width=200)
-    
-        # Entry Employee Number
-    employee_num_fac_inf = Entry(faculty_information)
-    employee_num_fac_inf.place(x=319, y=284, width=125)
-
-        # Entry Employee Name
-    employee_name_fac_inf = Entry(faculty_information)
-    employee_name_fac_inf.place(x=560, y=284, width=125)
-
-        # ComboBox Gender
-    gender_combobox_fac_inf = ttk.Combobox(faculty_information, values=["Male", "Female"])
-    gender_combobox_fac_inf.place(x=319, y=316, width=125)
-
-        # Entry Age
-    age_fac_inf = Entry(faculty_information)
-    age_fac_inf.place(x=560, y=316, width=125)
-
-        # Entry E-mail
-    email_fac_inf = Entry(faculty_information)
-    email_fac_inf.place(x=319, y=348, width=125)
-
-        # Entry Contact Number
-    con_num_fac_inf = Entry(faculty_information)
-    con_num_fac_inf.place(x=560, y=348, width=125)
-
-        # Entry Address
-    address_fac_inf = Entry(faculty_information)
-    address_fac_inf.place(x=319, y=380, width=125)
-
         # Clear Text Field
     def clear():
         department_combobox.delete(0, END)
@@ -355,6 +323,35 @@ def new_win():
         # employee_name_fac_inf.set("")
         # age_fac_inf.set("")
         # con_num_fac_inf.set("")
+
+    def search_data():
+        lookup_record = search_fac_inf.get()
+
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        # Clear the Treeview
+        for record in data_table.get_children():
+            data_table.delete(record)
+
+        cursor.execute("SELECT * FROM faculty_data WHERE Employee_No = '" + str(lookup_record) + "' or  Email = '" + str(lookup_record) + "' or  Employee_Name = '" + str(lookup_record) + "' or Gender = '" + str(lookup_record) + "' or Age = '" + str(lookup_record) + "' or Contact_Number = '" + str(lookup_record) + "' or Address = '" + str(lookup_record) + "' or College_Department = '" + str(lookup_record) + "'")
+        records = cursor.fetchall()
+
+        global count
+        count = 0
+
+        for record in records:
+            if count % 2 == 0:
+                data_table.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7]), tag="evenrow")
+            else:
+                data_table.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7]), tag="oddrow")
+            count += 1
+            data_table.tag_configure('evenrow', background='#EEEEEE')
+            data_table.tag_configure('oddrow', background='#EEEEEE')
+            search_fac_inf.delete(0, END)
+
+        conn.commit()
+        conn.close()
 
     def refreshTable():
         for data in data_table.get_children():
@@ -418,7 +415,18 @@ def new_win():
         cursor.execute("UPDATE faculty_data SET Employee_No = '" + str(Employee_No) + "', Email = '" + str(Email) + "', Employee_Name = '" + str(Employee_Name) + "', Gender = '" + str(Gender) + "', Age = '" + str(Age) + "', Contact_Number = '" + str(Contact_Number) + "', Address = '" + str(Address) + "', College_Department = '" + str(College_Department) + "' WHERE Employee_No = '"+ str(idEmployee_No)+"'")
         conn.commit()
 
-        # Add Faculty Button
+    def check_duplicate():
+        Employee_No = employee_num_fac_inf.get()
+        Email = email_fac_inf.get()
+        Contact_Number = con_num_fac_inf.get()
+
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM faculty_data WHERE Employee_No = '" + str(lookup_record) + "' or  Email = '" + str(lookup_record) + "'  or Contact_Number = '" + str(lookup_record) + "'")
+        records = cursor.fetchall()
+
+        # Add Faculty 
     def Save_Data():
         save_employee_number = employee_num_fac_inf.get()
         save_email = email_fac_inf.get()
@@ -443,11 +451,6 @@ def new_win():
             clear()
         refreshTable()
 
-    add_fac_btn = PhotoImage(file = "pic/btn_add_faculty.png")
-    add_button_fac_inf = customtkinter.CTkButton(master=faculty_information,image=add_fac_btn, text="" ,
-                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= Save_Data)
-    add_button_fac_inf.place(x=380, y=506, height=32,width=131)
-
     def select_row(e):
         clear()
 
@@ -462,17 +465,6 @@ def new_win():
         con_num_fac_inf.insert(0, values[5])
         address_fac_inf.insert(0, values[6])
         department_combobox.insert(0, values[7])
-
-        # for nm in data_table.selection():
-        #     content = data_table.item(nm,'values')
-        #     employee_num_fac_inf.insert(ttk.END,content[1])
-        #     email_fac_inf.insert(ttk.END,content[2])
-        #     employee_name_fac_inf.insert(ttk.END,content[3])
-        #     gender_combobox_fac_inf.insert(ttk.END,content[4])
-        #     age_fac_inf.insert(ttk.END,content[5])
-        #     con_num_fac_inf.insert(ttk.END,content[6])
-        #     address_fac_inf.insert(ttk.END,content[7])
-        #     department_combobox.insert(ttk.END,content[8])
 
         # Updating Selected Data
     def Update_Data():
@@ -491,20 +483,6 @@ def new_win():
         update(save_employee_number,save_email,save_employee_name,save_gender,save_age,save_contact_number,save_address,save_college_department,update_name)
             
         refreshTable()
-
-        # Update Button
-    def Update():
-        print("update")
-    update_btn = PhotoImage(file = "pic/btn_update.png")
-    button_update = customtkinter.CTkButton(master=faculty_information,image=update_btn, text="" ,
-                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= Update_Data)
-    button_update.place(x=212, y=506, height=32,width=131)
-
-        # Reset Button
-    reset_btn = PhotoImage(file = "pic/btn_reset.png")
-    button_reset = customtkinter.CTkButton(master=faculty_information,image=reset_btn, text="" ,
-                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
-    button_reset.place(x=548, y=506, height=32,width=131)
 
          # Data Table "TreeView"
     scrollbarx = Scrollbar(faculty_information, orient=HORIZONTAL)
@@ -547,6 +525,75 @@ def new_win():
     data_table.bind("<ButtonRelease-1>", select_row)
 
     refreshTable()
+
+        # ComboBox College Department
+    department_combobox = ttk.Combobox(faculty_information, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
+    department_combobox.place(x=382, y=202, width=200)
+    
+        # Entry Employee Number
+    employee_num_fac_inf = Entry(faculty_information)
+    employee_num_fac_inf.place(x=319, y=284, width=125)
+
+        # Entry Employee Name
+    employee_name_fac_inf = Entry(faculty_information)
+    employee_name_fac_inf.place(x=560, y=284, width=125)
+
+        # ComboBox Gender
+    gender_combobox_fac_inf = ttk.Combobox(faculty_information, values=["Male", "Female"])
+    gender_combobox_fac_inf.place(x=319, y=316, width=125)
+
+        # Entry Age
+    age_fac_inf = Entry(faculty_information)
+    age_fac_inf.place(x=560, y=316, width=125)
+
+        # Entry E-mail
+    email_fac_inf = Entry(faculty_information)
+    email_fac_inf.place(x=319, y=348, width=125)
+
+        # Entry Contact Number
+    con_num_fac_inf = Entry(faculty_information)
+    con_num_fac_inf.place(x=560, y=348, width=125)
+
+        # Entry Address
+    address_fac_inf = Entry(faculty_information)
+    address_fac_inf.place(x=319, y=380, width=125)
+
+        # Search Entry
+    search_ent_val = StringVar()
+    search_fac_inf = Entry(faculty_information, textvariable = search_ent_val)
+    search_fac_inf.place(x=850, y=205, width=200)
+
+        # Add Faculty Button
+    add_fac_btn = PhotoImage(file = "pic/btn_add_faculty.png")
+    add_button_fac_inf = customtkinter.CTkButton(master=faculty_information,image=add_fac_btn, text="" ,
+                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= Save_Data)
+    add_button_fac_inf.place(x=380, y=506, height=32,width=131)
+
+        # Update Button
+    def Update():
+        print("update")
+    update_btn = PhotoImage(file = "pic/btn_update.png")
+    button_update = customtkinter.CTkButton(master=faculty_information,image=update_btn, text="" ,
+                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= Update_Data)
+    button_update.place(x=212, y=506, height=32,width=131)
+
+        # Reset Button
+    reset_btn = PhotoImage(file = "pic/btn_reset.png")
+    button_reset = customtkinter.CTkButton(master=faculty_information,image=reset_btn, text="" ,
+                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
+    button_reset.place(x=548, y=506, height=32,width=131)
+
+        # Search Button
+    search_btn = PhotoImage(file = "pic/btn_search.png")
+    button_search = customtkinter.CTkButton(master=faculty_information,image=search_btn, text="" ,
+                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= search_data)
+    button_search.place(x=1065, y=204, height=20,width=90)
+
+        # Show All Button
+    showall_btn = PhotoImage(file = "pic/btn_showall.png")
+    button_showall = customtkinter.CTkButton(master=faculty_information,image=showall_btn, text="" ,
+                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= refreshTable)
+    button_showall.place(x=923, y=603, height=28,width=110)
 
     main_window.mainloop()
 
