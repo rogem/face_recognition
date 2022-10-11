@@ -130,7 +130,7 @@ def new_win():
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(faculty_information)
+    show_frame(mathematics_att_record)
 
     # ============= Page 1 Frame =========
 
@@ -527,7 +527,7 @@ def new_win():
     refreshTable()
 
         # ComboBox College Department
-    department_combobox = ttk.Combobox(faculty_information, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
+    department_combobox = ttk.Combobox(faculty_information,state="readonly", values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
     department_combobox.place(x=382, y=202, width=200)
     
         # Entry Employee Number
@@ -539,7 +539,7 @@ def new_win():
     employee_name_fac_inf.place(x=560, y=284, width=125)
 
         # ComboBox Gender
-    gender_combobox_fac_inf = ttk.Combobox(faculty_information, values=["Male", "Female"])
+    gender_combobox_fac_inf = ttk.Combobox(faculty_information,state="readonly", values=["Male", "Female"])
     gender_combobox_fac_inf.place(x=319, y=316, width=125)
 
         # Entry Age
@@ -604,6 +604,45 @@ def new_win():
     mathematics_att_record.photo = ImageTk.PhotoImage(mathematics_att_record.math_rec_resize_image)
     mathematics_att_record.math_rec_bg_img_lb = Label(mathematics_att_record, image = mathematics_att_record.photo)
     mathematics_att_record.math_rec_bg_img_lb.pack()
+
+        # ComboBox College Department
+    math_rec_department_combobox = ttk.Combobox(mathematics_att_record, state=DISABLED, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
+    math_rec_department_combobox.place(x=445, y=305, width=200)
+
+        # Entry Employee Number
+    employee_num_math_rec = Entry(mathematics_att_record, state=DISABLED)
+    employee_num_math_rec.place(x=404, y=366, width=110)
+
+        # Entry Employee Name
+    employee_name_math_rec = Entry(mathematics_att_record, state=DISABLED)
+    employee_name_math_rec.place(x=404, y=397, width=110)
+
+        # Entry Attendance Satatus
+    att_status_math_rec = Entry(mathematics_att_record, state=DISABLED)
+    att_status_math_rec.place(x=404, y=428, width=110)
+
+        # Entry Time In
+    time_in_math_rec = Entry(mathematics_att_record, state=DISABLED)
+    time_in_math_rec.place(x=565, y=366, width=110)
+
+        # Entry Time Out
+    time_out_math_rec = Entry(mathematics_att_record, state=DISABLED)
+    time_out_math_rec.place(x=565, y=397, width=110)
+
+        # Entry Date
+    date_math_rec = Entry(mathematics_att_record, state=DISABLED)
+    date_math_rec.place(x=565, y=428, width=110)
+
+        # Search Entry
+    search_ent = StringVar()
+    search_math_rec = Entry(mathematics_att_record, textvariable = search_ent)
+    search_math_rec.place(x=780, y=307, width=190)
+
+        # Search Button
+    search_btn_math_rec = PhotoImage(file = "pic/btn_search.png")
+    math_rec_button_search = customtkinter.CTkButton(master=mathematics_att_record,image=search_btn_math_rec, text="" ,
+                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= search_data)
+    math_rec_button_search.place(x=975, y=307, height=17,width=70)
 
     main_window.mainloop()
 
