@@ -122,8 +122,9 @@ def new_win():
     page4 = Frame(main_window)
     attendance_record = Frame(main_window)
     faculty_information = Frame(main_window)
+    mathematics_att_record = Frame(main_window)
 
-    for frame in (page1, page2, page3, page4, attendance_record,faculty_information):
+    for frame in (page1, page2, page3, page4, attendance_record,faculty_information,mathematics_att_record):
         frame.grid(row=0, column=0, sticky='nsew')
 
     def show_frame(frame):
@@ -315,14 +316,6 @@ def new_win():
         employee_name_fac_inf.delete(0, END)
         age_fac_inf.delete(0, END)
         con_num_fac_inf.delete(0, END)
-        # department_combobox.set("")
-        # employee_num_fac_inf.set("")
-        # gender_combobox_fac_inf.set("")
-        # email_fac_inf.set("")
-        # address_fac_inf.set("")
-        # employee_name_fac_inf.set("")
-        # age_fac_inf.set("")
-        # con_num_fac_inf.set("")
 
     def search_data():
         lookup_record = search_fac_inf.get()
@@ -423,8 +416,15 @@ def new_win():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        cursor.execute("SELECT * FROM faculty_data WHERE Employee_No = '" + str(lookup_record) + "' or  Email = '" + str(lookup_record) + "'  or Contact_Number = '" + str(lookup_record) + "'")
-        records = cursor.fetchall()
+        cursor.execute("SELECT * FROM faculty_data WHERE Employee_No = '" + str(Employee_No) + "' or  Email = '" + str(Email) + "'  or Contact_Number = '" + str(Contact_Number) + "'")
+        records = cursor.fetchone()
+
+        if records is not None:
+            return True
+        else:
+            return False
+
+        conn.commit()
 
         # Add Faculty 
     def Save_Data():
@@ -441,11 +441,11 @@ def new_win():
             messagebox.showinfo("Error", "Please fill up the blank entry!!")
             return
         else:
-            try:
+            if check_duplicate() == False:
                 messagebox.showinfo("Messgae", "Data Added!!")
                 insert(str(save_employee_number),str(save_email),str(save_employee_name),str(save_gender),str(save_age),str(save_contact_number),str(save_address),str(save_college_department))
                 
-            except:
+            else:
                 messagebox.showinfo("Error", "Employee Number, Email or Contact Number Already Exist")
                 return
             clear()
@@ -594,6 +594,16 @@ def new_win():
     button_showall = customtkinter.CTkButton(master=faculty_information,image=showall_btn, text="" ,
                                                 corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= refreshTable)
     button_showall.place(x=923, y=603, height=28,width=110)
+
+
+    # ============= Mathematics Attendance Record Frame =========
+
+        # open background image
+    mathematics_att_record.math_rec_image = Image.open('pic/9.png')
+    mathematics_att_record.math_rec_resize_image = mathematics_att_record.math_rec_image.resize((1362, 692))
+    mathematics_att_record.photo = ImageTk.PhotoImage(mathematics_att_record.math_rec_resize_image)
+    mathematics_att_record.math_rec_bg_img_lb = Label(mathematics_att_record, image = mathematics_att_record.photo)
+    mathematics_att_record.math_rec_bg_img_lb.pack()
 
     main_window.mainloop()
 
