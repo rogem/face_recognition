@@ -605,6 +605,56 @@ def new_win():
     mathematics_att_record.math_rec_bg_img_lb = Label(mathematics_att_record, image = mathematics_att_record.photo)
     mathematics_att_record.math_rec_bg_img_lb.pack()
 
+         # Data Table "TreeView"
+    scrollbarx_math_rec = Scrollbar(mathematics_att_record, orient=HORIZONTAL)
+    scrollbarx_math_rec.place(x=710, y=584, width=347)
+    scrollbary_math_rec = Scrollbar(mathematics_att_record, orient=VERTICAL)
+    scrollbary_math_rec.place(x=1040, y=366, height=219)
+
+    # style = ttk.Style()
+    # style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
+
+    data_table_math_rec = ttk.Treeview(mathematics_att_record)
+    data_table_math_rec.place(x=710, y=366, width=330, height=219)
+    data_table_math_rec.configure(yscrollcommand=scrollbary_math_rec.set, xscrollcommand=scrollbarx_math_rec.set)
+
+    scrollbarx_math_rec.configure(command=data_table_math_rec.xview)
+    scrollbary_math_rec.configure(command=data_table_math_rec.yview)
+
+    data_table_math_rec['columns'] = ("Employee No.","Name","Department","Time in","Time out","Status")
+    # Format Columns
+    data_table_math_rec.column("#0", width=0, stretch=NO)
+    data_table_math_rec.column("Employee No.", anchor=W, width=150)
+    data_table_math_rec.column("Name", anchor=W, width=100)
+    data_table_math_rec.column("Department", anchor=W, width=200)
+    data_table_math_rec.column("Time in", anchor=W, width=100)
+    data_table_math_rec.column("Time out", anchor=W, width=100)
+    data_table_math_rec.column("Status", anchor=W, width=200)
+
+    # Create Headings
+    data_table_math_rec.heading("Employee No.", text="Employee No.", anchor=CENTER)
+    data_table_math_rec.heading("Name", text="Name", anchor=CENTER)
+    data_table_math_rec.heading("Department", text="Department", anchor=CENTER)
+    data_table_math_rec.heading("Time in", text="Time in", anchor=CENTER)
+    data_table_math_rec.heading("Time out", text="Time out", anchor=CENTER)
+    data_table_math_rec.heading("Status", text="Status", anchor=CENTER)
+
+        # Total Faculty Label
+    total_faculty_lb_math_rec = Label(mathematics_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_faculty_lb_math_rec.place(x=347, y=190)
+
+        # Total Present Label
+    total_present_lb_math_rec = Label(mathematics_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_present_lb_math_rec.place(x=565, y=190)
+
+        # Total Absent Label
+    total_absent_lb_math_rec = Label(mathematics_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_absent_lb_math_rec.place(x=772, y=190)
+
+        # Total Late Label
+    total_late_lb_math_rec = Label(mathematics_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_late_lb_math_rec.place(x=990, y=190)
+
         # ComboBox College Department
     math_rec_department_combobox = ttk.Combobox(mathematics_att_record, state=DISABLED, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
     math_rec_department_combobox.place(x=445, y=305, width=200)
@@ -639,10 +689,28 @@ def new_win():
     search_math_rec.place(x=780, y=307, width=190)
 
         # Search Button
-    search_btn_math_rec = PhotoImage(file = "pic/btn_search.png")
+    search_btn_math_rec = PhotoImage(file = "pic/btn_search_small.png")
     math_rec_button_search = customtkinter.CTkButton(master=mathematics_att_record,image=search_btn_math_rec, text="" ,
-                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= search_data)
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= search_data)
     math_rec_button_search.place(x=975, y=307, height=17,width=70)
+
+        # Show All Button
+    showall_btn_math_rec = PhotoImage(file = "pic/btn_showall_small.png")
+    math_rec_button_showall = customtkinter.CTkButton(master=mathematics_att_record,image=showall_btn_math_rec, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= refreshTable)
+    math_rec_button_showall.place(x=843, y=608, height=21,width=90)
+
+        # Reset Button
+    reset_btn_math_rec = PhotoImage(file = "pic/btn_reset_small.png")
+    math_rec_button_reset = customtkinter.CTkButton(master=mathematics_att_record,image=reset_btn_math_rec, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
+    math_rec_button_reset.place(x=510, y=519, height=25,width=100)
+
+        # Print Button
+    print_btn_math_rec = PhotoImage(file = "pic/btn_print.png")
+    math_rec_button_print = customtkinter.CTkButton(master=mathematics_att_record,image=print_btn_math_rec, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
+    math_rec_button_print.place(x=372, y=519, height=25,width=100)
 
     main_window.mainloop()
 
