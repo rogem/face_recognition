@@ -130,7 +130,7 @@ def new_win():
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(mathematics_att_record)
+    show_frame(page2)
 
     # ============= Page 1 Frame =========
 
@@ -180,30 +180,62 @@ def new_win():
     page3.pg3_bg_img_lb.pack()
 
         # Text Box Username and Password
+    username_lbl_pg3 = Label(page3, text='Username', fg='Black', bg ='#1f2a76', font = "Heltvetica 27 bold")
+    username_lbl_pg3.place(x=116, y=207)
     pg3_txtbox_username = Entry(page3, borderwidth=0, width=16, font=('Arial',30))
-    pg3_txtbox_username.insert(0,"Username")
+    # pg3_txtbox_username.insert(0,"Username")
     pg3_txtbox_username.place(x=116, y=256, height=92)
 
+    password_lbl_pg3 = Label(page3, text='Password', fg='Black', bg ='#1f2a76', font = "Heltvetica 27 bold")
+    password_lbl_pg3.place(x=116, y=370)
     pg3_txtbox_pass = Entry(page3, borderwidth=0, width=16, font=('Arial', 30), show='*')
-    pg3_txtbox_pass.insert(0,"Password")
+    # pg3_txtbox_pass.insert(0,"Password")
     pg3_txtbox_pass.place(x=116, y=422, height=90)
 
         # Account verification
     def verify():
-        try:
-            with open("Account.txt", "r") as f:
-                info = f.readlines()
-                i  = 0
-                for e in info:
-                    u, p =e.split(",")
-                    if u.strip() == pg3_txtbox_username.get() and p.strip() == pg3_txtbox_pass.get():
-                        show_frame(page4)
-                        i = 1
-                        break
-                if i==0:
-                    messagebox.showinfo("Error", "Please provide correct username and password!!")
-        except:
-            messagebox.showinfo("Error", "Please provide correct username and password!!")
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("""CREATE TABLE IF NOT EXISTS 
+            user_login(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Username TEXT, Password TEXT, Position TEXt)""")
+
+        # cursor.execute("INSERT INTO user_login (Username,Password) VALUES ('admin', '123' , 'admin')")
+
+        uname = pg3_txtbox_username.get()
+        pwd = pg3_txtbox_pass.get()
+
+        if uname=='' or pwd=='':
+            messagebox.showinfo("Error", "Please Fill The Empty Field!!")
+        else:
+            cursor.execute("SELECT * FROM user_login WHERE Username = '" + str(uname) + "' or  Password = '" + str(pwd) + "'")
+            if cursor.fetchone():
+                show_frame(page4)
+                messagebox.showinfo("Messgae", "WELCOME USER")
+            else:
+                messagebox.showinfo("Error", "Please provide correct username and password!!")
+
+            pg3_txtbox_username.delete(0, END)
+            pg3_txtbox_pass.delete(0, END)
+
+        conn.commit()
+
+
+    # def verify():
+    #     try:
+    #         with open("Account.txt", "r") as f:
+    #             info = f.readlines()
+    #             i  = 0
+    #             for e in info:
+    #                 u, p =e.split(",")
+    #                 if u.strip() == pg3_txtbox_username.get() and p.strip() == pg3_txtbox_pass.get():
+    #                     show_frame(page4)
+    #                     i = 1
+    #                     break
+    #             if i==0:
+    #                 messagebox.showinfo("Error", "Please provide correct username and password!!")
+    #     except:
+    #         messagebox.showinfo("Error", "Please provide correct username and password!!")
 
         # Login Button
     login_img_btn = PhotoImage(file = "pic/login.png")
