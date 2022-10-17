@@ -123,14 +123,16 @@ def new_win():
     attendance_record = Frame(main_window)
     faculty_information = Frame(main_window)
     mathematics_att_record = Frame(main_window)
+    employee_login = Frame(main_window)
+    attendance_monitoring = Frame(main_window)
 
-    for frame in (page1, page2, page3, page4, attendance_record,faculty_information,mathematics_att_record):
+    for frame in (page1, page2, page3, page4, attendance_record,faculty_information,mathematics_att_record,employee_login,attendance_monitoring):
         frame.grid(row=0, column=0, sticky='nsew')
 
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(page2)
+    show_frame(attendance_monitoring)
 
     # ============= Page 1 Frame =========
 
@@ -162,13 +164,85 @@ def new_win():
 
         # Employee Button
     employee_img_btn = PhotoImage(file = "pic/btn_employee.png")
-    pg2_button_bio = Button(page2,image=employee_img_btn, borderwidth=0,bg='#1f2a76', command=lambda: show_frame(page3))
-    pg2_button_bio.place(x=99, y=256)
+    pg2_button_employee = Button(page2,image=employee_img_btn, borderwidth=0,bg='#1f2a76', command=lambda: show_frame(employee_login))
+    pg2_button_employee.place(x=99, y=256)
 
         # Admin Button
     admin_img_btn = PhotoImage(file = "pic/bttn_admin.png")
     pg2_button_admin = Button(page2,image=admin_img_btn, borderwidth=0, bg='#1f2a76',command=lambda: show_frame(page3))
     pg2_button_admin.place(x=99, y=422)
+
+    # ============= Employee Sign In Frame =========
+
+        # open background image
+    employee_login.empl_log_image = Image.open('pic/5.png')
+    employee_login.empl_log_resize_image = employee_login.empl_log_image.resize((1362, 692))
+    employee_login.photo = ImageTk.PhotoImage(employee_login.empl_log_resize_image)
+    employee_login.empl_log_bg_img_lb = Label(employee_login, image = employee_login.photo)
+    employee_login.empl_log_bg_img_lb.pack()
+
+        # Text Box Username and Password
+    username_lbl_empl_log= Label(employee_login, text='Username', fg='Black', bg ='#1f2a76', font = "Heltvetica 27 bold")
+    username_lbl_empl_log.place(x=116, y=207)
+    empl_log_txtbox_username = Entry(employee_login, borderwidth=0, width=16, font=('Arial',30))
+    empl_log_txtbox_username.place(x=116, y=256, height=92)
+
+    password_lbl_empl_log = Label(employee_login, text='Password', fg='Black', bg ='#1f2a76', font = "Heltvetica 27 bold")
+    password_lbl_empl_log.place(x=116, y=370)
+    empl_log_txtbox_pass = Entry(employee_login, borderwidth=0, width=16, font=('Arial', 30), show='*')
+    empl_log_txtbox_pass.place(x=116, y=422, height=90)
+
+        # Account verification
+    def verify():
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("""CREATE TABLE IF NOT EXISTS 
+            user_login(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Username TEXT, Password TEXT, Position TEXt)""")
+
+        # cursor.execute("INSERT INTO user_login (Username,Password) VALUES ('admin', '123' , 'admin')")
+
+        uname = empl_log_txtbox_username.get()
+        pwd = empl_log_txtbox_pass.get()
+
+        if uname=='' or pwd=='':
+            messagebox.showinfo("Error", "Please Fill The Empty Field!!")
+        else:
+            cursor.execute("SELECT * FROM user_login WHERE Username = '" + str(uname) + "' or  Password = '" + str(pwd) + "'")
+            if cursor.fetchone():
+                show_frame(page4)
+                messagebox.showinfo("Messgae", "WELCOME USER")
+            else:
+                messagebox.showinfo("Error", "Please provide correct username and password!!")
+
+            empl_log_txtbox_username.delete(0, END)
+            empl_log_txtbox_pass.delete(0, END)
+            check_button_empl_log.select()
+
+        conn.commit()
+
+        # Login Button
+    login_img_btn1 = PhotoImage(file = "pic/login.png")
+    empl_log_button = Button(employee_login, image=login_img_btn1, borderwidth=0, bg='#1f2a76', command=verify)
+    empl_log_button.place(x=180, y=557)
+
+        # show and hide Password
+    def show_password_Employee():
+        if  empl_log_txtbox_pass.cget('show') =='*':
+            empl_log_txtbox_pass.configure(show='')
+        else:
+            empl_log_txtbox_pass.configure(show='*')
+    check_button_empl_log = Checkbutton(employee_login, text="show password",bg="#1f2a76", command=show_password_Employee, font="Arial", activebackground="#1f2a76",)
+    check_button_empl_log.place(x=116,y=520)
+
+    # ============= Employee Attendance Record In Frame =========
+
+        # open background image
+    attendance_monitoring.att_mon_image = Image.open('pic/6.png')
+    attendance_monitoring.att_mon_resize_image = attendance_monitoring.att_mon_image.resize((1362, 692))
+    attendance_monitoring.photo = ImageTk.PhotoImage(attendance_monitoring.att_mon_resize_image)
+    attendance_monitoring.att_mon_bg_img_lb = Label(attendance_monitoring, image = attendance_monitoring.photo)
+    attendance_monitoring.att_mon_bg_img_lb.pack()
 
     # ======== Page 3 Admin Sign In Frame ===========
 
@@ -217,25 +291,9 @@ def new_win():
 
             pg3_txtbox_username.delete(0, END)
             pg3_txtbox_pass.delete(0, END)
+            check_button.select()
 
         conn.commit()
-
-
-    # def verify():
-    #     try:
-    #         with open("Account.txt", "r") as f:
-    #             info = f.readlines()
-    #             i  = 0
-    #             for e in info:
-    #                 u, p =e.split(",")
-    #                 if u.strip() == pg3_txtbox_username.get() and p.strip() == pg3_txtbox_pass.get():
-    #                     show_frame(page4)
-    #                     i = 1
-    #                     break
-    #             if i==0:
-    #                 messagebox.showinfo("Error", "Please provide correct username and password!!")
-    #     except:
-    #         messagebox.showinfo("Error", "Please provide correct username and password!!")
 
         # Login Button
     login_img_btn = PhotoImage(file = "pic/login.png")
