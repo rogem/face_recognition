@@ -210,7 +210,7 @@ def new_win():
         else:
             cursor.execute("SELECT * FROM user_login WHERE Username = '" + str(uname) + "' or  Password = '" + str(pwd) + "'")
             if cursor.fetchone():
-                show_frame(page4)
+                show_frame(attendance_monitoring)
                 messagebox.showinfo("Messgae", "WELCOME USER")
             else:
                 messagebox.showinfo("Error", "Please provide correct username and password!!")
@@ -243,6 +243,18 @@ def new_win():
     attendance_monitoring.photo = ImageTk.PhotoImage(attendance_monitoring.att_mon_resize_image)
     attendance_monitoring.att_mon_bg_img_lb = Label(attendance_monitoring, image = attendance_monitoring.photo)
     attendance_monitoring.att_mon_bg_img_lb.pack()
+
+        # Attendace Record Button
+    record_btn_att_mon = PhotoImage(file = "pic/btn_attendace_rec.png")
+    att_mon_button_record = customtkinter.CTkButton(master=attendance_monitoring,image=record_btn_att_mon, text="" ,
+                                                corner_radius=20,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(employee_login))
+    att_mon_button_record.place(x=773, y=319, height=100,width=412)
+
+        # Personal Information Button
+    info_btn_att_mon = PhotoImage(file = "pic/btn_personal_info.png")
+    att_mon_button_info = customtkinter.CTkButton(master=attendance_monitoring,image=info_btn_att_mon, text="" ,
+                                                corner_radius=20,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(employee_login))
+    att_mon_button_info.place(x=296, y=319, height=100,width=412)
 
     # ======== Page 3 Admin Sign In Frame ===========
 
@@ -807,123 +819,3 @@ def new_win():
 w.destroy()
 new_win()
 w.mainloop()
-
-        # if save_college_department and save_employee_number and save_gender and save_email and save_address and save_employee_name and save_age and save_contact_number:
- 
-        #     # print("College Department:", save_college_department)
-        #     # print("Employee No.: ", save_employee_number, "Employee Name: ", save_employee_name)
-        #     # print("Gender: ", save_gender, "Age: ", save_age)
-        #     # print("Email: ", save_email, "Contact Number: ", save_contact_number)
-        #     # print("Address:", save_address)
-        #     # print("------------------------------------------")
-
-        #     filepath = pathlib.Path("data/faculty_data.xlsx")
-        #     if filepath.exists():
-        #         pass 
-        #     else:
-        #         filepath = Workbook()
-        #         sheet = filepath.active
-        #         sheet["A1"] = "Employee No."
-        #         sheet["B1"] = "Email"
-        #         sheet["C1"] = "Employee Name"
-        #         sheet["D1"] = "Gender"
-        #         sheet["E1"] = "Age"
-        #         sheet["F1"] = "Contact Number"
-        #         sheet["G1"] = "Address"
-        #         sheet["H1"] = "College Department"
-
-        #         filepath.save("data/faculty_data.xlsx")
-
-        #     file = openpyxl.load_workbook("data/faculty_data.xlsx")
-        #     sheet1 = file.active
-        #     global Found
-        #     Found = True
-
-        #     for i in range(2,(sheet1.max_row)+1):
-        #         global Found
-        #         if((save_employee_number==sheet1['A'+str(i)].value) and (save_email==sheet1['B'+str(i)].value)):
-        #             Found = True
-        #             break
-        #         else:
-        #             Found = False
-                
-        #     if(Found==True):
-        #         messagebox.showinfo("Error", "Employee Number or Email Exists!!")
-        #     else:
-        #         messagebox.showinfo("Success", "Data Added!")
-        #         lastRow = str((sheet1.max_row)+1)
-        #         sheet1['A'+lastRow] = save_employee_number
-        #         sheet1['B'+lastRow] = save_email
-        #         sheet1['C'+lastRow] = save_employee_name
-        #         sheet1['D'+lastRow] = save_gender
-        #         sheet1['E'+lastRow] = save_age
-        #         sheet1['F'+lastRow] = save_contact_number
-        #         sheet1['G'+lastRow] = save_address
-        #         sheet1['H'+lastRow] = save_college_department
-
-        #     file.save("data/faculty_data.xlsx")
-        #     clear()
-
-        # else:
-        #     messagebox.showwarning(title="Error", message="Fill up all the data are required.")
-
-
-         # Search Entry
-    # def filterTreeView(*args):
-    #     ItemOnTreeView = data_table.get_children()
-
-    #     search = search_ent_val.get()
-
-    #     for eachItem in ItemOnTreeView:
-    #         if search in data_table.item(eachItem)['values'][2]:
-    #             search_val = data_table.item(eachItem)['values']
-    #             data_table.delete(eachItem)
-
-    #             data_table.insert("", 1, values=search_val)
-
-    # search_ent_val = StringVar()
-
-    # search_fac_inf = Entry(faculty_information, textvariable = search_ent_val)
-    # search_fac_inf.place(x=850, y=202, width=200)
-
-    # search_ent_val.trace("w", filterTreeView)
-
-    #     # open and connect the excel to tha data table
-    # openfile = openpyxl.load_workbook("data/faculty_data.xlsx")
-    # select_sheet1 = openfile.active
-
-    # list_col_header = select_sheet1.iter_rows(min_row=1,max_row=1,values_only=True)
-    # list_data_set = select_sheet1.iter_rows(min_row=2,values_only=True)
-    # list_col_header = [r for r in list_col_header]
-    # list_data_set = [r for r in list_data_set]
-    # openfile.close()
-
-
-    # scrollbarx = Scrollbar(faculty_information, orient=HORIZONTAL)
-    # scrollbarx.place(x=730, y=584, width=465)
-    # scrollbary = Scrollbar(faculty_information, orient=VERTICAL)
-    # scrollbary.place(x=1180, y=284, height=300)
-
-    # style = ttk.Style()
-    # style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
-
-    # data_table = ttk.Treeview(faculty_information, selectmode = 'browse')
-    # data_table.place(x=730, y=284, width=450, height=300)
-    # data_table.configure(yscrollcommand=scrollbary.set, xscrollcommand=scrollbarx.set)
-
-    # scrollbarx.configure(command=data_table.xview)
-    # scrollbary.configure(command=data_table.yview)
-
-    # data_table['height'] = 8
-    # data_table['show'] = 'headings'
-    # data_table["columns"] = list_col_header[0]
-
-    # # Display the Heading 
-    # for i in list_col_header[0]:
-    #     data_table.column(i, width = 100, anchor = 'c')
-    # for i in list_col_header[0]:
-    #     data_table.heading(i, text = i)
-
-    # # Display the list Data
-    # for data in list_data_set:
-    #     data_table.insert("", 'end', iid = data[0], values = data)
