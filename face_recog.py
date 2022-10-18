@@ -132,7 +132,7 @@ def new_win():
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(attendance_monitoring)
+    show_frame(faculty_information)
 
     # ============= Page 1 Frame =========
 
@@ -418,6 +418,10 @@ def new_win():
         employee_name_fac_inf.delete(0, END)
         age_fac_inf.delete(0, END)
         con_num_fac_inf.delete(0, END)
+        position_fac_inf.delete(0, END)
+        username_fac_inf.delete(0, END)
+        password_fac_inf.delete(0, END)
+        # retype_password_fac_inf.delete(0, END)
 
     def search_data():
         lookup_record = search_fac_inf.get()
@@ -437,9 +441,9 @@ def new_win():
 
         for record in records:
             if count % 2 == 0:
-                data_table.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7]), tag="evenrow")
+                data_table.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7],record[8],record[9],record[10]), tag="evenrow")
             else:
-                data_table.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7]), tag="oddrow")
+                data_table.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7],record[8],record[9],record[10]), tag="oddrow")
             count += 1
             data_table.tag_configure('evenrow', background='#EEEEEE')
             data_table.tag_configure('oddrow', background='#EEEEEE')
@@ -462,15 +466,16 @@ def new_win():
         return new_tup
 
         # Insert Data
-    def insert(Employee_No,Email,Employee_Name,Gender,Age,Contact_Number,Address,College_Department):
+    def insert(Employee_No,Email,Employee_Name,Gender,Age,Contact_Number,Address,College_Department,Username,Password,Position):
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
             faculty_data(Employee_No TEXT, Email TEXT, Employee_Name TEXT,
-            Gender TEXT,Age TEXT,Contact_Number TEXT,Address TEXT,College_Department TEXT)""")
+            Gender TEXT,Age TEXT,Contact_Number TEXT,Address TEXT,College_Department TEXT,
+            Username TEXT, Password TEXT, Position TEXT)""")
         
-        cursor.execute("INSERT INTO faculty_data VALUES ('" + str(Employee_No) + "','" + str(Email) + "','" + str(Employee_Name) + "','" + str(Gender) + "','" + str(Age) + "','" + str(Contact_Number) + "','" + str(Address) + "','" + str(College_Department) + "')")
+        cursor.execute("INSERT INTO faculty_data VALUES ('" + str(Employee_No) + "','" + str(Email) + "','" + str(Employee_Name) + "','" + str(Gender) + "','" + str(Age) + "','" + str(Contact_Number) + "','" + str(Address) + "','" + str(College_Department) + "','" + str(Username) + "','" + str(Password) + "','" + str(Position) + "')")
         conn.commit()
 
         # Read Data on the sql
@@ -480,7 +485,8 @@ def new_win():
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
             faculty_data(Employee_No TEXT, Email TEXT, Employee_Name TEXT,
-            Gender TEXT,Age TEXT,Contact_Number TEXT,Address TEXT,College_Department TEXT)""")
+            Gender TEXT,Age TEXT,Contact_Number TEXT,Address TEXT,College_Department TEXT,
+            Username TEXT, Password TEXT, Position TEXT)""")
 
         cursor.execute("SELECT * FROM faculty_data")
         results = cursor.fetchall()
@@ -493,32 +499,36 @@ def new_win():
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
             faculty_data(Employee_No TEXT, Email TEXT, Employee_Name TEXT,
-            Gender TEXT,Age TEXT,Contact_Number TEXT,Address TEXT,College_Department TEXT)""")
+            Gender TEXT,Age TEXT,Contact_Number TEXT,Address TEXT,College_Department TEXT,
+            Username TEXT, Password TEXT, Position TEXT)""")
 
         cursor.execute("DELETE FROM faculty_data WHERE Employee_No ='" + srt(data) + "'")
         conn.commit()
 
         # Update data sql
-    def update(Employee_No,Email,Employee_Name,Gender,Age,Contact_Number,Address,College_Department,idEmployee_No):
+    def update(Employee_No,Email,Employee_Name,Gender,Age,Contact_Number,Address,College_Department,Username,Password,Position,idEmployee_No):
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
             faculty_data(Employee_No TEXT, Email TEXT, Employee_Name TEXT,
-            Gender TEXT,Age TEXT,Contact_Number TEXT,Address TEXT,College_Department TEXT)""")
+            Gender TEXT,Age TEXT,Contact_Number TEXT,Address TEXT,College_Department TEXT,
+            Username TEXT, Password TEXT, Position TEXT)""")
 
-        cursor.execute("UPDATE faculty_data SET Employee_No = '" + str(Employee_No) + "', Email = '" + str(Email) + "', Employee_Name = '" + str(Employee_Name) + "', Gender = '" + str(Gender) + "', Age = '" + str(Age) + "', Contact_Number = '" + str(Contact_Number) + "', Address = '" + str(Address) + "', College_Department = '" + str(College_Department) + "' WHERE Employee_No = '"+ str(idEmployee_No)+"'")
+        cursor.execute("UPDATE faculty_data SET Employee_No = '" + str(Employee_No) + "', Email = '" + str(Email) + "', Employee_Name = '" + str(Employee_Name) + "', Gender = '" + str(Gender) + "', Age = '" + str(Age) + "', Contact_Number = '" + str(Contact_Number) + "', Address = '" + str(Address) + "', College_Department = '" + str(College_Department) + "', Username = '" + str(Username) + "', Password = '" + str(Password) + "', Position = '" + str(Position) + "' WHERE Employee_No = '"+ str(idEmployee_No)+"'")
         conn.commit()
 
     def check_duplicate():
         Employee_No = employee_num_fac_inf.get()
         Email = email_fac_inf.get()
         Contact_Number = con_num_fac_inf.get()
+        Username = username_fac_inf.get()
+        Password = password_fac_inf.get()
 
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        cursor.execute("SELECT * FROM faculty_data WHERE Employee_No = '" + str(Employee_No) + "' or  Email = '" + str(Email) + "'  or Contact_Number = '" + str(Contact_Number) + "'")
+        cursor.execute("SELECT * FROM faculty_data WHERE Employee_No = '" + str(Employee_No) + "' or  Email = '" + str(Email) + "'  or Contact_Number = '" + str(Contact_Number) + "' or Username = '" + str(Username) + "' or Password = '" + str(Password) + "'")
         records = cursor.fetchone()
 
         if records is not None:
@@ -538,19 +548,22 @@ def new_win():
         save_contact_number = con_num_fac_inf.get()
         save_address = address_fac_inf.get()
         save_college_department = department_combobox.get()
+        save_username = username_fac_inf.get()
+        save_password = password_fac_inf.get()
+        save_position = position_fac_inf.get()
 
-        if save_employee_number == "" or save_email == "" or save_employee_name == "" or save_gender == "" or save_age == "" or save_contact_number == "" or save_address == "" or save_college_department == "":
+        if save_employee_number == "" or save_email == "" or save_employee_name == "" or save_gender == "" or save_age == "" or save_contact_number == "" or save_address == "" or save_college_department == "" or save_username == "" or save_password == "" or save_position == "":
             messagebox.showinfo("Error", "Please fill up the blank entry!!")
             return
         else:
             if check_duplicate() == False:
                 messagebox.showinfo("Messgae", "Data Added!!")
-                insert(str(save_employee_number),str(save_email),str(save_employee_name),str(save_gender),str(save_age),str(save_contact_number),str(save_address),str(save_college_department))
-                
+                insert(str(save_employee_number),str(save_email),str(save_employee_name),str(save_gender),str(save_age),str(save_contact_number),str(save_address),str(save_college_department),str(save_username),str(save_password),str(save_position)) 
+                clear()
             else:
                 messagebox.showinfo("Error", "Employee Number, Email or Contact Number Already Exist")
                 return
-            clear()
+            
         refreshTable()
 
     def select_row(e):
@@ -567,6 +580,9 @@ def new_win():
         con_num_fac_inf.insert(0, values[5])
         address_fac_inf.insert(0, values[6])
         department_combobox.insert(0, values[7])
+        username_fac_inf.insert(0, values[8])
+        password_fac_inf.insert(0, values[9])
+        position_fac_inf.insert(0, values[10])
 
         # Updating Selected Data
     def Update_Data():
@@ -579,11 +595,19 @@ def new_win():
         save_contact_number = con_num_fac_inf.get()
         save_address = address_fac_inf.get()
         save_college_department = department_combobox.get()
+        save_username = username_fac_inf.get()
+        save_password = password_fac_inf.get()
+        save_position = position_fac_inf.get()
 
         selected_item = data_table.selection()[0]
         update_name = str(data_table.item(selected_item)['values'][0])
-        update(save_employee_number,save_email,save_employee_name,save_gender,save_age,save_contact_number,save_address,save_college_department,update_name)
-            
+        if save_employee_number == "" or save_email == "" or save_employee_name == "" or save_gender == "" or save_age == "" or save_contact_number == "" or save_address == "" or save_college_department == "" or save_username == "" or save_password == "" or save_position == "":
+            messagebox.showinfo("Error", "Please fill up the blank entry!!")
+            return
+        else:
+            messagebox.showinfo("Messgae", "Data Updated!!")
+            update(save_employee_number,save_email,save_employee_name,save_gender,save_age,save_contact_number,save_address,save_college_department,save_username,save_password,save_position,update_name)
+            clear()     
         refreshTable()
 
          # Data Table "TreeView"
@@ -602,7 +626,7 @@ def new_win():
     scrollbarx.configure(command=data_table.xview)
     scrollbary.configure(command=data_table.yview)
 
-    data_table['columns'] = ("Employee No.","Email","Employee Name","Gender","Age","Contact Number","Address","College Department")
+    data_table['columns'] = ("Employee No.","Email","Employee Name","Gender","Age","Contact Number","Address","College Department","Username","Password","Position")
     # Format Columns
     data_table.column("#0", width=0, stretch=NO)
     data_table.column("Employee No.", anchor=W, width=150)
@@ -613,6 +637,9 @@ def new_win():
     data_table.column("Contact Number", anchor=W, width=200)
     data_table.column("Address", anchor=W, width=300)
     data_table.column("College Department", anchor=W, width=150)
+    data_table.column("Username", anchor=W, width=100)
+    data_table.column("Password", anchor=W, width=100)
+    data_table.column("Position", anchor=W, width=100)
 
     # Create Headings
     data_table.heading("Employee No.", text="Employee No.", anchor=CENTER)
@@ -623,42 +650,78 @@ def new_win():
     data_table.heading("Contact Number", text="Contact Number", anchor=CENTER)
     data_table.heading("Address", text="Address", anchor=CENTER)
     data_table.heading("College Department", text="College Department", anchor=CENTER)
+    data_table.heading("Username", text="Username", anchor=CENTER)
+    data_table.heading("Password", text="Password", anchor=CENTER)
+    data_table.heading("Position", text="Position", anchor=CENTER)
 
     data_table.bind("<ButtonRelease-1>", select_row)
 
     refreshTable()
 
         # ComboBox College Department
-    department_combobox = ttk.Combobox(faculty_information,state="readonly", values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
+    department_combobox = ttk.Combobox(faculty_information, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
     department_combobox.place(x=382, y=202, width=200)
+    # state="readonly"
     
         # Entry Employee Number
     employee_num_fac_inf = Entry(faculty_information)
-    employee_num_fac_inf.place(x=319, y=284, width=125)
+    employee_num_fac_inf.place(x=200, y=288, width=125)
 
         # Entry Employee Name
     employee_name_fac_inf = Entry(faculty_information)
-    employee_name_fac_inf.place(x=560, y=284, width=125)
+    employee_name_fac_inf.place(x=385, y=288, width=125)
 
         # ComboBox Gender
-    gender_combobox_fac_inf = ttk.Combobox(faculty_information,state="readonly", values=["Male", "Female"])
-    gender_combobox_fac_inf.place(x=319, y=316, width=125)
+    gender_combobox_fac_inf = ttk.Combobox(faculty_information, values=["Male", "Female"])
+    gender_combobox_fac_inf.place(x=200, y=328, width=125)
 
         # Entry Age
     age_fac_inf = Entry(faculty_information)
-    age_fac_inf.place(x=560, y=316, width=125)
+    age_fac_inf.place(x=385, y=328, width=125)
 
         # Entry E-mail
     email_fac_inf = Entry(faculty_information)
-    email_fac_inf.place(x=319, y=348, width=125)
+    email_fac_inf.place(x=200, y=365, width=125)
 
         # Entry Contact Number
     con_num_fac_inf = Entry(faculty_information)
-    con_num_fac_inf.place(x=560, y=348, width=125)
+    con_num_fac_inf.place(x=385, y=365, width=125)
 
         # Entry Address
     address_fac_inf = Entry(faculty_information)
-    address_fac_inf.place(x=319, y=380, width=125)
+    address_fac_inf.place(x=200, y=405, width=125)
+
+        # Label Position
+    position_fac_inf_lb = Label(faculty_information, text='Position:', fg='#043f6b', font="Heltvetica 8 bold")
+    position_fac_inf_lb.place(x=560, y=272)
+
+        # Label Username
+    username_fac_inf_lb = Label(faculty_information, text='Username:', fg='#043f6b', font="Heltvetica 8 bold")
+    username_fac_inf_lb.place(x=560, y=312)
+
+        # Label Password
+    password_fac_lb = Label(faculty_information, text='Password:', fg='#043f6b', font="Heltvetica 8 bold")
+    password_fac_lb.place(x=560, y=350)
+
+    #     # Label Retype Password
+    # retype_password_fac_lb = Label(faculty_information, text='ReType Password:', fg='#043f6b', font="Heltvetica 8 bold")
+    # retype_password_fac_lb.place(x=560, y=389)
+
+        # Entry Position
+    position_fac_inf = ttk.Combobox(faculty_information, values=["Admin", "Employee"])
+    position_fac_inf.place(x=560, y=288, width=125)
+
+        # Entry Username
+    username_fac_inf = Entry(faculty_information)
+    username_fac_inf.place(x=560, y=328, width=125)
+
+        # Entry Password
+    password_fac_inf = Entry(faculty_information)
+    password_fac_inf.place(x=560, y=365, width=125)
+
+    #     # Entry Retype Password
+    # retype_password_fac_inf = Entry(faculty_information)
+    # retype_password_fac_inf.place(x=560, y=405, width=125)
 
         # Search Entry
     search_ent_val = StringVar()
