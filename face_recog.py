@@ -248,8 +248,12 @@ def new_win():
     attendance_monitoring.att_mon_bg_img_lb.pack()
 
         # Employee Name Label
-    att_mon_lb_empname = Label(attendance_monitoring, text='Users Name', fg='white', bg ='#00436e', font = "Heltvetica 15 bold")
-    att_mon_lb_empname.place(x=25, y=130)
+    att_mon_lb_name = Label(attendance_monitoring, text='Users Name', fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
+    att_mon_lb_name.place(x=20, y=140)
+
+        # Employee Department Label
+    att_mon_lb_name = Label(attendance_monitoring, text='Department', fg='white', bg ='#00436e', font = "Heltvetica 15 bold")
+    att_mon_lb_name.place(x=20, y=180)
 
         # Attendace Record Button
     record_btn_att_mon = PhotoImage(file = "pic/btn_attendace_rec.png")
