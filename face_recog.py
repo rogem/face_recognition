@@ -132,7 +132,7 @@ def new_win():
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(faculty_information)
+    show_frame(attendance_monitoring)
 
     # ============= Page 1 Frame =========
 
@@ -197,27 +197,30 @@ def new_win():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        cursor.execute("""CREATE TABLE IF NOT EXISTS 
-            user_login(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Username TEXT, Password TEXT, Position TEXt)""")
+        # cursor.execute("""CREATE TABLE IF NOT EXISTS 
+        #     user_login(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Username TEXT, Password TEXT, Position TEXt)""")
 
         # cursor.execute("INSERT INTO user_login (Username,Password) VALUES ('admin', '123' , 'admin')")
 
         uname = empl_log_txtbox_username.get()
         pwd = empl_log_txtbox_pass.get()
+        emply = "Employee"
 
         if uname=='' or pwd=='':
             messagebox.showinfo("Error", "Please Fill The Empty Field!!")
         else:
-            cursor.execute("SELECT * FROM user_login WHERE Username = '" + str(uname) + "' or  Password = '" + str(pwd) + "'")
+            cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(emply) + "'")
             if cursor.fetchone():
                 show_frame(attendance_monitoring)
                 messagebox.showinfo("Messgae", "WELCOME USER")
+
+                empl_log_txtbox_username.delete(0, END)
+                empl_log_txtbox_pass.delete(0, END)
+                check_button_empl_log.deselect()
             else:
                 messagebox.showinfo("Error", "Please provide correct username and password!!")
 
-            empl_log_txtbox_username.delete(0, END)
-            empl_log_txtbox_pass.delete(0, END)
-            check_button_empl_log.select()
+                
 
         conn.commit()
 
@@ -243,6 +246,10 @@ def new_win():
     attendance_monitoring.photo = ImageTk.PhotoImage(attendance_monitoring.att_mon_resize_image)
     attendance_monitoring.att_mon_bg_img_lb = Label(attendance_monitoring, image = attendance_monitoring.photo)
     attendance_monitoring.att_mon_bg_img_lb.pack()
+
+        # Employee Name Label
+    att_mon_lb_empname = Label(attendance_monitoring, text='Users Name', fg='white', bg ='#00436e', font = "Heltvetica 15 bold")
+    att_mon_lb_empname.place(x=25, y=130)
 
         # Attendace Record Button
     record_btn_att_mon = PhotoImage(file = "pic/btn_attendace_rec.png")
@@ -283,27 +290,27 @@ def new_win():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        cursor.execute("""CREATE TABLE IF NOT EXISTS 
-            user_login(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Username TEXT, Password TEXT, Position TEXt)""")
+        # cursor.execute("""CREATE TABLE IF NOT EXISTS 
+        #     user_login(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Username TEXT, Password TEXT, Position TEXt)""")
 
         # cursor.execute("INSERT INTO user_login (Username,Password) VALUES ('admin', '123' , 'admin')")
 
         uname = pg3_txtbox_username.get()
         pwd = pg3_txtbox_pass.get()
-
+        adm = "Admin"
         if uname=='' or pwd=='':
             messagebox.showinfo("Error", "Please Fill The Empty Field!!")
         else:
-            cursor.execute("SELECT * FROM user_login WHERE Username = '" + str(uname) + "' or  Password = '" + str(pwd) + "'")
+            cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(adm) + "'")
             if cursor.fetchone():
                 show_frame(page4)
                 messagebox.showinfo("Messgae", "WELCOME USER")
+
+                pg3_txtbox_username.delete(0, END)
+                pg3_txtbox_pass.delete(0, END)
+                check_button.deselect()
             else:
                 messagebox.showinfo("Error", "Please provide correct username and password!!")
-
-            pg3_txtbox_username.delete(0, END)
-            pg3_txtbox_pass.delete(0, END)
-            check_button.select()
 
         conn.commit()
 
@@ -363,7 +370,7 @@ def new_win():
         # Logout Button
     logout_btn = PhotoImage(file = "pic/logout.png")
     pg4_button_logout = customtkinter.CTkButton(master=page4,image=logout_btn, text="" ,
-                                                corner_radius=30, fg_color="#f0f0f0",hover_color="#6699cc", command=lambda: show_frame(page2))
+                                                corner_radius=30, fg_color="#f0f0f0",hover_color="#6699cc", command=lambda: show_frame(page3 ))
     pg4_button_logout.place(x=1075, y=469, height=178,width=197)
 
     # ============= Attendace Record Frame =========
@@ -716,8 +723,20 @@ def new_win():
     username_fac_inf.place(x=560, y=328, width=125)
 
         # Entry Password
-    password_fac_inf = Entry(faculty_information)
+    password_fac_inf = Entry(faculty_information, show='*')
     password_fac_inf.place(x=560, y=365, width=125)
+
+    check_button_style = ttk.Style()
+    check_button_style.configure('TCheckbutton', font = 7)
+
+        # show and hide Password
+    def show_entry_password():
+        if  password_fac_inf.cget('show') =='*':
+            password_fac_inf.configure(show='')
+        else:
+            password_fac_inf.configure(show='*')
+    check_button_fac_inf = Checkbutton(faculty_information, text="show password", command=show_entry_password, font="Arial 7", )
+    check_button_fac_inf.place(x=560, y=385)
 
     #     # Entry Retype Password
     # retype_password_fac_inf = Entry(faculty_information)
