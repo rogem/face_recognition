@@ -264,9 +264,6 @@ def new_win():
     Name =''
     Department=''
 
-    #     Name = get_Name
-
-
         # Employee Name Label
     att_mon_lb_name = Label(attendance_monitoring, text="Employee Name", fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
     att_mon_lb_name.place(x=20, y=140)
