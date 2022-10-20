@@ -132,7 +132,7 @@ def new_win():
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(attendance_monitoring)
+    show_frame(employee_login)
 
     # ============= Page 1 Frame =========
 
@@ -211,8 +211,20 @@ def new_win():
         else:
             cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(emply) + "'")
             if cursor.fetchone():
+                cursor.execute("SELECT Employee_Name FROM faculty_data WHERE Username like '"+ str(uname)+"' AND Password like '"+ str(pwd)+"'")
+                get_Name = cursor.fetchone()
+
+                Name = get_Name
+                att_mon_lb_name.configure(text = Name)
+
+                cursor.execute("SELECT College_Department FROM faculty_data WHERE Username like '"+ str(uname)+"' AND Password like '"+ str(pwd)+"'")
+                get_Department = cursor.fetchone()
+
+                Department = get_Department
+                att_mon_lb_dept.configure(text = Department)
+
                 show_frame(attendance_monitoring)
-                messagebox.showinfo("Messgae", "WELCOME USER")
+                messagebox.showinfo("Messgae", "WELCOME USER" )
 
                 empl_log_txtbox_username.delete(0, END)
                 empl_log_txtbox_pass.delete(0, END)
@@ -247,13 +259,21 @@ def new_win():
     attendance_monitoring.att_mon_bg_img_lb = Label(attendance_monitoring, image = attendance_monitoring.photo)
     attendance_monitoring.att_mon_bg_img_lb.pack()
 
+    global Name
+    global Department
+    Name =''
+    Department=''
+
+    #     Name = get_Name
+
+
         # Employee Name Label
-    att_mon_lb_name = Label(attendance_monitoring, text='Users Name', fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
+    att_mon_lb_name = Label(attendance_monitoring, text="Employee Name", fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
     att_mon_lb_name.place(x=20, y=140)
 
         # Employee Department Label
-    att_mon_lb_name = Label(attendance_monitoring, text='Department', fg='white', bg ='#00436e', font = "Heltvetica 15 bold")
-    att_mon_lb_name.place(x=20, y=180)
+    att_mon_lb_dept = Label(attendance_monitoring, text='Department', fg='white', bg ='#00436e', font = "Heltvetica 15 bold")
+    att_mon_lb_dept.place(x=20, y=180)
 
         # Attendace Record Button
     record_btn_att_mon = PhotoImage(file = "pic/btn_attendace_rec.png")
@@ -274,7 +294,7 @@ def new_win():
     page3.pg3_resize_image = page3.pg3_image.resize((1362, 692))
     page3.photo = ImageTk.PhotoImage(page3.pg3_resize_image)
     page3.pg3_bg_img_lb = Label(page3, image = page3.photo)
-    page3.pg3_bg_img_lb.pack()
+    page3.pg3_bg_img_lb.pack() 
 
         # Text Box Username and Password
     username_lbl_pg3 = Label(page3, text='Username', fg='Black', bg ='#1f2a76', font = "Heltvetica 27 bold")
