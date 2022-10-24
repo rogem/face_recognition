@@ -136,7 +136,7 @@ def new_win():
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(employee_login)
+    show_frame(mathematics_att_record)
 
     # ============= Page 1 Frame =========
 
@@ -277,6 +277,33 @@ def new_win():
     attendance_monitoring.att_mon_bg_img_lb = Label(attendance_monitoring, image = attendance_monitoring.photo)
     attendance_monitoring.att_mon_bg_img_lb.pack()
 
+         # Data Table "TreeView"
+    scrollbary_emp_att_rec = Scrollbar(attendance_monitoring, orient=VERTICAL)
+    scrollbary_emp_att_rec.place(x=1090, y=300, height=335)
+
+    # style = ttk.Style()
+    # style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
+
+    data_table_emp_att_rec = ttk.Treeview(attendance_monitoring)
+    data_table_emp_att_rec.place(x=340, y=300, width=750, height=335)
+    data_table_emp_att_rec.configure(yscrollcommand=scrollbary_emp_att_rec.set)
+
+    scrollbary_emp_att_rec.configure(command=data_table_emp_att_rec.yview)
+
+    data_table_emp_att_rec['columns'] = ("Time in","Time out","Date","Status")
+    # Format Columns
+    data_table_emp_att_rec.column("#0", width=0, stretch=NO)
+    data_table_emp_att_rec.column("Time in", anchor=W, width=100)
+    data_table_emp_att_rec.column("Time out", anchor=W, width=100)
+    data_table_emp_att_rec.column("Date", anchor=W, width=100)
+    data_table_emp_att_rec.column("Status", anchor=W, width=100)
+
+    # Create Headings
+    data_table_emp_att_rec.heading("Time in", text="Time in", anchor=CENTER)
+    data_table_emp_att_rec.heading("Time out", text="Time out", anchor=CENTER)
+    data_table_emp_att_rec.heading("Date", text="Date", anchor=CENTER)
+    data_table_emp_att_rec.heading("Status", text="Status", anchor=CENTER)
+
     global Name
     global Department
     global ID_Number
@@ -308,7 +335,22 @@ def new_win():
     att_mon_lb_cont = Label(attendance_monitoring, text='Phone Number', bg ='#ffd636', font = "Heltvetica 17 bold")
     att_mon_lb_cont.place(x=660, y=140)
 
-    
+        # Search Entry
+    search_entry_att_mon = StringVar()
+    search_att_mon = Entry(attendance_monitoring, textvariable = search_entry_att_mon)
+    search_att_mon.place(x=590, y=237, width=210)
+
+        # Search Button
+    search_btn_att_mon = PhotoImage(file = "pic/btn_search.png")
+    att_mon_button_search = customtkinter.CTkButton(master=attendance_monitoring,image=search_btn_att_mon, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= "")
+    att_mon_button_search.place(x=820, y=235, height=20,width=90)
+
+        # Show All Button
+    showall_btn_att_mon = PhotoImage(file = "pic/btn_showall.png")
+    att_mon_button_showall = customtkinter.CTkButton(master=attendance_monitoring,image=showall_btn_att_mon, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command="")
+    att_mon_button_showall.place(x=680, y=655, height=27,width=110)
 
     #     # Attendace Record Button
     # record_btn_att_mon = PhotoImage(file = "pic/btn_attendace_rec.png")
@@ -926,7 +968,7 @@ def new_win():
     scrollbarx_math_rec.configure(command=data_table_math_rec.xview)
     scrollbary_math_rec.configure(command=data_table_math_rec.yview)
 
-    data_table_math_rec['columns'] = ("Employee No.","Name","Department","Time in","Time out","Status")
+    data_table_math_rec['columns'] = ("Employee No.","Name","Department","Time in","Time out","Date","Status")
     # Format Columns
     data_table_math_rec.column("#0", width=0, stretch=NO)
     data_table_math_rec.column("Employee No.", anchor=W, width=150)
@@ -934,7 +976,8 @@ def new_win():
     data_table_math_rec.column("Department", anchor=W, width=200)
     data_table_math_rec.column("Time in", anchor=W, width=100)
     data_table_math_rec.column("Time out", anchor=W, width=100)
-    data_table_math_rec.column("Status", anchor=W, width=200)
+    data_table_math_rec .column("Date", anchor=W, width=100)
+    data_table_math_rec .column("Status", anchor=W, width=100)
 
     # Create Headings
     data_table_math_rec.heading("Employee No.", text="Employee No.", anchor=CENTER)
@@ -942,7 +985,8 @@ def new_win():
     data_table_math_rec.heading("Department", text="Department", anchor=CENTER)
     data_table_math_rec.heading("Time in", text="Time in", anchor=CENTER)
     data_table_math_rec.heading("Time out", text="Time out", anchor=CENTER)
-    data_table_math_rec.heading("Status", text="Status", anchor=CENTER)
+    data_table_math_rec .heading("Date", text="Date", anchor=CENTER)
+    data_table_math_rec .heading("Status", text="Status", anchor=CENTER)
 
         # Total Faculty Label
     total_faculty_lb_math_rec = Label(mathematics_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
