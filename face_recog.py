@@ -125,8 +125,12 @@ def new_win():
     mathematics_att_record = Frame(main_window)
     employee_login = Frame(main_window)
     attendance_monitoring = Frame(main_window)
+    developers = Frame(main_window)
+    about = Frame(main_window)
+    about_clg_goal = Frame(main_window)
+    about_program= Frame(main_window)
 
-    for frame in (page1, page2, page3, page4, attendance_record,faculty_information,mathematics_att_record,employee_login,attendance_monitoring):
+    for frame in (page1, page2, page3, page4, attendance_record,faculty_information,mathematics_att_record,employee_login,attendance_monitoring,developers,about,about_clg_goal,about_program):
         frame.grid(row=0, column=0, sticky='nsew')
 
     def show_frame(frame):
@@ -213,15 +217,29 @@ def new_win():
             if cursor.fetchone():
                 cursor.execute("SELECT Employee_Name FROM faculty_data WHERE Username like '"+ str(uname)+"' AND Password like '"+ str(pwd)+"'")
                 get_Name = cursor.fetchone()
+                cursor.execute("SELECT College_Department FROM faculty_data WHERE Username like '"+ str(uname)+"' AND Password like '"+ str(pwd)+"'")
+                get_Department = cursor.fetchone()
+                cursor.execute("SELECT Employee_No FROM faculty_data WHERE Username like '"+ str(uname)+"' AND Password like '"+ str(pwd)+"'")
+                get_ID_Number = cursor.fetchone()
+                cursor.execute("SELECT Email FROM faculty_data WHERE Username like '"+ str(uname)+"' AND Password like '"+ str(pwd)+"'")
+                get_Email = cursor.fetchone()
+                cursor.execute("SELECT Contact_Number FROM faculty_data WHERE Username like '"+ str(uname)+"' AND Password like '"+ str(pwd)+"'")
+                get_Phone = cursor.fetchone()
 
                 Name = get_Name
                 att_mon_lb_name.configure(text = Name)
 
-                cursor.execute("SELECT College_Department FROM faculty_data WHERE Username like '"+ str(uname)+"' AND Password like '"+ str(pwd)+"'")
-                get_Department = cursor.fetchone()
-
                 Department = get_Department
                 att_mon_lb_dept.configure(text = Department)
+
+                ID_Number = get_ID_Number 
+                att_mon_lb_empnum.configure(text = ID_Number)
+
+                User_Email = get_Email 
+                att_mon_lb_eml.configure(text = User_Email)
+
+                Phone = get_Phone
+                att_mon_lb_cont.configure(text = Phone)
 
                 show_frame(attendance_monitoring)
                 messagebox.showinfo("Messgae", "WELCOME USER" )
@@ -261,28 +279,48 @@ def new_win():
 
     global Name
     global Department
+    global ID_Number
+    global User_Email
+    global Phone
     Name =''
-    Department=''
+    Department =''
+    ID_Number ='' 
+    User_Email ='' 
+    Phone =''
 
         # Employee Name Label
-    att_mon_lb_name = Label(attendance_monitoring, text="Employee Name", fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
-    att_mon_lb_name.place(x=20, y=140)
+    att_mon_lb_name = Label(attendance_monitoring, text="Employee Name", bg ='#ffd636', font = "Heltvetica 30 bold")
+    att_mon_lb_name.place(x=300, y=40)
+
+        # Employee Number Label
+    att_mon_lb_empnum = Label(attendance_monitoring, text='Employee Number', bg ='#ffd636', font = "Heltvetica 17 bold")
+    att_mon_lb_empnum.place(x=300, y=100)
 
         # Employee Department Label
-    att_mon_lb_dept = Label(attendance_monitoring, text='Department', fg='white', bg ='#00436e', font = "Heltvetica 15 bold")
-    att_mon_lb_dept.place(x=20, y=180)
+    att_mon_lb_dept = Label(attendance_monitoring, text='Department', bg ='#ffd636', font = "Heltvetica 17 bold")
+    att_mon_lb_dept.place(x=300, y=140)
 
-        # Attendace Record Button
-    record_btn_att_mon = PhotoImage(file = "pic/btn_attendace_rec.png")
-    att_mon_button_record = customtkinter.CTkButton(master=attendance_monitoring,image=record_btn_att_mon, text="" ,
-                                                corner_radius=20,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(employee_login))
-    att_mon_button_record.place(x=773, y=319, height=100,width=412)
+        # Employee Email Label
+    att_mon_lb_eml = Label(attendance_monitoring, text='Email', bg ='#ffd636', font = "Heltvetica 17 bold")
+    att_mon_lb_eml.place(x=660, y=100)
 
-        # Personal Information Button
-    info_btn_att_mon = PhotoImage(file = "pic/btn_personal_info.png")
-    att_mon_button_info = customtkinter.CTkButton(master=attendance_monitoring,image=info_btn_att_mon, text="" ,
-                                                corner_radius=20,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(employee_login))
-    att_mon_button_info.place(x=296, y=319, height=100,width=412)
+        # Employee Phone Number Label
+    att_mon_lb_cont = Label(attendance_monitoring, text='Phone Number', bg ='#ffd636', font = "Heltvetica 17 bold")
+    att_mon_lb_cont.place(x=660, y=140)
+
+    
+
+    #     # Attendace Record Button
+    # record_btn_att_mon = PhotoImage(file = "pic/btn_attendace_rec.png")
+    # att_mon_button_record = customtkinter.CTkButton(master=attendance_monitoring,image=record_btn_att_mon, text="" ,
+    #                                             corner_radius=20,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(employee_login))
+    # att_mon_button_record.place(x=773, y=319, height=100,width=412)
+
+    #     # Personal Information Button
+    # info_btn_att_mon = PhotoImage(file = "pic/btn_personal_info.png")
+    # att_mon_button_info = customtkinter.CTkButton(master=attendance_monitoring,image=info_btn_att_mon, text="" ,
+    #                                             corner_radius=20,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(employee_login))
+    # att_mon_button_info.place(x=296, y=319, height=100,width=412)
 
     # ======== Page 3 Admin Sign In Frame ===========
 
@@ -391,8 +429,68 @@ def new_win():
         # Logout Button
     logout_btn = PhotoImage(file = "pic/logout.png")
     pg4_button_logout = customtkinter.CTkButton(master=page4,image=logout_btn, text="" ,
-                                                corner_radius=30, fg_color="#f0f0f0",hover_color="#6699cc", command=lambda: show_frame(page3 ))
+                                                corner_radius=30, fg_color="#f0f0f0",hover_color="#6699cc", command=lambda: show_frame(page3))
     pg4_button_logout.place(x=1075, y=469, height=178,width=197)
+
+    # ============= Developers Frame =========
+
+        # open background image
+    developers.dev_image = Image.open('pic/8a.png')
+    developers.dev_resize_image = developers.dev_image.resize((1362, 692))
+    developers.photo = ImageTk.PhotoImage(developers.dev_resize_image)
+    developers.dev_bg_img_lb = Label(developers, image = developers.photo)
+    developers.dev_bg_img_lb.pack()
+
+    # ============= About(the Collage) Frame =========
+# #fcd24f
+        # open background image
+    about.abt_image = Image.open('pic/9a.png')
+    about.abt_resize_image = about.abt_image.resize((1362, 692))
+    about.photo = ImageTk.PhotoImage(about.abt_resize_image)
+    about.abt_bg_img_lb = Label(about, image = about.photo)
+    about.abt_bg_img_lb.pack()
+
+        # Next Button
+    next_btn = PhotoImage(file = "pic/btn_forward.png")
+    button_next = customtkinter.CTkButton(master=about,image=next_btn, text="" ,
+                                                corner_radius=6,fg_color="#ffffff",hover_color="#006699", command=lambda: show_frame(about_clg_goal))
+    button_next.place(x=1250, y=320, height=100,width=100)
+
+    # ============= About(Collage Goals) Frame =========
+
+        # open background image
+    about_clg_goal.abt_clg_goal_image = Image.open('pic/9b.png')
+    about_clg_goal.abt_clg_goal_resize_image = about_clg_goal.abt_clg_goal_image.resize((1362, 692))
+    about_clg_goal.abt_clg_goal_photo = ImageTk.PhotoImage(about_clg_goal.abt_clg_goal_resize_image)
+    about_clg_goal.abt_clg_goal_bg_img_lb = Label(about_clg_goal, image = about_clg_goal.abt_clg_goal_photo)
+    about_clg_goal.abt_clg_goal_bg_img_lb.pack()
+
+        # Next Button
+    next_btn_abt_clg_goal = PhotoImage(file = "pic/btn_forward.png")
+    abt_clg_goal_button_next = customtkinter.CTkButton(master=about_clg_goal,image=next_btn_abt_clg_goal, text="" ,
+                                                corner_radius=6,fg_color="#ffffff",hover_color="#006699", command=lambda: show_frame(about_program))
+    abt_clg_goal_button_next.place(x=1250, y=320, height=100,width=100)
+
+        # Back Button
+    abt_clg_goal_back_btn = PhotoImage(file = "pic/btn_back.png")
+    abt_clg_goal_button_back = customtkinter.CTkButton(master=about_clg_goal,image=abt_clg_goal_back_btn, text="" ,
+                                                corner_radius=6,fg_color="#ffffff",hover_color="#006699", command=lambda: show_frame(about))
+    abt_clg_goal_button_back.place(x=20, y=320, height=100,width=100)
+
+        # ============= About(Collage Goals) Frame =========
+
+        # open background image
+    about_program.abt_prog_image = Image.open('pic/9c.png')
+    about_program.abt_prog_resize_image = about_program.abt_prog_image.resize((1362, 692))
+    about_program.abt_prog_photo = ImageTk.PhotoImage(about_program.abt_prog_resize_image)
+    about_program.abt_prog_bg_img_lb = Label(about_program, image = about_program.abt_prog_photo)
+    about_program.abt_prog_bg_img_lb.pack()
+
+        # Back Button
+    abt_prog_back_btn = PhotoImage(file = "pic/btn_back.png")
+    abt_prog_button_back = customtkinter.CTkButton(master=about_program,image=abt_prog_back_btn, text="" ,
+                                                corner_radius=6,fg_color="#ffffff",hover_color="#006699", command=lambda: show_frame(about_clg_goal))
+    abt_prog_button_back.place(x=20, y=320, height=100,width=100)
 
     # ============= Attendace Record Frame =========
 
@@ -449,6 +547,7 @@ def new_win():
         position_fac_inf.delete(0, END)
         username_fac_inf.delete(0, END)
         password_fac_inf.delete(0, END)
+        # check_button_fac_inf.deselect()
         # retype_password_fac_inf.delete(0, END)
 
     def search_data():
@@ -579,6 +678,7 @@ def new_win():
         save_username = username_fac_inf.get()
         save_password = password_fac_inf.get()
         save_position = position_fac_inf.get()
+
 
         if save_employee_number == "" or save_email == "" or save_employee_name == "" or save_gender == "" or save_age == "" or save_contact_number == "" or save_address == "" or save_college_department == "" or save_username == "" or save_password == "" or save_position == "":
             messagebox.showinfo("Error", "Please fill up the blank entry!!")
