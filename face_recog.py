@@ -5,9 +5,9 @@ import time
 import customtkinter
 import os
 import sqlite3
-# import openpyxl, xlrd
-# from openpyxl import Workbook
-# import pathlib
+from time import strftime
+import calendar
+
 
 w=Tk()
 
@@ -997,6 +997,38 @@ def new_win():
     mathematics_att_record.math_rec_bg_img_lb = Label(mathematics_att_record, image = mathematics_att_record.photo)
     mathematics_att_record.math_rec_bg_img_lb.pack()
 
+        #  Get Current Time and Date
+    def time():
+        string_time = strftime('%H:%M:%S %p')
+        time_lb_math_rec.configure(text = string_time)
+        time_lb_math_rec.after(1000, time)
+
+        string_date = strftime('%d/%m/20%y')
+        date_lb_math_rec.configure(text = string_date)
+
+
+    def math_read():
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("""CREATE TABLE IF NOT EXISTS 
+            attendance_record(ID INTEGER PRIMARY KEY,Employee_No INTEGER,Name TEXT,Department TEXT,Time_in TEXT,Time_out TEXT,_Date TEXT,Status TEXT)""")
+
+        # cursor.execute("""INSERT INTO attendance_record (ID,Employee_No,Name,Department,Time_in,Time_out,_Date,Status)
+        #                 VAlUES
+        #                 (1,234,'neil','ite','8:23:45 AM','5:23:45 PM','26/10/2022','Present'),
+        #                 (2,345,'josel','ite','9:12:45 AM','6:23:45 PM','26/10/2022','Late') """)
+
+        cursor.execute("SELECT Employee_No,Name,Department,Time_in,Time_out,_Date,Status FROM attendance_record")
+        results = cursor.fetchall()
+        conn.commit()
+        return results
+
+    def refreshTable():
+        for result in reverse(math_read()):
+            data_table_math_rec.insert(parent='', index='end', iid=result, text="", values=(result), tag="orow")
+        data_table_math_rec.tag_configure('orow', background='#EEEEEE')
+
          # Data Table "TreeView"
     scrollbarx_math_rec = Scrollbar(mathematics_att_record, orient=HORIZONTAL)
     scrollbarx_math_rec.place(x=710, y=584, width=347)
@@ -1032,6 +1064,17 @@ def new_win():
     data_table_math_rec.heading("Time out", text="Time out", anchor=CENTER)
     data_table_math_rec .heading("Date", text="Date", anchor=CENTER)
     data_table_math_rec .heading("Status", text="Status", anchor=CENTER)
+
+    refreshTable()
+
+        # Time Label
+    time_lb_math_rec = Label(mathematics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 27 bold")
+    time_lb_math_rec.place(x=20, y=390)
+
+        # date Label
+    date_lb_math_rec = Label(mathematics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 27 bold")
+    date_lb_math_rec.place(x=20, y=435)
+    time()
 
         # Total Faculty Label
     total_faculty_lb_math_rec = Label(mathematics_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
