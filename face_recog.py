@@ -129,14 +129,17 @@ def new_win():
     about = Frame(main_window)
     about_clg_goal = Frame(main_window)
     about_program= Frame(main_window)
+    psychology_att_record = Frame(main_window)
+    applied_physics_att_record = Frame(main_window)
+    ite_att_record = Frame(main_window)
 
-    for frame in (page1, page2, page3, page4, attendance_record,faculty_information,mathematics_att_record,employee_login,attendance_monitoring,developers,about,about_clg_goal,about_program):
+    for frame in (page1, page2, page3, page4, attendance_record,faculty_information,mathematics_att_record,employee_login,attendance_monitoring,developers,about,about_clg_goal,about_program,psychology_att_record,applied_physics_att_record,ite_att_record):
         frame.grid(row=0, column=0, sticky='nsew')
 
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(mathematics_att_record)
+    show_frame(page4)
 
     # ============= Page 1 Frame =========
 
@@ -352,6 +355,12 @@ def new_win():
                                                 corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command="")
     att_mon_button_showall.place(x=680, y=655, height=27,width=110)
 
+        # Logout Button
+    att_mon_logout = PhotoImage(file = "pic/btn_logout.png")
+    att_mon_button_logout = customtkinter.CTkButton(master=attendance_monitoring,image=att_mon_logout, text="" ,
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#ffffff",hover_color="#6699cc", command=lambda: show_frame(employee_login))
+    att_mon_button_logout.place(x=30, y=565, height=100,width=100)
+
     #     # Attendace Record Button
     # record_btn_att_mon = PhotoImage(file = "pic/btn_attendace_rec.png")
     # att_mon_button_record = customtkinter.CTkButton(master=attendance_monitoring,image=record_btn_att_mon, text="" ,
@@ -441,37 +450,37 @@ def new_win():
         # Faculty Information Button
     faculty_info_btn = PhotoImage(file = "pic/faculty_info.png")
     pg4_button_faculty = customtkinter.CTkButton(master=page4,image=faculty_info_btn, text="" ,
-                                                corner_radius=30, fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(faculty_information))
+                                                corner_radius=30,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(faculty_information))
     pg4_button_faculty.place(x=100, y=314, height=134,width=562)
 
         # Attendace Record Button
     att_rec_btn = PhotoImage(file = "pic/attendance_rec.png")
     pg4_button_att_rec = customtkinter.CTkButton(master=page4,image=att_rec_btn, text="" ,
-                                                corner_radius=30, fg_color="#cc9900",hover_color="#fdca34", command=lambda: show_frame(attendance_record))
+                                                corner_radius=30,bg_color='#ffffff', fg_color="#cc9900",hover_color="#fdca34", command=lambda: show_frame(attendance_record))
     pg4_button_att_rec.place(x=100, y=469, height=178,width=330)
 
         # About Button
     about_btn = PhotoImage(file = "pic/about.png")
     pg4_button_photo = customtkinter.CTkButton(master=page4,image=about_btn, text="" ,
-                                                corner_radius=30, fg_color="#cc9900",hover_color="#fdca34", command=lambda: show_frame(page2))
+                                                corner_radius=30,bg_color='#ffffff', fg_color="#cc9900",hover_color="#fdca34", command=lambda: show_frame(about))
     pg4_button_photo.place(x=456, y=469, height=178,width=197)
 
         # Photo Button
     photo_btn = PhotoImage(file = "pic/photo.png")
     pg4_button_train_img = customtkinter.CTkButton(master=page4,image=photo_btn, text="" ,
-                                                corner_radius=30, fg_color="#cc9900",hover_color="#fdca34", command=lambda: show_frame(page2))
+                                                corner_radius=30,bg_color='#ffffff', fg_color="#cc9900",hover_color="#fdca34", command=lambda: show_frame(page2))
     pg4_button_train_img.place(x=683, y=315, height=333,width=348)
 
         # Developers Button
     developers_btn = PhotoImage(file = "pic/developers.png")
     pg4_button_developers = customtkinter.CTkButton(master=page4,image=developers_btn, text="" ,
-                                                corner_radius=20, fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(page2))
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(developers))
     pg4_button_developers.place(x=1048, y=314, height=134,width=246)
 
         # Logout Button
     logout_btn = PhotoImage(file = "pic/logout.png")
     pg4_button_logout = customtkinter.CTkButton(master=page4,image=logout_btn, text="" ,
-                                                corner_radius=30, fg_color="#f0f0f0",hover_color="#6699cc", command=lambda: show_frame(page3))
+                                                corner_radius=30,bg_color='#ffffff', fg_color="#ffffff",hover_color="#6699cc", command=lambda: show_frame(page3))
     pg4_button_logout.place(x=1075, y=469, height=178,width=197)
 
     # ============= Developers Frame =========
@@ -482,6 +491,12 @@ def new_win():
     developers.photo = ImageTk.PhotoImage(developers.dev_resize_image)
     developers.dev_bg_img_lb = Label(developers, image = developers.photo)
     developers.dev_bg_img_lb.pack()
+
+        # Back Button
+    dev_back = PhotoImage(file = "pic/btn_back_page.png")
+    dev_button_back = customtkinter.CTkButton(master=developers,image=dev_back, text="" ,
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(page4))
+    dev_button_back.place(x=45, y=595, height=50,width=140)
 
     # ============= About(the Collage) Frame =========
 # #fcd24f
@@ -497,6 +512,12 @@ def new_win():
     button_next = customtkinter.CTkButton(master=about,image=next_btn, text="" ,
                                                 corner_radius=6,fg_color="#ffffff",hover_color="#006699", command=lambda: show_frame(about_clg_goal))
     button_next.place(x=1250, y=320, height=100,width=100)
+
+        # Back Button
+    abt_back = PhotoImage(file = "pic/btn_back_page.png")
+    abt_button_back = customtkinter.CTkButton(master=about,image=abt_back, text="" ,
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(page4))
+    abt_button_back.place(x=20, y=595, height=50,width=140)
 
     # ============= About(Collage Goals) Frame =========
 
@@ -519,6 +540,12 @@ def new_win():
                                                 corner_radius=6,fg_color="#ffffff",hover_color="#006699", command=lambda: show_frame(about))
     abt_clg_goal_button_back.place(x=20, y=320, height=100,width=100)
 
+        # Back Button
+    abt_clg_goal_back = PhotoImage(file = "pic/btn_back_page.png")
+    abt_clg_goal_button_back = customtkinter.CTkButton(master=about_clg_goal,image=abt_clg_goal_back, text="" ,
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(page4))
+    abt_clg_goal_button_back.place(x=20, y=595, height=50,width=140)
+
         # ============= About(Collage Goals) Frame =========
 
         # open background image
@@ -534,6 +561,12 @@ def new_win():
                                                 corner_radius=6,fg_color="#ffffff",hover_color="#006699", command=lambda: show_frame(about_clg_goal))
     abt_prog_button_back.place(x=20, y=320, height=100,width=100)
 
+        # Back Button
+    abt_prog_back = PhotoImage(file = "pic/btn_back_page.png")
+    abt_prog_button_back = customtkinter.CTkButton(master=about_program,image=abt_prog_back, text="" ,
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(page4))
+    abt_prog_button_back.place(x=20, y=595, height=50,width=140)
+
     # ============= Attendace Record Frame =========
 
         # open background image
@@ -546,26 +579,32 @@ def new_win():
         # Mathematics Faculty Button
     math_fac_btn = PhotoImage(file = "pic/math_faculty.png")
     att_rec_button_math_fac = customtkinter.CTkButton(master=attendance_record,image=math_fac_btn, text="" ,
-                                                corner_radius=20,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(page2))
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(mathematics_att_record))
     att_rec_button_math_fac.place(x=254, y=254, height=99,width=413)
 
         # Psychology Faculty Button
     psyc_fac_btn = PhotoImage(file = "pic/psyc_faculty.png")
     att_rec_button_psyc_fac = customtkinter.CTkButton(master=attendance_record,image=psyc_fac_btn, text="" ,
-                                                corner_radius=20,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(page2))
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(psychology_att_record))
     att_rec_button_psyc_fac.place(x=731, y=254, height=99,width=413)
 
         # ITE Faculty Button
     ite_fac_btn = PhotoImage(file = "pic/ite_faculty.png")
     att_rec_button_ite_fac = customtkinter.CTkButton(master=attendance_record,image=ite_fac_btn, text="" ,
-                                                corner_radius=20,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(page2))
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(ite_att_record))
     att_rec_button_ite_fac.place(x=254, y=394, height=99,width=413)
 
         # Applied Psychology Faculty Button
-    app_psyc_fac_btn = PhotoImage(file = "pic/psyc_faculty.png")
+    app_psyc_fac_btn = PhotoImage(file = "pic/applied_psyc_faculty.png")
     att_rec_button_app_psyc_fac = customtkinter.CTkButton(master=attendance_record,image=app_psyc_fac_btn, text="" ,
-                                                corner_radius=20,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(page2))
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(applied_physics_att_record))
     att_rec_button_app_psyc_fac.place(x=731, y=394, height=99,width=413)
+
+        # Back Button
+    att_rec_back = PhotoImage(file = "pic/btn_back_page.png")
+    att_rec_button_back = customtkinter.CTkButton(master=attendance_record,image=att_rec_back, text="" ,
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(page4))
+    att_rec_button_back.place(x=45, y=595, height=50,width=140)
 
     # ============= Faculty Information Frame =========
 
@@ -913,7 +952,7 @@ def new_win():
         # Add Faculty Button
     add_fac_btn = PhotoImage(file = "pic/btn_add_faculty.png")
     add_button_fac_inf = customtkinter.CTkButton(master=faculty_information,image=add_fac_btn, text="" ,
-                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= Save_Data)
+                                                corner_radius=6, fg_color="#00436e",hover_color="#006699", command= Save_Data)
     add_button_fac_inf.place(x=380, y=506, height=32,width=131)
 
         # Update Button
@@ -921,29 +960,35 @@ def new_win():
         print("update")
     update_btn = PhotoImage(file = "pic/btn_update.png")
     button_update = customtkinter.CTkButton(master=faculty_information,image=update_btn, text="" ,
-                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= Update_Data)
+                                                corner_radius=6, fg_color="#00436e",hover_color="#006699", command= Update_Data)
     button_update.place(x=212, y=506, height=32,width=131)
 
         # Reset Button
     reset_btn = PhotoImage(file = "pic/btn_reset.png")
     button_reset = customtkinter.CTkButton(master=faculty_information,image=reset_btn, text="" ,
-                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
+                                                corner_radius=6, fg_color="#00436e",hover_color="#006699", command= clear)
     button_reset.place(x=548, y=506, height=32,width=131)
 
         # Search Button
     search_btn = PhotoImage(file = "pic/btn_search.png")
     button_search = customtkinter.CTkButton(master=faculty_information,image=search_btn, text="" ,
-                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= search_data)
+                                                corner_radius=6, fg_color="#00436e",hover_color="#006699", command= search_data)
     button_search.place(x=1065, y=204, height=20,width=90)
 
         # Show All Button
     showall_btn = PhotoImage(file = "pic/btn_showall.png")
     button_showall = customtkinter.CTkButton(master=faculty_information,image=showall_btn, text="" ,
-                                                corner_radius=6,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= refreshTable)
+                                                corner_radius=6, fg_color="#00436e",hover_color="#006699", command= refreshTable)
     button_showall.place(x=923, y=603, height=28,width=110)
 
+        # Back Button
+    fac_inf_back = PhotoImage(file = "pic/btn_back_page.png")
+    fac_inf_button_back = customtkinter.CTkButton(master=faculty_information,image=fac_inf_back, text="" ,
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(page4))
+    fac_inf_button_back.place(x=20, y=595, height=50,width=140)
 
-    # ============= Mathematics Attendance Record Frame =========
+
+    # ============= Mathematics Attendance Record Frame =============================================================================
 
         # open background image
     mathematics_att_record.math_rec_image = Image.open('pic/9.png')
@@ -1060,6 +1105,384 @@ def new_win():
     math_rec_button_print = customtkinter.CTkButton(master=mathematics_att_record,image=print_btn_math_rec, text="" ,
                                                 corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
     math_rec_button_print.place(x=372, y=519, height=25,width=100)
+
+        # Back Button
+    math_rec_back = PhotoImage(file = "pic/btn_back_page.png")
+    math_rec_button_back = customtkinter.CTkButton(master=mathematics_att_record,image=math_rec_back, text="" ,
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(attendance_record))
+    math_rec_button_back.place(x=45, y=595, height=50,width=140)
+
+    # ============= Psychology Attendance Record Frame =============================================================================
+
+        # open background image
+    psychology_att_record.psyc_image = Image.open('pic/10a.png')
+    psychology_att_record.psyc_resize_image = psychology_att_record.psyc_image.resize((1362, 692))
+    psychology_att_record.photo = ImageTk.PhotoImage(psychology_att_record.psyc_resize_image)
+    psychology_att_record.psyc_bg_img_lb = Label(psychology_att_record, image = psychology_att_record.photo)
+    psychology_att_record.psyc_bg_img_lb.pack()
+
+         # Data Table "TreeView"
+    scrollbarx_psyc = Scrollbar(psychology_att_record, orient=HORIZONTAL)
+    scrollbarx_psyc.place(x=710, y=584, width=347)
+    scrollbary_psyc = Scrollbar(psychology_att_record, orient=VERTICAL)
+    scrollbary_psyc.place(x=1040, y=366, height=219)
+
+    # style = ttk.Style()
+    # style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
+
+    data_table_psyc = ttk.Treeview(psychology_att_record)
+    data_table_psyc.place(x=710, y=366, width=330, height=219)
+    data_table_psyc.configure(yscrollcommand=scrollbary_psyc.set, xscrollcommand=scrollbarx_psyc.set)
+
+    scrollbarx_psyc.configure(command=data_table_psyc.xview)
+    scrollbary_psyc.configure(command=data_table_psyc.yview)
+
+    data_table_psyc['columns'] = ("Employee No.","Name","Department","Time in","Time out","Date","Status")
+    # Format Columns
+    data_table_psyc.column("#0", width=0, stretch=NO)
+    data_table_psyc.column("Employee No.", anchor=W, width=150)
+    data_table_psyc.column("Name", anchor=W, width=100)
+    data_table_psyc.column("Department", anchor=W, width=200)
+    data_table_psyc.column("Time in", anchor=W, width=100)
+    data_table_psyc.column("Time out", anchor=W, width=100)
+    data_table_psyc .column("Date", anchor=W, width=100)
+    data_table_psyc .column("Status", anchor=W, width=100)
+
+    # Create Headings
+    data_table_psyc.heading("Employee No.", text="Employee No.", anchor=CENTER)
+    data_table_psyc.heading("Name", text="Name", anchor=CENTER)
+    data_table_psyc.heading("Department", text="Department", anchor=CENTER)
+    data_table_psyc.heading("Time in", text="Time in", anchor=CENTER)
+    data_table_psyc.heading("Time out", text="Time out", anchor=CENTER)
+    data_table_psyc .heading("Date", text="Date", anchor=CENTER)
+    data_table_psyc .heading("Status", text="Status", anchor=CENTER)
+
+        # Total Faculty Label
+    total_faculty_lb_psyc = Label(psychology_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_faculty_lb_psyc.place(x=347, y=190)
+
+        # Total Present Label
+    total_present_lb_psyc = Label(psychology_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_present_lb_psyc.place(x=565, y=190)
+
+        # Total Absent Label
+    total_absent_lb_psyc = Label(psychology_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_absent_lb_psyc.place(x=772, y=190)
+
+        # Total Late Label
+    total_late_lb_psyc = Label(psychology_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_late_lb_psyc.place(x=990, y=190)
+
+        # ComboBox College Department
+    psyc_department_combobox = ttk.Combobox(psychology_att_record, state=DISABLED, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
+    psyc_department_combobox.place(x=445, y=305, width=200)
+
+        # Entry Employee Number
+    employee_num_psyc = Entry(psychology_att_record, state=DISABLED)
+    employee_num_psyc.place(x=404, y=366, width=110)
+
+        # Entry Employee Name
+    employee_name_psyc = Entry(psychology_att_record, state=DISABLED)
+    employee_name_psyc.place(x=404, y=397, width=110)
+
+        # Entry Attendance Satatus
+    att_status_psyc = Entry(psychology_att_record, state=DISABLED)
+    att_status_psyc.place(x=404, y=428, width=110)
+
+        # Entry Time In
+    time_in_psyc = Entry(psychology_att_record, state=DISABLED)
+    time_in_psyc.place(x=565, y=366, width=110)
+
+        # Entry Time Out
+    time_out_psyc = Entry(psychology_att_record, state=DISABLED)
+    time_out_psyc.place(x=565, y=397, width=110)
+
+        # Entry Date
+    date_psyc = Entry(psychology_att_record, state=DISABLED)
+    date_psyc.place(x=565, y=428, width=110)
+
+        # Search Entry
+    search_ent_psyc = StringVar()
+    search_psyc = Entry(psychology_att_record, textvariable = search_ent_psyc)
+    search_psyc.place(x=780, y=307, width=190)
+
+        # Search Button
+    search_btn_psyc = PhotoImage(file = "pic/btn_search_small.png")
+    psyc_button_search = customtkinter.CTkButton(master=psychology_att_record,image=search_btn_psyc, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= search_data)
+    psyc_button_search.place(x=975, y=307, height=17,width=70)
+
+        # Show All Button
+    showall_btn_psyc = PhotoImage(file = "pic/btn_showall_small.png")
+    psyc_button_showall = customtkinter.CTkButton(master=psychology_att_record,image=showall_btn_psyc, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= refreshTable)
+    psyc_button_showall.place(x=843, y=608, height=21,width=90)
+
+        # Reset Button
+    reset_btn_psyc = PhotoImage(file = "pic/btn_reset_small.png")
+    psyc_button_reset = customtkinter.CTkButton(master=psychology_att_record,image=reset_btn_psyc, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
+    psyc_button_reset.place(x=510, y=519, height=25,width=100)
+
+        # Print Button
+    print_btn_psyc = PhotoImage(file = "pic/btn_print.png")
+    psyc_button_print = customtkinter.CTkButton(master=psychology_att_record,image=print_btn_psyc, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
+    psyc_button_print.place(x=372, y=519, height=25,width=100)
+
+        # Back Button
+    psyc_back = PhotoImage(file = "pic/btn_back_page.png")
+    psyc_button_back = customtkinter.CTkButton(master=psychology_att_record,image=psyc_back, text="" ,
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(attendance_record))
+    psyc_button_back.place(x=45, y=595, height=50,width=140)
+
+    # ============= Applied Physics Attendance Record Frame =============================================================================
+
+        # open background image
+    applied_physics_att_record.applied_image = Image.open('pic/10b.png')
+    applied_physics_att_record.applied_resize_image = applied_physics_att_record.applied_image.resize((1362, 692))
+    applied_physics_att_record.photo = ImageTk.PhotoImage(applied_physics_att_record.applied_resize_image)
+    applied_physics_att_record.applied_bg_img_lb = Label(applied_physics_att_record, image = applied_physics_att_record.photo)
+    applied_physics_att_record.applied_bg_img_lb.pack()
+
+         # Data Table "TreeView"
+    scrollbarx_applied = Scrollbar(applied_physics_att_record, orient=HORIZONTAL)
+    scrollbarx_applied.place(x=710, y=584, width=347)
+    scrollbary_applied = Scrollbar(applied_physics_att_record, orient=VERTICAL)
+    scrollbary_applied.place(x=1040, y=366, height=219)
+
+    # style = ttk.Style()
+    # style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
+
+    data_table_applied = ttk.Treeview(applied_physics_att_record)
+    data_table_applied.place(x=710, y=366, width=330, height=219)
+    data_table_applied.configure(yscrollcommand=scrollbary_applied.set, xscrollcommand=scrollbarx_applied.set)
+
+    scrollbarx_applied.configure(command=data_table_applied.xview)
+    scrollbary_applied.configure(command=data_table_applied.yview)
+
+    data_table_applied['columns'] = ("Employee No.","Name","Department","Time in","Time out","Date","Status")
+    # Format Columns
+    data_table_applied.column("#0", width=0, stretch=NO)
+    data_table_applied.column("Employee No.", anchor=W, width=150)
+    data_table_applied.column("Name", anchor=W, width=100)
+    data_table_applied.column("Department", anchor=W, width=200)
+    data_table_applied.column("Time in", anchor=W, width=100)
+    data_table_applied.column("Time out", anchor=W, width=100)
+    data_table_applied .column("Date", anchor=W, width=100)
+    data_table_applied .column("Status", anchor=W, width=100)
+
+    # Create Headings
+    data_table_applied.heading("Employee No.", text="Employee No.", anchor=CENTER)
+    data_table_applied.heading("Name", text="Name", anchor=CENTER)
+    data_table_applied.heading("Department", text="Department", anchor=CENTER)
+    data_table_applied.heading("Time in", text="Time in", anchor=CENTER)
+    data_table_applied.heading("Time out", text="Time out", anchor=CENTER)
+    data_table_applied .heading("Date", text="Date", anchor=CENTER)
+    data_table_applied .heading("Status", text="Status", anchor=CENTER)
+
+        # Total Faculty Label
+    total_faculty_lb_applied = Label(applied_physics_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_faculty_lb_applied.place(x=347, y=190)
+
+        # Total Present Label
+    total_present_lb_applied = Label(applied_physics_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_present_lb_applied.place(x=565, y=190)
+
+        # Total Absent Label
+    total_absent_lb_applied = Label(applied_physics_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_absent_lb_applied.place(x=772, y=190)
+
+        # Total Late Label
+    total_late_lb_applied = Label(applied_physics_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_late_lb_applied.place(x=990, y=190)
+
+        # ComboBox College Department
+    applied_department_combobox = ttk.Combobox(applied_physics_att_record, state=DISABLED, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
+    applied_department_combobox.place(x=445, y=305, width=200)
+
+        # Entry Employee Number
+    employee_num_applied = Entry(applied_physics_att_record, state=DISABLED)
+    employee_num_applied.place(x=404, y=366, width=110)
+
+        # Entry Employee Name
+    employee_name_applied = Entry(applied_physics_att_record, state=DISABLED)
+    employee_name_applied.place(x=404, y=397, width=110)
+
+        # Entry Attendance Satatus
+    att_status_applied = Entry(applied_physics_att_record, state=DISABLED)
+    att_status_applied.place(x=404, y=428, width=110)
+
+        # Entry Time In
+    time_in_applied = Entry(applied_physics_att_record, state=DISABLED)
+    time_in_applied.place(x=565, y=366, width=110)
+
+        # Entry Time Out
+    time_out_applied = Entry(applied_physics_att_record, state=DISABLED)
+    time_out_applied.place(x=565, y=397, width=110)
+
+        # Entry Date
+    date_applied = Entry(applied_physics_att_record, state=DISABLED)
+    date_applied.place(x=565, y=428, width=110)
+
+        # Search Entry
+    search_ent_applied = StringVar()
+    search_applied = Entry(applied_physics_att_record, textvariable = search_ent_applied)
+    search_applied.place(x=780, y=307, width=190)
+
+        # Search Button
+    search_btn_applied = PhotoImage(file = "pic/btn_search_small.png")
+    applied_button_search = customtkinter.CTkButton(master=applied_physics_att_record,image=search_btn_applied, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= search_data)
+    applied_button_search.place(x=975, y=307, height=17,width=70)
+
+        # Show All Button
+    showall_btn_applied = PhotoImage(file = "pic/btn_showall_small.png")
+    applied_button_showall = customtkinter.CTkButton(master=applied_physics_att_record,image=showall_btn_applied, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= refreshTable)
+    applied_button_showall.place(x=843, y=608, height=21,width=90)
+
+        # Reset Button
+    reset_btn_applied = PhotoImage(file = "pic/btn_reset_small.png")
+    applied_button_reset = customtkinter.CTkButton(master=applied_physics_att_record,image=reset_btn_applied, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
+    applied_button_reset.place(x=510, y=519, height=25,width=100)
+
+        # Print Button
+    print_btn_applied = PhotoImage(file = "pic/btn_print.png")
+    applied_button_print = customtkinter.CTkButton(master=applied_physics_att_record,image=print_btn_applied, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
+    applied_button_print.place(x=372, y=519, height=25,width=100)
+
+        # Back Button
+    applied_back = PhotoImage(file = "pic/btn_back_page.png")
+    applied_button_back = customtkinter.CTkButton(master=applied_physics_att_record,image=applied_back, text="" ,
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(attendance_record))
+    applied_button_back.place(x=45, y=595, height=50,width=140)
+
+    # ============= Applied Physics Attendance Record Frame =============================================================================
+
+        # open background image
+    ite_att_record.ite_image = Image.open('pic/10c.png')
+    ite_att_record.ite_resize_image = ite_att_record.ite_image.resize((1362, 692))
+    ite_att_record.photo = ImageTk.PhotoImage(ite_att_record.ite_resize_image)
+    ite_att_record.ite_bg_img_lb = Label(ite_att_record, image = ite_att_record.photo)
+    ite_att_record.ite_bg_img_lb.pack()
+
+         # Data Table "TreeView"
+    scrollbarx_ite = Scrollbar(ite_att_record, orient=HORIZONTAL)
+    scrollbarx_ite.place(x=710, y=584, width=347)
+    scrollbary_ite = Scrollbar(ite_att_record, orient=VERTICAL)
+    scrollbary_ite.place(x=1040, y=366, height=219)
+
+    # style = ttk.Style()
+    # style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
+
+    data_table_ite = ttk.Treeview(ite_att_record)
+    data_table_ite.place(x=710, y=366, width=330, height=219)
+    data_table_ite.configure(yscrollcommand=scrollbary_ite.set, xscrollcommand=scrollbarx_ite.set)
+
+    scrollbarx_ite.configure(command=data_table_ite.xview)
+    scrollbary_ite.configure(command=data_table_ite.yview)
+
+    data_table_ite['columns'] = ("Employee No.","Name","Department","Time in","Time out","Date","Status")
+    # Format Columns
+    data_table_ite.column("#0", width=0, stretch=NO)
+    data_table_ite.column("Employee No.", anchor=W, width=150)
+    data_table_ite.column("Name", anchor=W, width=100)
+    data_table_ite.column("Department", anchor=W, width=200)
+    data_table_ite.column("Time in", anchor=W, width=100)
+    data_table_ite.column("Time out", anchor=W, width=100)
+    data_table_ite .column("Date", anchor=W, width=100)
+    data_table_ite .column("Status", anchor=W, width=100)
+
+    # Create Headings
+    data_table_ite.heading("Employee No.", text="Employee No.", anchor=CENTER)
+    data_table_ite.heading("Name", text="Name", anchor=CENTER)
+    data_table_ite.heading("Department", text="Department", anchor=CENTER)
+    data_table_ite.heading("Time in", text="Time in", anchor=CENTER)
+    data_table_ite.heading("Time out", text="Time out", anchor=CENTER)
+    data_table_ite .heading("Date", text="Date", anchor=CENTER)
+    data_table_ite .heading("Status", text="Status", anchor=CENTER)
+
+        # Total Faculty Label
+    total_faculty_lb_ite = Label(ite_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_faculty_lb_ite.place(x=347, y=190)
+
+        # Total Present Label
+    total_present_lb_ite = Label(ite_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_present_lb_ite.place(x=565, y=190)
+
+        # Total Absent Label
+    total_absent_lb_ite = Label(ite_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_absent_lb_ite.place(x=772, y=190)
+
+        # Total Late Label
+    total_late_lb_ite = Label(ite_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_late_lb_ite.place(x=990, y=190)
+
+        # ComboBox College Department
+    ite_department_combobox = ttk.Combobox(ite_att_record, state=DISABLED, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
+    ite_department_combobox.place(x=445, y=305, width=200)
+
+        # Entry Employee Number
+    employee_num_ite = Entry(ite_att_record, state=DISABLED)
+    employee_num_ite.place(x=404, y=366, width=110)
+
+        # Entry Employee Name
+    employee_name_ite = Entry(ite_att_record, state=DISABLED)
+    employee_name_ite.place(x=404, y=397, width=110)
+
+        # Entry Attendance Satatus
+    att_status_ite = Entry(ite_att_record, state=DISABLED)
+    att_status_ite.place(x=404, y=428, width=110)
+
+        # Entry Time In
+    time_in_ite = Entry(ite_att_record, state=DISABLED)
+    time_in_ite.place(x=565, y=366, width=110)
+
+        # Entry Time Out
+    time_out_ite = Entry(ite_att_record, state=DISABLED)
+    time_out_ite.place(x=565, y=397, width=110)
+
+        # Entry Date
+    date_ite = Entry(ite_att_record, state=DISABLED)
+    date_ite.place(x=565, y=428, width=110)
+
+        # Search Entry
+    search_ent_ite = StringVar()
+    search_ite = Entry(ite_att_record, textvariable = search_ent_ite)
+    search_ite.place(x=780, y=307, width=190)
+
+        # Search Button
+    search_btn_ite = PhotoImage(file = "pic/btn_search_small.png")
+    ite_button_search = customtkinter.CTkButton(master=ite_att_record,image=search_btn_ite, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= search_data)
+    ite_button_search.place(x=975, y=307, height=17,width=70)
+
+        # Show All Button
+    showall_btn_ite = PhotoImage(file = "pic/btn_showall_small.png")
+    ite_button_showall = customtkinter.CTkButton(master=ite_att_record,image=showall_btn_ite, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= refreshTable)
+    ite_button_showall.place(x=843, y=608, height=21,width=90)
+
+        # Reset Button
+    reset_btn_ite = PhotoImage(file = "pic/btn_reset_small.png")
+    ite_button_reset = customtkinter.CTkButton(master=ite_att_record,image=reset_btn_ite, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
+    ite_button_reset.place(x=510, y=519, height=25,width=100)
+
+        # Print Button
+    print_btn_ite = PhotoImage(file = "pic/btn_print.png")
+    ite_button_print = customtkinter.CTkButton(master=ite_att_record,image=print_btn_ite, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
+    ite_button_print.place(x=372, y=519, height=25,width=100)
+
+        # Back Button
+    ite_back = PhotoImage(file = "pic/btn_back_page.png")
+    ite_button_back = customtkinter.CTkButton(master=ite_att_record,image=ite_back, text="" ,
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(attendance_record))
+    ite_button_back.place(x=45, y=595, height=50,width=140)
 
     main_window.mainloop()
 
