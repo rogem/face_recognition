@@ -997,37 +997,163 @@ def new_win():
     mathematics_att_record.math_rec_bg_img_lb = Label(mathematics_att_record, image = mathematics_att_record.photo)
     mathematics_att_record.math_rec_bg_img_lb.pack()
 
+    def normal():
+        employee_num_math_rec.configure(state='normal')
+        employee_name_math_rec.configure(state='normal')
+        math_rec_department_combobox.configure(state='normal')
+        time_in_math_rec.configure(state='normal')
+        time_out_math_rec.configure(state='normal')
+        date_math_rec.configure(state='normal')
+        att_status_math_rec.configure(state='normal')
+
+    def disable_text():
+        employee_num_math_rec.configure(state='disabled',text='')
+        employee_name_math_rec.configure(state='disabled')
+        math_rec_department_combobox.configure(state='disabled')
+        time_in_math_rec.configure(state='disabled')
+        time_out_math_rec.configure(state='disabled')
+        date_math_rec.configure(state='disabled')
+        att_status_math_rec.configure(state='disabled')
+
+    def reset():
+        normal()
+        employee_num_math_rec.delete(0, END)
+        employee_name_math_rec.delete(0, END)
+        math_rec_department_combobox.delete(0, END)
+        time_in_math_rec.delete(0, END)
+        time_out_math_rec.delete(0, END)
+        date_math_rec.delete(0, END)
+        att_status_math_rec.delete(0, END)
+        disable_text()
+
         #  Get Current Time and Date
     def time():
-        string_time = strftime('%H:%M:%S %p')
+        string_time = strftime('Time: %H:%M:%S %p')
         time_lb_math_rec.configure(text = string_time)
         time_lb_math_rec.after(1000, time)
 
-        string_date = strftime('%d/%m/20%y')
+        string_date = strftime('Date: %d/%m/20%y')
         date_lb_math_rec.configure(text = string_date)
 
+            # search Data
+    def search_data_math():
+        lookup_record = search_math_rec.get()
 
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        # Clear the Treeview
+        for record in data_table_math_rec.get_children():
+            data_table_math_rec.delete(record)
+        
+        cursor.execute("SELECT * FROM attendance_record WHERE Employee_No = '" + str(lookup_record) + "' or  Name = '" + str(lookup_record) + "' or  Department = '" + str(lookup_record) + "' or Time_in = '" + str(lookup_record) + "' or Time_out = '" + str(lookup_record) + "' or _Date = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "'")
+        records = cursor.fetchall()
+
+        global count
+        count = 0
+
+        for record in records:
+            if count % 2 == 0:
+                data_table_math_rec.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5]), tag="evenrow")
+            else:
+                data_table_math_rec.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5]), tag="oddrow")
+            count += 1
+            data_table_math_rec.tag_configure('evenrow', background='#EEEEEE')
+            data_table_math_rec.tag_configure('oddrow', background='#EEEEEE')
+            search_math_rec.delete(0, END)
+
+        conn.commit()
+        conn.close()
+
+            # Get And Disply the data in the table
     def math_read():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
-            attendance_record(ID INTEGER PRIMARY KEY,Employee_No INTEGER,Name TEXT,Department TEXT,Time_in TEXT,Time_out TEXT,_Date TEXT,Status TEXT)""")
+            attendance_record(ID INTEGER PRIMARY KEY,Employee_No INTEGER,Name TEXT,
+            Department TEXT,Time_in TEXT,Time_out TEXT,_Date TEXT,Status TEXT)""")
 
         # cursor.execute("""INSERT INTO attendance_record (ID,Employee_No,Name,Department,Time_in,Time_out,_Date,Status)
         #                 VAlUES
         #                 (1,234,'neil','ite','8:23:45 AM','5:23:45 PM','26/10/2022','Present'),
         #                 (2,345,'josel','ite','9:12:45 AM','6:23:45 PM','26/10/2022','Late') """)
 
-        cursor.execute("SELECT Employee_No,Name,Department,Time_in,Time_out,_Date,Status FROM attendance_record")
-        results = cursor.fetchall()
+        cursor.execute("SELECT Employee_No,Name,Department,Time_in,Time_out,_Date,Status FROM attendance_record WHERE Department='Mathematics'")
+        results_math = cursor.fetchall()
         conn.commit()
-        return results
+        return results_math
 
-    def refreshTable():
-        for result in reverse(math_read()):
-            data_table_math_rec.insert(parent='', index='end', iid=result, text="", values=(result), tag="orow")
+    def delete_math(data):
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("""CREATE TABLE IF NOT EXISTS 
+            attendance_record(ID INTEGER PRIMARY KEY,Employee_No INTEGER,Name TEXT,
+            Department TEXT,Time_in TEXT,Time_out TEXT,_Date TEXT,Status TEXT)""")
+
+        cursor.execute("DELETE FROM attendance_record WHERE Employee_No ='" + srt(data) + "'")
+        conn.commit()
+
+            # Refresh the tabble on Treeview
+    def refreshTable_math():
+        for data_math in data_table_math_rec.get_children():
+            data_table_math_rec.delete(data_math)
+
+        for results_math_rec in reverse(math_read()):
+            data_table_math_rec.insert(parent='', index='end', iid=results_math_rec, text="", values=(results_math_rec), tag="orow")
         data_table_math_rec.tag_configure('orow', background='#EEEEEE')
+
+            # GET the Count of Total Faculty, Total Present, Total Late and Total Absent
+    def count_data():
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        date = date_lb_math_rec.cget("text")
+
+        cursor.execute("SELECT COUNT(*) FROM faculty_data WHERE Position='Employee'")
+        total = cursor.fetchall()
+
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Mathematics' AND Status='Present' AND _Date='" + str(date) + "'")
+        present = cursor.fetchall()
+
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Mathematics' AND Status='Absent' AND _Date='" + str(date) + "'")
+        absent = cursor.fetchall()
+
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Mathematics' AND Status='Late' AND _Date='" + str(date) + "'")
+        late = cursor.fetchall()
+
+        total_faculty_lb_math_rec.configure(text=total)
+        total_present_lb_math_rec.configure(text=present)
+        total_absent_lb_math_rec.configure(text=absent)
+        total_late_lb_math_rec.configure(text=late)
+
+        conn.commit()
+        conn.close()
+
+    def select_row_math(e):
+        selected = data_table_math_rec.focus()
+        values = data_table_math_rec.item(selected, 'values')
+
+        normal()
+
+        employee_num_math_rec.delete(0, END)
+        employee_name_math_rec.delete(0, END)
+        math_rec_department_combobox.delete(0, END)
+        time_in_math_rec.delete(0, END)
+        time_out_math_rec.delete(0, END)
+        date_math_rec.delete(0, END)
+        att_status_math_rec.delete(0, END)
+
+        employee_num_math_rec.insert(0, values[0])
+        employee_name_math_rec.insert(0, values[1])
+        math_rec_department_combobox.insert(0, values[2])
+        time_in_math_rec.insert(0, values[3])
+        time_out_math_rec.insert(0, values[4])
+        date_math_rec.insert(0, values[5])
+        att_status_math_rec.insert(0, values[6])
+
+        disable_text()
 
          # Data Table "TreeView"
     scrollbarx_math_rec = Scrollbar(mathematics_att_record, orient=HORIZONTAL)
@@ -1065,59 +1191,61 @@ def new_win():
     data_table_math_rec .heading("Date", text="Date", anchor=CENTER)
     data_table_math_rec .heading("Status", text="Status", anchor=CENTER)
 
-    refreshTable()
+    data_table_math_rec.bind("<ButtonRelease-1>", select_row_math)
+
+    refreshTable_math()
 
         # Time Label
-    time_lb_math_rec = Label(mathematics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 27 bold")
-    time_lb_math_rec.place(x=20, y=390)
+    time_lb_math_rec = Label(mathematics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    time_lb_math_rec.place(x=540, y=10)
 
         # date Label
-    date_lb_math_rec = Label(mathematics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 27 bold")
-    date_lb_math_rec.place(x=20, y=435)
-    time()
+    date_lb_math_rec = Label(mathematics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    date_lb_math_rec.place(x=710, y=10)
+    
 
         # Total Faculty Label
-    total_faculty_lb_math_rec = Label(mathematics_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
-    total_faculty_lb_math_rec.place(x=347, y=190)
+    total_faculty_lb_math_rec = Label(mathematics_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_faculty_lb_math_rec.place(x=294, y=190)
 
         # Total Present Label
-    total_present_lb_math_rec = Label(mathematics_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
-    total_present_lb_math_rec.place(x=565, y=190)
+    total_present_lb_math_rec = Label(mathematics_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_present_lb_math_rec.place(x=512, y=190)
 
         # Total Absent Label
-    total_absent_lb_math_rec = Label(mathematics_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
-    total_absent_lb_math_rec.place(x=772, y=190)
+    total_absent_lb_math_rec = Label(mathematics_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_absent_lb_math_rec.place(x=717, y=190)
 
         # Total Late Label
-    total_late_lb_math_rec = Label(mathematics_att_record, text='1', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
-    total_late_lb_math_rec.place(x=990, y=190)
+    total_late_lb_math_rec = Label(mathematics_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_late_lb_math_rec.place(x=948, y=190)
 
         # ComboBox College Department
-    math_rec_department_combobox = ttk.Combobox(mathematics_att_record, state=DISABLED, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
+    math_rec_department_combobox = ttk.Combobox(mathematics_att_record, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
     math_rec_department_combobox.place(x=445, y=305, width=200)
 
         # Entry Employee Number
-    employee_num_math_rec = Entry(mathematics_att_record, state=DISABLED)
+    employee_num_math_rec = Entry(mathematics_att_record)
     employee_num_math_rec.place(x=404, y=366, width=110)
 
         # Entry Employee Name
-    employee_name_math_rec = Entry(mathematics_att_record, state=DISABLED)
+    employee_name_math_rec = Entry(mathematics_att_record)
     employee_name_math_rec.place(x=404, y=397, width=110)
 
         # Entry Attendance Satatus
-    att_status_math_rec = Entry(mathematics_att_record, state=DISABLED)
+    att_status_math_rec = Entry(mathematics_att_record)
     att_status_math_rec.place(x=404, y=428, width=110)
 
         # Entry Time In
-    time_in_math_rec = Entry(mathematics_att_record, state=DISABLED)
+    time_in_math_rec = Entry(mathematics_att_record)
     time_in_math_rec.place(x=565, y=366, width=110)
 
         # Entry Time Out
-    time_out_math_rec = Entry(mathematics_att_record, state=DISABLED)
+    time_out_math_rec = Entry(mathematics_att_record)
     time_out_math_rec.place(x=565, y=397, width=110)
 
         # Entry Date
-    date_math_rec = Entry(mathematics_att_record, state=DISABLED)
+    date_math_rec = Entry(mathematics_att_record)
     date_math_rec.place(x=565, y=428, width=110)
 
         # Search Entry
@@ -1128,25 +1256,25 @@ def new_win():
         # Search Button
     search_btn_math_rec = PhotoImage(file = "pic/btn_search_small.png")
     math_rec_button_search = customtkinter.CTkButton(master=mathematics_att_record,image=search_btn_math_rec, text="" ,
-                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= search_data)
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=search_data_math)
     math_rec_button_search.place(x=975, y=307, height=17,width=70)
 
         # Show All Button
     showall_btn_math_rec = PhotoImage(file = "pic/btn_showall_small.png")
     math_rec_button_showall = customtkinter.CTkButton(master=mathematics_att_record,image=showall_btn_math_rec, text="" ,
-                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= refreshTable)
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=refreshTable_math)
     math_rec_button_showall.place(x=843, y=608, height=21,width=90)
 
         # Reset Button
     reset_btn_math_rec = PhotoImage(file = "pic/btn_reset_small.png")
     math_rec_button_reset = customtkinter.CTkButton(master=mathematics_att_record,image=reset_btn_math_rec, text="" ,
-                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=reset)
     math_rec_button_reset.place(x=510, y=519, height=25,width=100)
 
         # Print Button
     print_btn_math_rec = PhotoImage(file = "pic/btn_print.png")
     math_rec_button_print = customtkinter.CTkButton(master=mathematics_att_record,image=print_btn_math_rec, text="" ,
-                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= clear)
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= '')
     math_rec_button_print.place(x=372, y=519, height=25,width=100)
 
         # Back Button
@@ -1154,6 +1282,9 @@ def new_win():
     math_rec_button_back = customtkinter.CTkButton(master=mathematics_att_record,image=math_rec_back, text="" ,
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(attendance_record))
     math_rec_button_back.place(x=45, y=595, height=50,width=140)
+
+    time()
+    count_data()
 
     # ============= Psychology Attendance Record Frame =============================================================================
 
