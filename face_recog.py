@@ -139,9 +139,9 @@ def new_win():
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(page4)
+    show_frame(employee_login)
 
-    # ============= Page 1 Frame =========
+    # ============= Page 1 Frame =========================================================================================================================================
 
         # open background image
     page1.pg1_image = Image.open('pic/2.png')
@@ -160,7 +160,7 @@ def new_win():
     pg1_button_bio = Button(page1,image=biometric_img_btn, borderwidth=0,bg='#1f2a76', command=lambda: show_frame(page2))
     pg1_button_bio.place(x=99, y=256)
 
-    # ============= Page 2 Frame =========
+    # ============= Page 2 Frame =======================================================================================================================================
 
         # open background image
     page2.pg2_image = Image.open('pic/3.png')
@@ -179,7 +179,7 @@ def new_win():
     pg2_button_admin = Button(page2,image=admin_img_btn, borderwidth=0, bg='#1f2a76',command=lambda: show_frame(page3))
     pg2_button_admin.place(x=99, y=422)
 
-    # ============= Employee Sign In Frame =========
+    # ============= Employee Sign In Frame ============================================================================================================================
 
         # open background image
     employee_login.empl_log_image = Image.open('pic/5.png')
@@ -229,20 +229,11 @@ def new_win():
                 cursor.execute("SELECT Contact_Number FROM faculty_data WHERE Username like '"+ str(uname)+"' AND Password like '"+ str(pwd)+"'")
                 get_Phone = cursor.fetchone()
 
-                Name = get_Name
-                att_mon_lb_name.configure(text = Name)
-
-                Department = get_Department
-                att_mon_lb_dept.configure(text = Department)
-
-                ID_Number = get_ID_Number 
-                att_mon_lb_empnum.configure(text = ID_Number)
-
-                User_Email = get_Email 
-                att_mon_lb_eml.configure(text = User_Email)
-
-                Phone = get_Phone
-                att_mon_lb_cont.configure(text = Phone)
+                att_mon_lb_name.configure(text = get_Name)
+                att_mon_lb_dept.configure(text = get_Department)
+                att_mon_lb_empnum.configure(text = get_ID_Number)
+                att_mon_lb_eml.configure(text = get_Email)
+                att_mon_lb_cont.configure(text = get_Phone)
 
                 show_frame(attendance_monitoring)
                 messagebox.showinfo("Messgae", "WELCOME USER" )
@@ -271,7 +262,7 @@ def new_win():
     check_button_empl_log = Checkbutton(employee_login, text="show password",bg="#1f2a76", command=show_password_Employee, font="Arial", activebackground="#1f2a76",)
     check_button_empl_log.place(x=116,y=520)
 
-    # ============= Employee Attendance Record In Frame =========
+    # ============= Employee Attendance Record In Frame ========================================================================================================================
 
         # open background image
     attendance_monitoring.att_mon_image = Image.open('pic/6.png')
@@ -279,6 +270,31 @@ def new_win():
     attendance_monitoring.photo = ImageTk.PhotoImage(attendance_monitoring.att_mon_resize_image)
     attendance_monitoring.att_mon_bg_img_lb = Label(attendance_monitoring, image = attendance_monitoring.photo)
     attendance_monitoring.att_mon_bg_img_lb.pack()
+
+
+    def user_read():
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        # user_name = att_mon_lb_name.cget("text")
+        # user_dept = att_mon_lb_dept.cget("text")
+
+        cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Name='pano' AND Department='Psychology'")
+        results_user = cursor.fetchall()
+        conn.commit()
+        # return results_user
+
+        global num
+        num = 0
+
+        for record in results_user:
+            if num % 2 == 0:
+                data_table_emp_att_rec.insert(parent='', index='end', iid=num, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+            else:
+                data_table_emp_att_rec.insert(parent='', index='end', iid=num, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+            num += 1
+            data_table_emp_att_rec.tag_configure('evenrow', background='#EEEEEE')
+            data_table_emp_att_rec.tag_configure('oddrow', background='#EEEEEE')
 
          # Data Table "TreeView"
     scrollbary_emp_att_rec = Scrollbar(attendance_monitoring, orient=VERTICAL)
@@ -296,10 +312,10 @@ def new_win():
     data_table_emp_att_rec['columns'] = ("Time in","Time out","Date","Status")
     # Format Columns
     data_table_emp_att_rec.column("#0", width=0, stretch=NO)
-    data_table_emp_att_rec.column("Time in", anchor=W, width=100)
-    data_table_emp_att_rec.column("Time out", anchor=W, width=100)
-    data_table_emp_att_rec.column("Date", anchor=W, width=100)
-    data_table_emp_att_rec.column("Status", anchor=W, width=100)
+    data_table_emp_att_rec.column("Time in", anchor=CENTER, width=50)
+    data_table_emp_att_rec.column("Time out", anchor=CENTER, width=50)
+    data_table_emp_att_rec.column("Date", anchor=CENTER, width=50)
+    data_table_emp_att_rec.column("Status", anchor=CENTER, width=50)
 
     # Create Headings
     data_table_emp_att_rec.heading("Time in", text="Time in", anchor=CENTER)
@@ -307,35 +323,26 @@ def new_win():
     data_table_emp_att_rec.heading("Date", text="Date", anchor=CENTER)
     data_table_emp_att_rec.heading("Status", text="Status", anchor=CENTER)
 
-    global Name
-    global Department
-    global ID_Number
-    global User_Email
-    global Phone
-    Name =''
-    Department =''
-    ID_Number ='' 
-    User_Email ='' 
-    Phone =''
+    user_read()
 
         # Employee Name Label
-    att_mon_lb_name = Label(attendance_monitoring, text="Employee Name", bg ='#ffd636', font = "Heltvetica 30 bold")
+    att_mon_lb_name = Label(attendance_monitoring, text='', bg ='#ffd636', font = "Heltvetica 30 bold")
     att_mon_lb_name.place(x=300, y=40)
 
         # Employee Number Label
-    att_mon_lb_empnum = Label(attendance_monitoring, text='Employee Number', bg ='#ffd636', font = "Heltvetica 17 bold")
+    att_mon_lb_empnum = Label(attendance_monitoring, text='', bg ='#ffd636', font = "Heltvetica 17 bold")
     att_mon_lb_empnum.place(x=300, y=100)
 
         # Employee Department Label
-    att_mon_lb_dept = Label(attendance_monitoring, text='Department', bg ='#ffd636', font = "Heltvetica 17 bold")
+    att_mon_lb_dept = Label(attendance_monitoring, text='', bg ='#ffd636', font = "Heltvetica 17 bold")
     att_mon_lb_dept.place(x=300, y=140)
 
         # Employee Email Label
-    att_mon_lb_eml = Label(attendance_monitoring, text='Email', bg ='#ffd636', font = "Heltvetica 17 bold")
+    att_mon_lb_eml = Label(attendance_monitoring, text='', bg ='#ffd636', font = "Heltvetica 17 bold")
     att_mon_lb_eml.place(x=660, y=100)
 
         # Employee Phone Number Label
-    att_mon_lb_cont = Label(attendance_monitoring, text='Phone Number', bg ='#ffd636', font = "Heltvetica 17 bold")
+    att_mon_lb_cont = Label(attendance_monitoring, text='', bg ='#ffd636', font = "Heltvetica 17 bold")
     att_mon_lb_cont.place(x=660, y=140)
 
         # Search Entry
@@ -373,7 +380,7 @@ def new_win():
     #                                             corner_radius=20,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(employee_login))
     # att_mon_button_info.place(x=296, y=319, height=100,width=412)
 
-    # ======== Page 3 Admin Sign In Frame ===========
+    # ======== Page 3 Admin Sign In Frame ====================================================================================================================================
 
         # open background image
     page3.pg3_image = Image.open('pic/4.png')
@@ -438,7 +445,7 @@ def new_win():
     check_button = Checkbutton(page3, text="show password",bg="#1f2a76", command=show_password, font="Arial", activebackground="#1f2a76",)
     check_button.place(x=116,y=520)
 
-    # ============= Page 4 Home  Frame =========
+    # ============= Page 4 Home  Frame ====================================================================================================================
 
         # open background image
     page4.pg4_image = Image.open('pic/7.png')
@@ -483,7 +490,7 @@ def new_win():
                                                 corner_radius=30,bg_color='#ffffff', fg_color="#ffffff",hover_color="#6699cc", command=lambda: show_frame(page3))
     pg4_button_logout.place(x=1075, y=469, height=178,width=197)
 
-    # ============= Developers Frame =========
+    # ============= Developers Frame ========================================================================================================================================
 
         # open background image
     developers.dev_image = Image.open('pic/8a.png')
@@ -498,7 +505,7 @@ def new_win():
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(page4))
     dev_button_back.place(x=45, y=595, height=50,width=140)
 
-    # ============= About(the Collage) Frame =========
+    # ============= About(the Collage) Frame ================================================================================================================================
 # #fcd24f
         # open background image
     about.abt_image = Image.open('pic/9a.png')
@@ -519,7 +526,7 @@ def new_win():
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(page4))
     abt_button_back.place(x=20, y=595, height=50,width=140)
 
-    # ============= About(Collage Goals) Frame =========
+    # ============= About(Collage Goals) Frame ================================================================================================================================
 
         # open background image
     about_clg_goal.abt_clg_goal_image = Image.open('pic/9b.png')
@@ -546,7 +553,7 @@ def new_win():
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(page4))
     abt_clg_goal_button_back.place(x=20, y=595, height=50,width=140)
 
-        # ============= About(Collage Goals) Frame =========
+    # ============= About(Collage Goals) Frame =================================================================================================================================
 
         # open background image
     about_program.abt_prog_image = Image.open('pic/9c.png')
@@ -567,7 +574,7 @@ def new_win():
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(page4))
     abt_prog_button_back.place(x=20, y=595, height=50,width=140)
 
-    # ============= Attendace Record Frame =========
+    # ============= Attendace Record Frame ======================================================================================================================================
 
         # open background image
     attendance_record.att_rec_image = Image.open('pic/8.png')
@@ -606,7 +613,7 @@ def new_win():
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(page4))
     att_rec_button_back.place(x=45, y=595, height=50,width=140)
 
-    # ============= Faculty Information Frame =========
+    # ============= Faculty Information Frame ===================================================================================================================================================
 
         # open background image
     faculty_information.fac_inf_image = Image.open('pic/10.png')
