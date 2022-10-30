@@ -1139,24 +1139,24 @@ def new_win():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        date = date_lb_math_rec.cget("text")
+        date_mathematics = date_lb_math_rec.cget("text")
 
         cursor.execute("SELECT COUNT(*) FROM faculty_data WHERE Position='Employee'")
-        total = cursor.fetchall()
+        total_math = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Mathematics' AND Status='Present' AND _Date='" + str(date) + "'")
-        present = cursor.fetchall()
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Mathematics' AND Status='Present' AND _Date='" + str(date_mathematics) + "'")
+        present_math = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Mathematics' AND Status='Absent' AND _Date='" + str(date) + "'")
-        absent = cursor.fetchall()
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Mathematics' AND Status='Absent' AND _Date='" + str(date_mathematics) + "'")
+        absent_math = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Mathematics' AND Status='Late' AND _Date='" + str(date) + "'")
-        late = cursor.fetchall()
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Mathematics' AND Status='Late' AND _Date='" + str(date_mathematics) + "'")
+        late_math = cursor.fetchall()
 
-        total_faculty_lb_math_rec.configure(text=total)
-        total_present_lb_math_rec.configure(text=present)
-        total_absent_lb_math_rec.configure(text=absent)
-        total_late_lb_math_rec.configure(text=late)
+        total_faculty_lb_math_rec.configure(text=total_math)
+        total_present_lb_math_rec.configure(text=present_math)
+        total_absent_lb_math_rec.configure(text=absent_math)
+        total_late_lb_math_rec.configure(text=late_math)
 
         conn.commit()
         conn.close()
@@ -1327,12 +1327,12 @@ def new_win():
 
         #  Get Current Time and Date
     def time_psyc():
-        string_time = strftime('Time: %I:%M:%S %p')
-        time_lb_psyc.configure(text = string_time)
+        string_time_psyc = strftime('Time: %I:%M:%S %p')
+        time_lb_psyc.configure(text = string_time_psyc)
         time_lb_psyc.after(1000, time)
 
-        string_date = strftime('Date: %d/%m/20%y')
-        date_lb_psyc.configure(text = string_date)
+        string_date_psyc = strftime('Date: %d/%m/20%y')
+        date_lb_psyc.configure(text = string_date_psyc)
 
     def normal_psyc():
         employee_num_psyc.configure(state='normal')
@@ -1415,24 +1415,24 @@ def new_win():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        date = date_lb_psyc.cget("text")
+        date_psychology = date_lb_psyc.cget("text")
 
         cursor.execute("SELECT COUNT(*) FROM faculty_data WHERE Position='Employee'")
-        total = cursor.fetchall()
+        total_psyc = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Psychology' AND Status='Present' AND _Date='" + str(date) + "'")
-        present = cursor.fetchall()
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Psychology' AND Status='Present' AND _Date='" + str(date_psychology) + "'")
+        present_psyc = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Psychology' AND Status='Absent' AND _Date='" + str(date) + "'")
-        absent = cursor.fetchall()
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Psychology' AND Status='Absent' AND _Date='" + str(date_psychology) + "'")
+        absent_psyc = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Psychology' AND Status='Late' AND _Date='" + str(date) + "'")
-        late = cursor.fetchall()
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Psychology' AND Status='Late' AND _Date='" + str(date_psychology) + "'")
+        late_psyc = cursor.fetchall()
 
-        total_faculty_lb_psyc.configure(text=total)
-        total_present_lb_psyc.configure(text=present)
-        total_absent_lb_psyc.configure(text=absent)
-        total_late_lb_psyc.configure(text=late)
+        total_faculty_lb_psyc.configure(text=total_psyc)
+        total_present_lb_psyc.configure(text=present_psyc)
+        total_absent_lb_psyc.configure(text=absent_psyc)
+        total_late_lb_psyc.configure(text=late_psyc)
 
         conn.commit()
         conn.close()
@@ -1607,12 +1607,12 @@ def new_win():
 
         #  Get Current Time and Date
     def time_applied():
-        string_time = strftime('Time: %I:%M:%S %p')
-        time_lb_applied.configure(text = string_time)
+        string_time_applied = strftime('Time: %I:%M:%S %p')
+        time_lb_applied.configure(text = string_time_applied)
         time_lb_applied.after(1000, time)
 
-        string_date = strftime('Date: %d/%m/20%y')
-        date_lb_applied.configure(text = string_date)
+        string_date_applied = strftime('Date: %d/%m/20%y')
+        date_lb_applied.configure(text = string_date_applied)
 
     def normal_applied():
         employee_num_applied.configure(state='normal')
@@ -1695,24 +1695,24 @@ def new_win():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        date = date_lb_applied.cget("text")
+        date_physics = date_lb_applied.cget("text")
 
         cursor.execute("SELECT COUNT(*) FROM faculty_data WHERE Position='Employee'")
-        total = cursor.fetchall()
+        total_physics = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Applied Physics' AND Status='Present' AND _Date='" + str(date) + "'")
-        present = cursor.fetchall()
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Applied Physics' AND Status='Present' AND _Date='" + str(date_physics) + "'")
+        present_physics = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Applied Physics' AND Status='Absent' AND _Date='" + str(date) + "'")
-        absent = cursor.fetchall()
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Applied Physics' AND Status='Absent' AND _Date='" + str(date_physics) + "'")
+        absent_physics = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Applied Physics' AND Status='Late' AND _Date='" + str(date) + "'")
-        late = cursor.fetchall()
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Applied Physics' AND Status='Late' AND _Date='" + str(date_physics) + "'")
+        late_physics = cursor.fetchall()
 
-        total_faculty_lb_applied.configure(text=total)
-        total_present_lb_applied.configure(text=present)
-        total_absent_lb_applied.configure(text=absent)
-        total_late_lb_applied.configure(text=late)
+        total_faculty_lb_applied.configure(text=total_physics)
+        total_present_lb_applied.configure(text=present_physics)
+        total_absent_lb_applied.configure(text=absent_physics)
+        total_late_lb_applied.configure(text=late_physics)
 
         conn.commit()
         conn.close()
@@ -1887,12 +1887,12 @@ def new_win():
 
         #  Get Current Time and Date
     def time_ite():
-        string_time = strftime('Time: %I:%M:%S %p')
-        time_lb_ite.configure(text = string_time)
+        string_time_ite = strftime('Time: %I:%M:%S %p')
+        time_lb_ite.configure(text = string_time_ite)
         time_lb_ite.after(1000, time)
 
-        string_date = strftime('Date: %d/%m/20%y')
-        date_lb_ite.configure(text = string_date)
+        string_date_ite = strftime('Date: %d/%m/20%y')
+        date_lb_ite.configure(text = string_date_ite)
 
     def normal_ite():
         employee_num_ite.configure(state='normal')
@@ -1976,24 +1976,25 @@ def new_win():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        date = date_lb_ite.cget("text")
-        
+        date_IT = date_lb_ite.cget("text")
+
         cursor.execute("SELECT COUNT(*) FROM faculty_data WHERE Position='Employee'")
-        total = cursor.fetchall()
+        total_IT = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='ITE' AND Status='Present' AND _Date='" + str(date) + "'")
-        present = cursor.fetchall()
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='ITE' AND Status='Present' AND _Date='30/10/2022'")
+        present_IT = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='ITE' AND Status='Absent' AND _Date='" + str(date) + "'")
-        absent = cursor.fetchall()
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='ITE' AND Status='Absent' AND _Date='" + str(date_IT) + "'")
+        absent_IT = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='ITE' AND Status='Late' AND _Date='" + str(date) + "'")
-        late = cursor.fetchall()
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='ITE' AND Status='Late' AND _Date='" + str(date_IT) + "'")
+        late_IT = cursor.fetchall()
 
-        total_faculty_lb_ite.configure(text=total)
-        total_present_lb_ite.configure(text=present)
-        total_absent_lb_ite.configure(text=absent)
-        total_late_lb_ite.configure(text=late)
+        total_faculty_lb_ite.configure(text=total_IT)
+        total_present_lb_ite.configure(text=present_IT)
+        total_absent_lb_ite.configure(text=absent_IT)
+        total_late_lb_ite.configure(text=late_IT)
+
 
         conn.commit()
         conn.close()
@@ -2076,19 +2077,19 @@ def new_win():
     date_lb_ite.place(x=710, y=10)
 
         # Total Faculty Label
-    total_faculty_lb_ite = Label(ite_att_record, text='', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_faculty_lb_ite = Label(ite_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
     total_faculty_lb_ite.place(x=347, y=190)
 
         # Total Present Label
-    total_present_lb_ite = Label(ite_att_record, text='', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_present_lb_ite = Label(ite_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
     total_present_lb_ite.place(x=565, y=190)
 
         # Total Absent Label
-    total_absent_lb_ite = Label(ite_att_record, text='', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_absent_lb_ite = Label(ite_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
     total_absent_lb_ite.place(x=772, y=190)
 
         # Total Late Label
-    total_late_lb_ite = Label(ite_att_record, text='', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_late_lb_ite = Label(ite_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
     total_late_lb_ite.place(x=990, y=190)
 
         # ComboBox College Department
