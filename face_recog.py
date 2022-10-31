@@ -7,7 +7,9 @@ import os
 import sqlite3
 from time import strftime
 import calendar
-
+import pandas as pd
+import csv
+from tkinter import filedialog
 
 w=Tk()
 
@@ -1057,13 +1059,13 @@ def new_win():
         disable_text()
 
         #  Get Current Time and Date
-    def time():
-        string_time = strftime('Time: %I:%M:%S %p')
-        time_lb_math_rec.configure(text = string_time)
-        time_lb_math_rec.after(1000, time)
+    # def time():
+    #     string_time = strftime('Time: %I:%M:%S %p')
+    #     time_lb_math_rec.configure(text = string_time)
+    #     time_lb_math_rec.after(1000, time)
 
-        string_date = strftime('Date: %d/%m/20%y')
-        date_lb_math_rec.configure(text = string_date)
+    #     string_date = strftime('Date: %d/%m/20%y')
+    #     date_lb_math_rec.configure(text = string_date)
 
             # search Data
     def search_data_math():
@@ -1114,16 +1116,16 @@ def new_win():
         conn.commit()
         return results_math
 
-    def delete_math(data):
-        conn = sqlite3.connect("data/data.db")
-        cursor = conn.cursor()
+    # def delete_math(data):
+    #     conn = sqlite3.connect("data/data.db")
+    #     cursor = conn.cursor()
 
-        cursor.execute("""CREATE TABLE IF NOT EXISTS 
-            attendance_record(ID INTEGER PRIMARY KEY,Employee_No INTEGER,Name TEXT,
-            Department TEXT,Time_in TEXT,Time_out TEXT,_Date TEXT,Status TEXT)""")
+    #     cursor.execute("""CREATE TABLE IF NOT EXISTS 
+    #         attendance_record(ID INTEGER PRIMARY KEY,Employee_No INTEGER,Name TEXT,
+    #         Department TEXT,Time_in TEXT,Time_out TEXT,_Date TEXT,Status TEXT)""")
 
-        cursor.execute("DELETE FROM attendance_record WHERE Employee_No ='" + srt(data) + "'")
-        conn.commit()
+    #     cursor.execute("DELETE FROM attendance_record WHERE Employee_No ='" + srt(data) + "'")
+    #     conn.commit()
 
             # Refresh the tabble on Treeview
     def refreshTable_math():
@@ -1139,18 +1141,18 @@ def new_win():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        date_mathematics = date_lb_math_rec.cget("text")
+        # date_mathematics = date_lb_math_rec.cget("text")
 
         cursor.execute("SELECT COUNT(*) FROM faculty_data WHERE Position='Employee'")
         total_math = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Mathematics' AND Status='Present' AND _Date='" + str(date_mathematics) + "'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Mathematics' AND Status='Present'")
         present_math = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Mathematics' AND Status='Absent' AND _Date='" + str(date_mathematics) + "'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Mathematics' AND Status='Absent'")
         absent_math = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Mathematics' AND Status='Late' AND _Date='" + str(date_mathematics) + "'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Mathematics' AND Status='Late'")
         late_math = cursor.fetchall()
 
         total_faculty_lb_math_rec.configure(text=total_math)
@@ -1184,6 +1186,26 @@ def new_win():
         att_status_math_rec.insert(0, values[6])
 
         disable_text()
+
+    def print_data():
+        cols = ['Employee No.','Name','Department','Time in','Time out','Date','Status']
+        path = 'excelfile/read.csv'
+        excel_name = filedialog.asksaveasfilename(title='Save Location', defaultextension=['Excel files','*.xlsx'], filetypes=['Excel files','*.xlsx'])
+        lst = []
+        with open(path,"w",newline='') as myfile:
+            csvwriter = csv.writer(myfile, delimiter=',')
+            for row_id in data_table_math_rec.get_children():
+                row = data_table_math_rec.item(row_id,'values')
+                lst.append(row)
+            lst = list(map(list,lst))
+            lst.insert(0,cols)
+            for row in lst:
+                csvwriter.writerow(row)
+
+        writer = pd.ExcelWriter(excel_name)
+        df = pd.read_csv(path)
+        df.to_excel(writer,'sheet1')
+        writer.save()
 
          # Data Table "TreeView"
     scrollbarx_math_rec = Scrollbar(mathematics_att_record, orient=HORIZONTAL)
@@ -1225,13 +1247,13 @@ def new_win():
 
     refreshTable_math()
 
-        # Time Label
-    time_lb_math_rec = Label(mathematics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    time_lb_math_rec.place(x=540, y=10)
+    #     # Time Label
+    # time_lb_math_rec = Label(mathematics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    # time_lb_math_rec.place(x=540, y=10)
 
-        # date Label
-    date_lb_math_rec = Label(mathematics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    date_lb_math_rec.place(x=710, y=10)
+    #     # date Label
+    # date_lb_math_rec = Label(mathematics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    # date_lb_math_rec.place(x=710, y=10)
     
 
         # Total Faculty Label
@@ -1304,7 +1326,7 @@ def new_win():
         # Print Button
     print_btn_math_rec = PhotoImage(file = "pic/btn_print.png")
     math_rec_button_print = customtkinter.CTkButton(master=mathematics_att_record,image=print_btn_math_rec, text="" ,
-                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= '')
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=print_data)
     math_rec_button_print.place(x=372, y=519, height=25,width=100)
 
         # Back Button
@@ -1313,7 +1335,7 @@ def new_win():
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(attendance_record))
     math_rec_button_back.place(x=45, y=595, height=50,width=140)
 
-    time()
+    # time()
     count_data()
 
     # ============= Psychology Attendance Record Frame =============================================================================
@@ -1326,13 +1348,13 @@ def new_win():
     psychology_att_record.psyc_bg_img_lb.pack()
 
         #  Get Current Time and Date
-    def time_psyc():
-        string_time_psyc = strftime('Time: %I:%M:%S %p')
-        time_lb_psyc.configure(text = string_time_psyc)
-        time_lb_psyc.after(1000, time)
+    # def time_psyc():
+    #     string_time_psyc = strftime('Time: %I:%M:%S %p')
+    #     time_lb_psyc.configure(text = string_time_psyc)
+    #     time_lb_psyc.after(1000, time)
 
-        string_date_psyc = strftime('Date: %d/%m/20%y')
-        date_lb_psyc.configure(text = string_date_psyc)
+    #     string_date_psyc = strftime('Date: %d/%m/20%y')
+    #     date_lb_psyc.configure(text = string_date_psyc)
 
     def normal_psyc():
         employee_num_psyc.configure(state='normal')
@@ -1415,18 +1437,18 @@ def new_win():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        date_psychology = date_lb_psyc.cget("text")
+        # date_psychology = date_lb_psyc.cget("text")
 
         cursor.execute("SELECT COUNT(*) FROM faculty_data WHERE Position='Employee'")
         total_psyc = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Psychology' AND Status='Present' AND _Date='" + str(date_psychology) + "'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Psychology' AND Status='Present'")
         present_psyc = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Psychology' AND Status='Absent' AND _Date='" + str(date_psychology) + "'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Psychology' AND Status='Absent'")
         absent_psyc = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Psychology' AND Status='Late' AND _Date='" + str(date_psychology) + "'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Psychology' AND Status='Late'")
         late_psyc = cursor.fetchall()
 
         total_faculty_lb_psyc.configure(text=total_psyc)
@@ -1506,13 +1528,13 @@ def new_win():
 
     refreshTable_psyc()
 
-        # Time Label
-    time_lb_psyc = Label(psychology_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    time_lb_psyc.place(x=540, y=10)
+    #     # Time Label
+    # time_lb_psyc = Label(psychology_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    # time_lb_psyc.place(x=540, y=10)
 
-        # date Label
-    date_lb_psyc = Label(psychology_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    date_lb_psyc.place(x=710, y=10)
+    #     # date Label
+    # date_lb_psyc = Label(psychology_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    # date_lb_psyc.place(x=710, y=10)
 
         # Total Faculty Label
     total_faculty_lb_psyc = Label(psychology_att_record, text='', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
@@ -1593,7 +1615,7 @@ def new_win():
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(attendance_record))
     psyc_button_back.place(x=45, y=595, height=50,width=140)
 
-    time_psyc()
+    # time_psyc()
     count_data_psyc()
 
     # ============= Applied Physics Attendance Record Frame =============================================================================
@@ -1606,13 +1628,13 @@ def new_win():
     applied_physics_att_record.applied_bg_img_lb.pack()
 
         #  Get Current Time and Date
-    def time_applied():
-        string_time_applied = strftime('Time: %I:%M:%S %p')
-        time_lb_applied.configure(text = string_time_applied)
-        time_lb_applied.after(1000, time)
+    # def time_applied():
+    #     string_time_applied = strftime('Time: %I:%M:%S %p')
+    #     time_lb_applied.configure(text = string_time_applied)
+    #     time_lb_applied.after(1000, time)
 
-        string_date_applied = strftime('Date: %d/%m/20%y')
-        date_lb_applied.configure(text = string_date_applied)
+    #     string_date_applied = strftime('Date: %d/%m/20%y')
+    #     date_lb_applied.configure(text = string_date_applied)
 
     def normal_applied():
         employee_num_applied.configure(state='normal')
@@ -1695,18 +1717,18 @@ def new_win():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        date_physics = date_lb_applied.cget("text")
+        # date_physics = date_lb_applied.cget("text")
 
         cursor.execute("SELECT COUNT(*) FROM faculty_data WHERE Position='Employee'")
         total_physics = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Applied Physics' AND Status='Present' AND _Date='" + str(date_physics) + "'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Applied Physics' AND Status='Present'")
         present_physics = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Applied Physics' AND Status='Absent' AND _Date='" + str(date_physics) + "'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Applied Physics' AND Status='Absent'")
         absent_physics = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Applied Physics' AND Status='Late' AND _Date='" + str(date_physics) + "'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Applied Physics' AND Status='Late'")
         late_physics = cursor.fetchall()
 
         total_faculty_lb_applied.configure(text=total_physics)
@@ -1786,13 +1808,13 @@ def new_win():
 
     refreshTable_applied()
 
-        # Time Label
-    time_lb_applied = Label(applied_physics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    time_lb_applied.place(x=540, y=10)
+    #     # Time Label
+    # time_lb_applied = Label(applied_physics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    # time_lb_applied.place(x=540, y=10)
 
-        # date Label
-    date_lb_applied = Label(applied_physics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    date_lb_applied.place(x=710, y=10)
+    #     # date Label
+    # date_lb_applied = Label(applied_physics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    # date_lb_applied.place(x=710, y=10)
 
         # Total Faculty Label
     total_faculty_lb_applied = Label(applied_physics_att_record, text='', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
@@ -1873,7 +1895,7 @@ def new_win():
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(attendance_record))
     applied_button_back.place(x=45, y=595, height=50,width=140)
 
-    time_applied()
+    # time_applied()
     count_data_applied()
 
     # ============= Applied Physics Attendance Record Frame =============================================================================
@@ -1886,13 +1908,13 @@ def new_win():
     ite_att_record.ite_bg_img_lb.pack()
 
         #  Get Current Time and Date
-    def time_ite():
-        string_time_ite = strftime('Time: %I:%M:%S %p')
-        time_lb_ite.configure(text = string_time_ite)
-        time_lb_ite.after(1000, time)
+    # def time_ite():
+    #     string_time_ite = strftime('Time: %I:%M:%S %p')
+    #     time_lb_ite.configure(text = string_time_ite)
+    #     time_lb_ite.after(1000, time)
 
-        string_date_ite = strftime('Date: %d/%m/20%y')
-        date_lb_ite.configure(text = string_date_ite)
+    #     string_date_ite = strftime('Date: %d/%m/20%y')
+    #     date_lb_ite.configure(text = string_date_ite)
 
     def normal_ite():
         employee_num_ite.configure(state='normal')
@@ -1976,25 +1998,24 @@ def new_win():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        date_IT = date_lb_ite.cget("text")
+        # date_IT = date_lb_ite.cget("text")
 
         cursor.execute("SELECT COUNT(*) FROM faculty_data WHERE Position='Employee'")
         total_IT = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='ITE' AND Status='Present' AND _Date='30/10/2022'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='ITE' AND Status='Present'")
         present_IT = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='ITE' AND Status='Absent' AND _Date='" + str(date_IT) + "'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='ITE' AND Status='Absent'")
         absent_IT = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='ITE' AND Status='Late' AND _Date='" + str(date_IT) + "'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='ITE' AND Status='Late'")
         late_IT = cursor.fetchall()
 
         total_faculty_lb_ite.configure(text=total_IT)
         total_present_lb_ite.configure(text=present_IT)
         total_absent_lb_ite.configure(text=absent_IT)
         total_late_lb_ite.configure(text=late_IT)
-
 
         conn.commit()
         conn.close()
@@ -2068,13 +2089,13 @@ def new_win():
 
     refreshTable_ite()
 
-        # Time Label
-    time_lb_ite = Label(ite_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    time_lb_ite.place(x=540, y=10)
+    #     # Time Label
+    # time_lb_ite = Label(ite_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    # time_lb_ite.place(x=540, y=10)
 
-        # date Label
-    date_lb_ite = Label(ite_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    date_lb_ite.place(x=710, y=10)
+    #     # date Label
+    # date_lb_ite = Label(ite_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    # date_lb_ite.place(x=710, y=10)
 
         # Total Faculty Label
     total_faculty_lb_ite = Label(ite_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
@@ -2155,7 +2176,7 @@ def new_win():
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(attendance_record))
     ite_button_back.place(x=45, y=595, height=50,width=140)
 
-    time_ite()
+    # time_ite()
     count_data_ite()
 
     main_window.mainloop()
