@@ -10,6 +10,9 @@ import calendar
 import pandas as pd
 import csv
 from tkinter import filedialog
+import collections
+from collections import defaultdict
+import shutil
 
 w=Tk()
 
@@ -303,7 +306,7 @@ def new_win():
         # set_department=get_Department
 
         # Name =att_mon_lb_name.cget("text")
-        # print(Name)
+        print(set_name)
 
         cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Name='"+ str(set_name) +"' AND Department='Psychology'")
         results_user = cursor.fetchall()
@@ -349,23 +352,23 @@ def new_win():
     data_table_emp_att_rec.heading("Status", text="Status", anchor=CENTER)
 
         # Employee Name Label
-    att_mon_lb_name = Label(attendance_monitoring, text='', bg ='#ffd636', font = "Heltvetica 30 bold")
+    att_mon_lb_name = Label(attendance_monitoring, bg ='#ffd636', font = "Heltvetica 30 bold")
     att_mon_lb_name.place(x=300, y=40)
 
         # Employee Number Label
-    att_mon_lb_empnum = Label(attendance_monitoring, text='', bg ='#ffd636', font = "Heltvetica 17 bold")
+    att_mon_lb_empnum = Label(attendance_monitoring, bg ='#ffd636', font = "Heltvetica 17 bold")
     att_mon_lb_empnum.place(x=300, y=100)
 
         # Employee Department Label
-    att_mon_lb_dept = Label(attendance_monitoring, text='', bg ='#ffd636', font = "Heltvetica 17 bold")
+    att_mon_lb_dept = Label(attendance_monitoring, bg ='#ffd636', font = "Heltvetica 17 bold")
     att_mon_lb_dept.place(x=300, y=140)
 
         # Employee Email Label
-    att_mon_lb_eml = Label(attendance_monitoring, text='', bg ='#ffd636', font = "Heltvetica 17 bold")
+    att_mon_lb_eml = Label(attendance_monitoring, bg ='#ffd636', font = "Heltvetica 17 bold")
     att_mon_lb_eml.place(x=660, y=100)
 
         # Employee Phone Number Label
-    att_mon_lb_cont = Label(attendance_monitoring, text='', bg ='#ffd636', font = "Heltvetica 17 bold")
+    att_mon_lb_cont = Label(attendance_monitoring, bg ='#ffd636', font = "Heltvetica 17 bold")
     att_mon_lb_cont.place(x=660, y=140)
 
         # Search Entry
@@ -500,7 +503,7 @@ def new_win():
         # Photo Button
     photo_btn = PhotoImage(file = "pic/photo.png")
     pg4_button_train_img = customtkinter.CTkButton(master=page4,image=photo_btn, text="" ,
-                                                corner_radius=30,bg_color='#ffffff', fg_color="#cc9900",hover_color="#fdca34", command=lambda: show_frame(page2))
+                                                corner_radius=30,bg_color='#ffffff', fg_color="#cc9900",hover_color="#fdca34", command=lambda:'')
     pg4_button_train_img.place(x=683, y=315, height=333,width=348)
 
         # Developers Button
@@ -1058,14 +1061,14 @@ def new_win():
         att_status_math_rec.delete(0, END)
         disable_text()
 
-        #  Get Current Time and Date
-    # def time():
-    #     string_time = strftime('Time: %I:%M:%S %p')
-    #     time_lb_math_rec.configure(text = string_time)
-    #     time_lb_math_rec.after(1000, time)
+         # Get Current Time and Date
+    def time():
+        string_time = strftime('Time: %I:%M:%S %p')
+        time_lb_math_rec.configure(text = string_time)
+        time_lb_math_rec.after(1000, time)
 
-    #     string_date = strftime('Date: %d/%m/20%y')
-    #     date_lb_math_rec.configure(text = string_date)
+        string_date = strftime('Date: %d/%m/20%y')
+        date_lb_math_rec.configure(text = string_date)
 
             # search Data
     def search_data_math():
@@ -1187,10 +1190,12 @@ def new_win():
 
         disable_text()
 
-    def print_data():
+    def print_data_math():
+        file = filedialog.asksaveasfilename(title="Select file",initialfile="datafile.xlsx", defaultextension=".xlsx",filetypes=[("Execl file","*.xlsx")])
+
         cols = ['Employee No.','Name','Department','Time in','Time out','Date','Status']
-        path = 'excelfile/read.csv'
-        excel_name = filedialog.asksaveasfilename(title='Save Location', defaultextension=['Excel files','*.xlsx'], filetypes=['Excel files','*.xlsx'])
+        path = 'excelfile/read_data_employee_mathematics.csv'
+        excel_name = 'excelfile/new_datasave.xlsx'
         lst = []
         with open(path,"w",newline='') as myfile:
             csvwriter = csv.writer(myfile, delimiter=',')
@@ -1206,6 +1211,11 @@ def new_win():
         df = pd.read_csv(path)
         df.to_excel(writer,'sheet1')
         writer.save()
+        source = "excelfile/new_datasave.xlsx"
+        if file:
+            shutil.copy(source,file)
+        else:
+            messagebox.showinfo("Message", "You did not save the file!!")
 
          # Data Table "TreeView"
     scrollbarx_math_rec = Scrollbar(mathematics_att_record, orient=HORIZONTAL)
@@ -1247,13 +1257,13 @@ def new_win():
 
     refreshTable_math()
 
-    #     # Time Label
-    # time_lb_math_rec = Label(mathematics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    # time_lb_math_rec.place(x=540, y=10)
+        # Time Label
+    time_lb_math_rec = Label(mathematics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    time_lb_math_rec.place(x=540, y=10)
 
-    #     # date Label
-    # date_lb_math_rec = Label(mathematics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    # date_lb_math_rec.place(x=710, y=10)
+        # date Label
+    date_lb_math_rec = Label(mathematics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    date_lb_math_rec.place(x=710, y=10)
     
 
         # Total Faculty Label
@@ -1326,7 +1336,7 @@ def new_win():
         # Print Button
     print_btn_math_rec = PhotoImage(file = "pic/btn_print.png")
     math_rec_button_print = customtkinter.CTkButton(master=mathematics_att_record,image=print_btn_math_rec, text="" ,
-                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=print_data)
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=print_data_math)
     math_rec_button_print.place(x=372, y=519, height=25,width=100)
 
         # Back Button
@@ -1335,7 +1345,7 @@ def new_win():
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(attendance_record))
     math_rec_button_back.place(x=45, y=595, height=50,width=140)
 
-    # time()
+    time()
     count_data()
 
     # ============= Psychology Attendance Record Frame =============================================================================
@@ -1488,6 +1498,33 @@ def new_win():
         conn.commit()
         conn.close()
 
+    def print_data_psyc():
+        file = filedialog.asksaveasfilename(title="Select file",initialfile="datafile.xlsx", defaultextension=".xlsx",filetypes=[("Execl file","*.xlsx")])
+
+        cols = ['Employee No.','Name','Department','Time in','Time out','Date','Status']
+        path = 'excelfile/read_data_employee_psychology.csv'
+        excel_name = 'excelfile/new_datasave_psychology.xlsx'
+        lst = []
+        with open(path,"w",newline='') as myfile:
+            csvwriter = csv.writer(myfile, delimiter=',')
+            for row_id in data_table_psyc.get_children():
+                row = data_table_psyc.item(row_id,'values')
+                lst.append(row)
+            lst = list(map(list,lst))
+            lst.insert(0,cols)
+            for row in lst:
+                csvwriter.writerow(row)
+
+        writer = pd.ExcelWriter(excel_name)
+        df = pd.read_csv(path)
+        df.to_excel(writer,'sheet1')
+        writer.save()
+        source = "excelfile/new_datasave_psychology.xlsx"
+        if file:
+            shutil.copy(source,file)
+        else:
+            messagebox.showinfo("Message", "You did not save the file!!")
+
          # Data Table "TreeView"
     scrollbarx_psyc = Scrollbar(psychology_att_record, orient=HORIZONTAL)
     scrollbarx_psyc.place(x=710, y=584, width=347)
@@ -1537,19 +1574,19 @@ def new_win():
     # date_lb_psyc.place(x=710, y=10)
 
         # Total Faculty Label
-    total_faculty_lb_psyc = Label(psychology_att_record, text='', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_faculty_lb_psyc = Label(psychology_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
     total_faculty_lb_psyc.place(x=347, y=190)
 
         # Total Present Label
-    total_present_lb_psyc = Label(psychology_att_record, text='', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_present_lb_psyc = Label(psychology_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
     total_present_lb_psyc.place(x=565, y=190)
 
         # Total Absent Label
-    total_absent_lb_psyc = Label(psychology_att_record, text='', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_absent_lb_psyc = Label(psychology_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
     total_absent_lb_psyc.place(x=772, y=190)
 
         # Total Late Label
-    total_late_lb_psyc = Label(psychology_att_record, text='', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_late_lb_psyc = Label(psychology_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
     total_late_lb_psyc.place(x=990, y=190)
 
         # ComboBox College Department
@@ -1606,7 +1643,7 @@ def new_win():
         # Print Button
     print_btn_psyc = PhotoImage(file = "pic/btn_print.png")
     psyc_button_print = customtkinter.CTkButton(master=psychology_att_record,image=print_btn_psyc, text="" ,
-                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= '')
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=print_data_psyc)
     psyc_button_print.place(x=372, y=519, height=25,width=100)
 
         # Back Button
@@ -1768,6 +1805,33 @@ def new_win():
         conn.commit()
         conn.close()
 
+    def print_data_applied():
+        file = filedialog.asksaveasfilename(title="Select file",initialfile="datafile.xlsx", defaultextension=".xlsx",filetypes=[("Execl file","*.xlsx")])
+
+        cols = ['Employee No.','Name','Department','Time in','Time out','Date','Status']
+        path = 'excelfile/read_data_employee_appliedphysics.csv'
+        excel_name = 'excelfile/new_datasave_appliedphysics.xlsx'
+        lst = []
+        with open(path,"w",newline='') as myfile:
+            csvwriter = csv.writer(myfile, delimiter=',')
+            for row_id in data_table_applied.get_children():
+                row = data_table_applied.item(row_id,'values')
+                lst.append(row)
+            lst = list(map(list,lst))
+            lst.insert(0,cols)
+            for row in lst:
+                csvwriter.writerow(row)
+
+        writer = pd.ExcelWriter(excel_name)
+        df = pd.read_csv(path)
+        df.to_excel(writer,'sheet1')
+        writer.save()
+        source = "excelfile/new_datasave_appliedphysics.xlsx"
+        if file:
+            shutil.copy(source,file)
+        else:
+            messagebox.showinfo("Message", "You did not save the file!!")
+
          # Data Table "TreeView"
     scrollbarx_applied = Scrollbar(applied_physics_att_record, orient=HORIZONTAL)
     scrollbarx_applied.place(x=710, y=584, width=347)
@@ -1817,19 +1881,19 @@ def new_win():
     # date_lb_applied.place(x=710, y=10)
 
         # Total Faculty Label
-    total_faculty_lb_applied = Label(applied_physics_att_record, text='', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_faculty_lb_applied = Label(applied_physics_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
     total_faculty_lb_applied.place(x=347, y=190)
 
         # Total Present Label
-    total_present_lb_applied = Label(applied_physics_att_record, text='', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_present_lb_applied = Label(applied_physics_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
     total_present_lb_applied.place(x=565, y=190)
 
         # Total Absent Label
-    total_absent_lb_applied = Label(applied_physics_att_record, text='', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_absent_lb_applied = Label(applied_physics_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
     total_absent_lb_applied.place(x=772, y=190)
 
         # Total Late Label
-    total_late_lb_applied = Label(applied_physics_att_record, text='', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
+    total_late_lb_applied = Label(applied_physics_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
     total_late_lb_applied.place(x=990, y=190)
 
         # ComboBox College Department
@@ -1886,7 +1950,7 @@ def new_win():
         # Print Button
     print_btn_applied = PhotoImage(file = "pic/btn_print.png")
     applied_button_print = customtkinter.CTkButton(master=applied_physics_att_record,image=print_btn_applied, text="" ,
-                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= '')
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=print_data_applied)
     applied_button_print.place(x=372, y=519, height=25,width=100)
 
         # Back Button
@@ -2049,6 +2113,33 @@ def new_win():
         conn.commit()
         conn.close()
 
+    def print_data_ite():
+        file = filedialog.asksaveasfilename(title="Select file",initialfile="datafile.xlsx", defaultextension=".xlsx",filetypes=[("Execl file","*.xlsx")])
+
+        cols = ['Employee No.','Name','Department','Time in','Time out','Date','Status']
+        path = 'excelfile/read_data_employee_ite.csv'
+        excel_name = 'excelfile/new_datasave_ite.xlsx'
+        lst = []
+        with open(path,"w",newline='') as myfile:
+            csvwriter = csv.writer(myfile, delimiter=',')
+            for row_id in data_table_ite.get_children():
+                row = data_table_ite.item(row_id,'values')
+                lst.append(row)
+            lst = list(map(list,lst))
+            lst.insert(0,cols)
+            for row in lst:
+                csvwriter.writerow(row)
+
+        writer = pd.ExcelWriter(excel_name)
+        df = pd.read_csv(path)
+        df.to_excel(writer,'sheet1')
+        writer.save()
+        source = "excelfile/new_datasave_ite.xlsx"
+        if file:
+            shutil.copy(source,file)
+        else:
+            messagebox.showinfo("Message", "You did not save the file!!")
+
          # Data Table "TreeView"
     scrollbarx_ite = Scrollbar(ite_att_record, orient=HORIZONTAL)
     scrollbarx_ite.place(x=710, y=584, width=347)
@@ -2167,7 +2258,7 @@ def new_win():
         # Print Button
     print_btn_ite = PhotoImage(file = "pic/btn_print.png")
     ite_button_print = customtkinter.CTkButton(master=ite_att_record,image=print_btn_ite, text="" ,
-                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command='')
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=print_data_ite)
     ite_button_print.place(x=372, y=519, height=25,width=100)
 
         # Back Button
