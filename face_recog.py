@@ -443,10 +443,16 @@ def new_win():
         uname = pg3_txtbox_username.get()
         pwd = pg3_txtbox_pass.get()
         adm = "Admin"
+        state = "On"
+
+        num_count = 1
+        count = 3
+        authorize = True
+
         if uname=='' or pwd=='':
             messagebox.showinfo("Error", "Please Fill The Empty Field!!")
         else:
-            cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(adm) + "'")
+            cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(adm) + "' AND Status ='" + str(state) + "'")
             if cursor.fetchone():
                 show_frame(page4)
                 messagebox.showinfo("Messgae", "WELCOME USER")
@@ -455,7 +461,31 @@ def new_win():
                 pg3_txtbox_pass.delete(0, END)
                 check_button.deselect()
             else:
-                messagebox.showinfo("Error", "Please provide correct username and password!!")
+                # num_count = num_count+1
+                while count !=0:
+                    
+                    # authorize = True
+                    messagebox.showinfo("Error", "Reamaining Attempt: "+ str(count))
+                    count-=1
+
+                else:
+                    # authorize = False
+                    messagebox.showinfo("Error", "Access denied, Out of try !!")
+
+
+        # if uname=='' or pwd=='':
+        #     messagebox.showinfo("Error", "Please Fill The Empty Field!!")
+        # else:
+        #     cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(adm) + "' AND Status ='" + str(state) + "'")
+        #     if cursor.fetchone():
+        #         show_frame(page4)
+        #         messagebox.showinfo("Messgae", "WELCOME USER")
+
+        #         pg3_txtbox_username.delete(0, END)
+        #         pg3_txtbox_pass.delete(0, END)
+        #         check_button.deselect()
+        #     else:
+        #         messagebox.showinfo("Error", "Please provide correct username and password!!")
 
         conn.commit()
 
@@ -660,6 +690,7 @@ def new_win():
         employee_name_fac_inf.delete(0, END)
         age_fac_inf.delete(0, END)
         con_num_fac_inf.delete(0, END)
+        status_combobox_fac_inf.delete(0,END)
         position_fac_inf.delete(0, END)
         username_fac_inf.delete(0, END)
         password_fac_inf.delete(0, END)
@@ -676,7 +707,7 @@ def new_win():
         for record in data_table.get_children():
             data_table.delete(record)
 
-        cursor.execute("SELECT * FROM faculty_data WHERE Employee_No = '" + str(lookup_record) + "' or  Email = '" + str(lookup_record) + "' or  Employee_Name = '" + str(lookup_record) + "' or Gender = '" + str(lookup_record) + "' or Age = '" + str(lookup_record) + "' or Contact_Number = '" + str(lookup_record) + "' or Address = '" + str(lookup_record) + "' or College_Department = '" + str(lookup_record) + "'")
+        cursor.execute("SELECT * FROM faculty_data WHERE Employee_No = '" + str(lookup_record) + "' or  Email = '" + str(lookup_record) + "' or  Employee_Name = '" + str(lookup_record) + "' or Gender = '" + str(lookup_record) + "' or Age = '" + str(lookup_record) + "' or Contact_Number = '" + str(lookup_record) + "' or Address = '" + str(lookup_record) + "' or College_Department = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "'")
         records = cursor.fetchall()
 
         global count
@@ -684,9 +715,9 @@ def new_win():
 
         for record in records:
             if count % 2 == 0:
-                data_table.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7],record[8],record[9],record[10]), tag="evenrow")
+                data_table.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7],record[8],record[9],record[10],record[11]), tag="evenrow")
             else:
-                data_table.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7],record[8],record[9],record[10]), tag="oddrow")
+                data_table.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7],record[8],record[9],record[10],record[11]), tag="oddrow")
             count += 1
             data_table.tag_configure('evenrow', background='#EEEEEE')
             data_table.tag_configure('oddrow', background='#EEEEEE')
@@ -709,16 +740,16 @@ def new_win():
         return new_tup
 
         # Insert Data
-    def insert(Employee_No,Email,Employee_Name,Gender,Age,Contact_Number,Address,College_Department,Username,Password,Position):
+    def insert(Employee_No,Email,Employee_Name,Gender,Age,Contact_Number,Address,College_Department,Username,Password,Position,Status):
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
             faculty_data(Employee_No TEXT, Email TEXT, Employee_Name TEXT,
             Gender TEXT,Age TEXT,Contact_Number TEXT,Address TEXT,College_Department TEXT,
-            Username TEXT, Password TEXT, Position TEXT)""")
+            Username TEXT, Password TEXT, Position TEXT, Status TEXT)""")
         
-        cursor.execute("INSERT INTO faculty_data VALUES ('" + str(Employee_No) + "','" + str(Email) + "','" + str(Employee_Name) + "','" + str(Gender) + "','" + str(Age) + "','" + str(Contact_Number) + "','" + str(Address) + "','" + str(College_Department) + "','" + str(Username) + "','" + str(Password) + "','" + str(Position) + "')")
+        cursor.execute("INSERT INTO faculty_data VALUES ('" + str(Employee_No) + "','" + str(Email) + "','" + str(Employee_Name) + "','" + str(Gender) + "','" + str(Age) + "','" + str(Contact_Number) + "','" + str(Address) + "','" + str(College_Department) + "','" + str(Username) + "','" + str(Password) + "','" + str(Position) + "','" + str(Status) + "')")
         conn.commit()
 
         # Read Data on the sql
@@ -729,7 +760,7 @@ def new_win():
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
             faculty_data(Employee_No TEXT, Email TEXT, Employee_Name TEXT,
             Gender TEXT,Age TEXT,Contact_Number TEXT,Address TEXT,College_Department TEXT,
-            Username TEXT, Password TEXT, Position TEXT)""")
+            Username TEXT, Password TEXT, Position TEXT,Status TEXT)""")
 
         cursor.execute("SELECT * FROM faculty_data")
         results = cursor.fetchall()
@@ -743,22 +774,22 @@ def new_win():
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
             faculty_data(Employee_No TEXT, Email TEXT, Employee_Name TEXT,
             Gender TEXT,Age TEXT,Contact_Number TEXT,Address TEXT,College_Department TEXT,
-            Username TEXT, Password TEXT, Position TEXT)""")
+            Username TEXT, Password TEXT, Position TEXT,Status TEXT)""")
 
         cursor.execute("DELETE FROM faculty_data WHERE Employee_No ='" + srt(data) + "'")
         conn.commit()
 
         # Update data sql
-    def update(Employee_No,Email,Employee_Name,Gender,Age,Contact_Number,Address,College_Department,Username,Password,Position,idEmployee_No):
+    def update(Employee_No,Email,Employee_Name,Gender,Age,Contact_Number,Address,College_Department,Username,Password,Position,Status,idEmployee_No):
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
             faculty_data(Employee_No TEXT, Email TEXT, Employee_Name TEXT,
             Gender TEXT,Age TEXT,Contact_Number TEXT,Address TEXT,College_Department TEXT,
-            Username TEXT, Password TEXT, Position TEXT)""")
+            Username TEXT, Password TEXT, Position TEXT, Status TEXT)""")
 
-        cursor.execute("UPDATE faculty_data SET Employee_No = '" + str(Employee_No) + "', Email = '" + str(Email) + "', Employee_Name = '" + str(Employee_Name) + "', Gender = '" + str(Gender) + "', Age = '" + str(Age) + "', Contact_Number = '" + str(Contact_Number) + "', Address = '" + str(Address) + "', College_Department = '" + str(College_Department) + "', Username = '" + str(Username) + "', Password = '" + str(Password) + "', Position = '" + str(Position) + "' WHERE Employee_No = '"+ str(idEmployee_No)+"'")
+        cursor.execute("UPDATE faculty_data SET Employee_No = '" + str(Employee_No) + "', Email = '" + str(Email) + "', Employee_Name = '" + str(Employee_Name) + "', Gender = '" + str(Gender) + "', Age = '" + str(Age) + "', Contact_Number = '" + str(Contact_Number) + "', Address = '" + str(Address) + "', College_Department = '" + str(College_Department) + "', Username = '" + str(Username) + "', Password = '" + str(Password) + "', Position = '" + str(Position) + "', Status = '" + str(Status) + "' WHERE Employee_No = '"+ str(idEmployee_No)+"'")
         conn.commit()
 
     def check_duplicate():
@@ -794,15 +825,15 @@ def new_win():
         save_username = username_fac_inf.get()
         save_password = password_fac_inf.get()
         save_position = position_fac_inf.get()
+        save_status = status_combobox_fac_inf.get()
 
-
-        if save_employee_number == "" or save_email == "" or save_employee_name == "" or save_gender == "" or save_age == "" or save_contact_number == "" or save_address == "" or save_college_department == "" or save_username == "" or save_password == "" or save_position == "":
+        if save_status == "" or save_employee_number == "" or save_email == "" or save_employee_name == "" or save_gender == "" or save_age == "" or save_contact_number == "" or save_address == "" or save_college_department == "" or save_username == "" or save_password == "" or save_position == "":
             messagebox.showinfo("Error", "Please fill up the blank entry!!")
             return
         else:
             if check_duplicate() == False:
                 messagebox.showinfo("Messgae", "Data Added!!")
-                insert(str(save_employee_number),str(save_email),str(save_employee_name),str(save_gender),str(save_age),str(save_contact_number),str(save_address),str(save_college_department),str(save_username),str(save_password),str(save_position)) 
+                insert(str(save_employee_number),str(save_email),str(save_employee_name),str(save_gender),str(save_age),str(save_contact_number),str(save_address),str(save_college_department),str(save_username),str(save_password),str(save_position),str(save_status)) 
                 clear()
             else:
                 messagebox.showinfo("Error", "Employee Number, Email or Contact Number Already Exist")
@@ -827,6 +858,7 @@ def new_win():
         username_fac_inf.insert(0, values[8])
         password_fac_inf.insert(0, values[9])
         position_fac_inf.insert(0, values[10])
+        status_combobox_fac_inf.insert(0,values[11])
 
         # Updating Selected Data
     def Update_Data():
@@ -842,15 +874,16 @@ def new_win():
         save_username = username_fac_inf.get()
         save_password = password_fac_inf.get()
         save_position = position_fac_inf.get()
+        save_status = status_combobox_fac_inf.get()
 
         selected_item = data_table.selection()[0]
         update_name = str(data_table.item(selected_item)['values'][0])
-        if save_employee_number == "" or save_email == "" or save_employee_name == "" or save_gender == "" or save_age == "" or save_contact_number == "" or save_address == "" or save_college_department == "" or save_username == "" or save_password == "" or save_position == "":
+        if save_status == "" or save_employee_number == "" or save_email == "" or save_employee_name == "" or save_gender == "" or save_age == "" or save_contact_number == "" or save_address == "" or save_college_department == "" or save_username == "" or save_password == "" or save_position == "":
             messagebox.showinfo("Error", "Please fill up the blank entry!!")
             return
         else:
             messagebox.showinfo("Messgae", "Data Updated!!")
-            update(save_employee_number,save_email,save_employee_name,save_gender,save_age,save_contact_number,save_address,save_college_department,save_username,save_password,save_position,update_name)
+            update(save_employee_number,save_email,save_employee_name,save_gender,save_age,save_contact_number,save_address,save_college_department,save_username,save_password,save_position,save_status,update_name)
             clear()     
         refreshTable()
 
@@ -870,7 +903,7 @@ def new_win():
     scrollbarx.configure(command=data_table.xview)
     scrollbary.configure(command=data_table.yview)
 
-    data_table['columns'] = ("Employee No.","Email","Employee Name","Gender","Age","Contact Number","Address","College Department","Username","Password","Position")
+    data_table['columns'] = ("Status","Employee No.","Email","Employee Name","Gender","Age","Contact Number","Address","College Department","Username","Password","Position")
     # Format Columns
     data_table.column("#0", width=0, stretch=NO)
     data_table.column("Employee No.", anchor=W, width=150)
@@ -884,6 +917,7 @@ def new_win():
     data_table.column("Username", anchor=W, width=100)
     data_table.column("Password", anchor=W, width=100)
     data_table.column("Position", anchor=W, width=100)
+    data_table.column("Status", anchor=W, width=50)
 
     # Create Headings
     data_table.heading("Employee No.", text="Employee No.", anchor=CENTER)
@@ -897,6 +931,7 @@ def new_win():
     data_table.heading("Username", text="Username", anchor=CENTER)
     data_table.heading("Password", text="Password", anchor=CENTER)
     data_table.heading("Position", text="Position", anchor=CENTER)
+    data_table.heading("Status", text="Status", anchor=CENTER)
 
     data_table.bind("<ButtonRelease-1>", select_row)
 
@@ -934,6 +969,14 @@ def new_win():
         # Entry Address
     address_fac_inf = Entry(faculty_information)
     address_fac_inf.place(x=200, y=405, width=125)
+
+        # Label Status
+    status_fac_lb = Label(faculty_information, text='Status:', fg='#043f6b', font="Heltvetica 8 bold")
+    status_fac_lb.place(x=382, y=390)
+
+        # Entry Status
+    status_combobox_fac_inf = ttk.Combobox(faculty_information, values=["On", "Off"])
+    status_combobox_fac_inf.place(x=385, y=405, width=125)
 
         # Label Position
     position_fac_inf_lb = Label(faculty_information, text='Position:', fg='#043f6b', font="Heltvetica 8 bold")
@@ -1063,11 +1106,11 @@ def new_win():
 
          # Get Current Time and Date
     def time():
-        string_time = strftime('Time: %I:%M:%S %p')
+        string_time = strftime('%I:%M:%S %p')
         time_lb_math_rec.configure(text = string_time)
         time_lb_math_rec.after(1000, time)
 
-        string_date = strftime('Date: %d/%m/20%y')
+        string_date = strftime('%d/%m/20%y')
         date_lb_math_rec.configure(text = string_date)
 
             # search Data
@@ -1081,7 +1124,7 @@ def new_win():
         for record in data_table_math_rec.get_children():
             data_table_math_rec.delete(record)
         
-        cursor.execute("SELECT * FROM attendance_record WHERE Employee_No = '" + str(lookup_record) + "' or  Name = '" + str(lookup_record) + "' or  Department = '" + str(lookup_record) + "' or Time_in = '" + str(lookup_record) + "' or Time_out = '" + str(lookup_record) + "' or _Date = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "'")
+        cursor.execute("SELECT Employee_No,Name,Department,Time_in,Time_out,_Date,Status FROM attendance_record WHERE (Employee_No = '" + str(lookup_record) + "' or  Name = '" + str(lookup_record) + "' or Time_in = '" + str(lookup_record) + "' or Time_out = '" + str(lookup_record) + "' or _Date = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "') AND Department='Mathematics'")
         records = cursor.fetchall()
 
         global count
@@ -1144,18 +1187,18 @@ def new_win():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        # date_mathematics = date_lb_math_rec.cget("text")
+        date_mathematics = date_lb_math_rec.cget("text")
 
         cursor.execute("SELECT COUNT(*) FROM faculty_data WHERE Position='Employee'")
         total_math = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Mathematics' AND Status='Present'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Mathematics' AND Status='Present' AND _Date='"+ str(date_mathematics) +"'")
         present_math = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Mathematics' AND Status='Absent'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Mathematics' AND Status='Absent' AND _Date='"+ str(date_mathematics) +"'")
         absent_math = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Mathematics' AND Status='Late'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Mathematics' AND Status='Late' AND _Date='"+ str(date_mathematics) +"'")
         late_math = cursor.fetchall()
 
         total_faculty_lb_math_rec.configure(text=total_math)
@@ -1257,13 +1300,21 @@ def new_win():
 
     refreshTable_math()
 
+        # Time Text
+    time_lb = Label(mathematics_att_record, text='Time:', fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    time_lb.place(x=540, y=10)
+
+        # date Text
+    date_lb = Label(mathematics_att_record, text='Date:', fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    date_lb.place(x=710, y=10)
+
         # Time Label
     time_lb_math_rec = Label(mathematics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    time_lb_math_rec.place(x=540, y=10)
+    time_lb_math_rec.place(x=590, y=10)
 
         # date Label
     date_lb_math_rec = Label(mathematics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    date_lb_math_rec.place(x=710, y=10)
+    date_lb_math_rec.place(x=760, y=10)
     
 
         # Total Faculty Label
@@ -1357,14 +1408,14 @@ def new_win():
     psychology_att_record.psyc_bg_img_lb = Label(psychology_att_record, image = psychology_att_record.photo)
     psychology_att_record.psyc_bg_img_lb.pack()
 
-        #  Get Current Time and Date
-    # def time_psyc():
-    #     string_time_psyc = strftime('Time: %I:%M:%S %p')
-    #     time_lb_psyc.configure(text = string_time_psyc)
-    #     time_lb_psyc.after(1000, time)
+         # Get Current Time and Date
+    def time_psyc():
+        string_time_psyc = strftime('%I:%M:%S %p')
+        time_lb_psyc.configure(text = string_time_psyc)
+        time_lb_psyc.after(1000, time_psyc)
 
-    #     string_date_psyc = strftime('Date: %d/%m/20%y')
-    #     date_lb_psyc.configure(text = string_date_psyc)
+        string_date_psyc = strftime('%d/%m/20%y')
+        date_lb_psyc.configure(text = string_date_psyc)
 
     def normal_psyc():
         employee_num_psyc.configure(state='normal')
@@ -1447,18 +1498,18 @@ def new_win():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        # date_psychology = date_lb_psyc.cget("text")
+        date_psychology = date_lb_psyc.cget("text")
 
         cursor.execute("SELECT COUNT(*) FROM faculty_data WHERE Position='Employee'")
         total_psyc = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Psychology' AND Status='Present'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Psychology' AND Status='Present' AND _Date='"+ str(date_psychology) +"'")
         present_psyc = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Psychology' AND Status='Absent'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Psychology' AND Status='Absent' AND _Date='"+ str(date_psychology) +"'")
         absent_psyc = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Psychology' AND Status='Late'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Psychology' AND Status='Late' AND _Date='"+ str(date_psychology) +"'")
         late_psyc = cursor.fetchall()
 
         total_faculty_lb_psyc.configure(text=total_psyc)
@@ -1479,7 +1530,7 @@ def new_win():
         for record in data_table_psyc.get_children():
             data_table_psyc.delete(record)
         
-        cursor.execute("SELECT * FROM attendance_record WHERE Employee_No = '" + str(lookup_record) + "' or  Name = '" + str(lookup_record) + "' or  Department = '" + str(lookup_record) + "' or Time_in = '" + str(lookup_record) + "' or Time_out = '" + str(lookup_record) + "' or _Date = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "'")
+        cursor.execute("SELECT Employee_No,Name,Department,Time_in,Time_out,_Date,Status FROM attendance_record WHERE (Employee_No = '" + str(lookup_record) + "' or  Name = '" + str(lookup_record) + "' or  Department = '" + str(lookup_record) + "' or Time_in = '" + str(lookup_record) + "' or Time_out = '" + str(lookup_record) + "' or _Date = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "') AND Department='Psychology'")
         records = cursor.fetchall()
 
         global count
@@ -1565,13 +1616,21 @@ def new_win():
 
     refreshTable_psyc()
 
-    #     # Time Label
-    # time_lb_psyc = Label(psychology_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    # time_lb_psyc.place(x=540, y=10)
+        # Time Text
+    time_lb = Label(psychology_att_record, text='Time:', fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    time_lb.place(x=540, y=10)
 
-    #     # date Label
-    # date_lb_psyc = Label(psychology_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    # date_lb_psyc.place(x=710, y=10)
+        # date Text
+    date_lb = Label(psychology_att_record, text='Date:', fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    date_lb.place(x=710, y=10)
+
+        # Time Label
+    time_lb_psyc = Label(psychology_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    time_lb_psyc.place(x=590, y=10)
+
+        # date Label
+    date_lb_psyc = Label(psychology_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    date_lb_psyc.place(x=760, y=10)
 
         # Total Faculty Label
     total_faculty_lb_psyc = Label(psychology_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
@@ -1652,7 +1711,7 @@ def new_win():
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(attendance_record))
     psyc_button_back.place(x=45, y=595, height=50,width=140)
 
-    # time_psyc()
+    time_psyc()
     count_data_psyc()
 
     # ============= Applied Physics Attendance Record Frame =============================================================================
@@ -1665,13 +1724,13 @@ def new_win():
     applied_physics_att_record.applied_bg_img_lb.pack()
 
         #  Get Current Time and Date
-    # def time_applied():
-    #     string_time_applied = strftime('Time: %I:%M:%S %p')
-    #     time_lb_applied.configure(text = string_time_applied)
-    #     time_lb_applied.after(1000, time)
+    def time_applied():
+        string_time_applied = strftime('%I:%M:%S %p')
+        time_lb_applied.configure(text = string_time_applied)
+        time_lb_applied.after(1000, time_applied)
 
-    #     string_date_applied = strftime('Date: %d/%m/20%y')
-    #     date_lb_applied.configure(text = string_date_applied)
+        string_date_applied = strftime('%d/%m/20%y')
+        date_lb_applied.configure(text = string_date_applied)
 
     def normal_applied():
         employee_num_applied.configure(state='normal')
@@ -1754,18 +1813,18 @@ def new_win():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        # date_physics = date_lb_applied.cget("text")
+        date_physics = date_lb_applied.cget("text")
 
         cursor.execute("SELECT COUNT(*) FROM faculty_data WHERE Position='Employee'")
         total_physics = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Applied Physics' AND Status='Present'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Applied Physics' AND Status='Present' AND _Date='"+ str(date_physics) +"'")
         present_physics = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Applied Physics' AND Status='Absent'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Applied Physics' AND Status='Absent' AND _Date='"+ str(date_physics) +"'")
         absent_physics = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Applied Physics' AND Status='Late'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Applied Physics' AND Status='Late' AND _Date='"+ str(date_physics) +"'")
         late_physics = cursor.fetchall()
 
         total_faculty_lb_applied.configure(text=total_physics)
@@ -1786,7 +1845,7 @@ def new_win():
         for record in data_table_applied.get_children():
             data_table_applied.delete(record)
         
-        cursor.execute("SELECT * FROM attendance_record WHERE Employee_No = '" + str(lookup_record) + "' or  Name = '" + str(lookup_record) + "' or  Department = '" + str(lookup_record) + "' or Time_in = '" + str(lookup_record) + "' or Time_out = '" + str(lookup_record) + "' or _Date = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "'")
+        cursor.execute("SELECT Employee_No,Name,Department,Time_in,Time_out,_Date,Status FROM attendance_record WHERE (Employee_No = '" + str(lookup_record) + "' or  Name = '" + str(lookup_record) + "' or  Department = '" + str(lookup_record) + "' or Time_in = '" + str(lookup_record) + "' or Time_out = '" + str(lookup_record) + "' or _Date = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "') AND Department='Applied Physics'")
         records = cursor.fetchall()
 
         global count
@@ -1872,13 +1931,21 @@ def new_win():
 
     refreshTable_applied()
 
-    #     # Time Label
-    # time_lb_applied = Label(applied_physics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    # time_lb_applied.place(x=540, y=10)
+        # Time Text
+    time_lb = Label(applied_physics_att_record, text='Time:', fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    time_lb.place(x=540, y=1)
 
-    #     # date Label
-    # date_lb_applied = Label(applied_physics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    # date_lb_applied.place(x=710, y=10)
+        # date Text
+    date_lb = Label(applied_physics_att_record, text='Date:', fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    date_lb.place(x=710, y=1)
+
+        # Time Label
+    time_lb_applied = Label(applied_physics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    time_lb_applied.place(x=590, y=1)
+
+        # date Label
+    date_lb_applied = Label(applied_physics_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    date_lb_applied.place(x=760, y=1)
 
         # Total Faculty Label
     total_faculty_lb_applied = Label(applied_physics_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
@@ -1959,7 +2026,7 @@ def new_win():
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(attendance_record))
     applied_button_back.place(x=45, y=595, height=50,width=140)
 
-    # time_applied()
+    time_applied()
     count_data_applied()
 
     # ============= Applied Physics Attendance Record Frame =============================================================================
@@ -1972,13 +2039,13 @@ def new_win():
     ite_att_record.ite_bg_img_lb.pack()
 
         #  Get Current Time and Date
-    # def time_ite():
-    #     string_time_ite = strftime('Time: %I:%M:%S %p')
-    #     time_lb_ite.configure(text = string_time_ite)
-    #     time_lb_ite.after(1000, time)
+    def time_ite():
+        string_time_ite = strftime('%I:%M:%S %p')
+        time_lb_ite.configure(text = string_time_ite)
+        time_lb_ite.after(1000, time_ite)
 
-    #     string_date_ite = strftime('Date: %d/%m/20%y')
-    #     date_lb_ite.configure(text = string_date_ite)
+        string_date_ite = strftime('%d/%m/20%y')
+        date_lb_ite.configure(text = string_date_ite)
 
     def normal_ite():
         employee_num_ite.configure(state='normal')
@@ -2062,18 +2129,18 @@ def new_win():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        # date_IT = date_lb_ite.cget("text")
+        date_IT = date_lb_ite.cget("text")
 
         cursor.execute("SELECT COUNT(*) FROM faculty_data WHERE Position='Employee'")
         total_IT = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='ITE' AND Status='Present'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='ITE' AND Status='Present' AND _Date='"+ str(date_IT) +"'")
         present_IT = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='ITE' AND Status='Absent'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='ITE' AND Status='Absent' AND _Date='"+ str(date_IT) +"'")
         absent_IT = cursor.fetchall()
 
-        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='ITE' AND Status='Late'")
+        cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='ITE' AND Status='Late' AND _Date='"+ str(date_IT) +"'")
         late_IT = cursor.fetchall()
 
         total_faculty_lb_ite.configure(text=total_IT)
@@ -2094,7 +2161,7 @@ def new_win():
         for record in data_table_ite.get_children():
             data_table_ite.delete(record)
         
-        cursor.execute("SELECT * FROM attendance_record WHERE Employee_No = '" + str(lookup_record) + "' or  Name = '" + str(lookup_record) + "'or Time_in = '" + str(lookup_record) + "' or Time_out = '" + str(lookup_record) + "' or _Date = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "'")
+        cursor.execute("SELECT Employee_No,Name,Department,Time_in,Time_out,_Date,Status FROM attendance_record WHERE (Employee_No = '" + str(lookup_record) + "' or  Name = '" + str(lookup_record) + "'or Time_in = '" + str(lookup_record) + "' or Time_out = '" + str(lookup_record) + "' or _Date = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "') AND Department='ITE'")
         records = cursor.fetchall()
 
         global count
@@ -2180,13 +2247,21 @@ def new_win():
 
     refreshTable_ite()
 
-    #     # Time Label
-    # time_lb_ite = Label(ite_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    # time_lb_ite.place(x=540, y=10)
+        # Time Text
+    time_lb = Label(ite_att_record, text='Time:', fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    time_lb.place(x=540, y=10)
 
-    #     # date Label
-    # date_lb_ite = Label(ite_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
-    # date_lb_ite.place(x=710, y=10)
+        # date Text
+    date_lb = Label(ite_att_record, text='Date:', fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    date_lb.place(x=710, y=10)
+
+        # Time Label
+    time_lb_ite = Label(ite_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    time_lb_ite.place(x=590, y=10)
+
+        # date Label
+    date_lb_ite = Label(ite_att_record, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+    date_lb_ite.place(x=760, y=10)
 
         # Total Faculty Label
     total_faculty_lb_ite = Label(ite_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
@@ -2267,7 +2342,7 @@ def new_win():
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(attendance_record))
     ite_button_back.place(x=45, y=595, height=50,width=140)
 
-    # time_ite()
+    time_ite()
     count_data_ite()
 
     main_window.mainloop()
