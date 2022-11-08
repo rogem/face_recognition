@@ -137,8 +137,9 @@ def new_win():
     psychology_att_record = Frame(main_window)
     applied_physics_att_record = Frame(main_window)
     ite_att_record = Frame(main_window)
+    activity_log = Frame(main_window)
 
-    for frame in (page1, page2, page3, page4, attendance_record,faculty_information,mathematics_att_record,employee_login,attendance_monitoring,developers,about,about_clg_goal,about_program,psychology_att_record,applied_physics_att_record,ite_att_record):
+    for frame in (page1, page2, page3, page4, attendance_record,faculty_information,mathematics_att_record,employee_login,attendance_monitoring,developers,about,about_clg_goal,about_program,psychology_att_record,applied_physics_att_record,ite_att_record,activity_log):
         frame.grid(row=0, column=0, sticky='nsew')
 
     def show_frame(frame):
@@ -445,10 +446,8 @@ def new_win():
         adm = "Admin"
         state = "On"
 
-        num_count = 1
         count = 3
-        authorize = True
-
+        
         if uname=='' or pwd=='':
             messagebox.showinfo("Error", "Please Fill The Empty Field!!")
         else:
@@ -461,15 +460,11 @@ def new_win():
                 pg3_txtbox_pass.delete(0, END)
                 check_button.deselect()
             else:
-                # num_count = num_count+1
                 while count !=0:
-                    
-                    # authorize = True
                     messagebox.showinfo("Error", "Reamaining Attempt: "+ str(count))
                     count-=1
 
                 else:
-                    # authorize = False
                     messagebox.showinfo("Error", "Access denied, Out of try !!")
 
 
@@ -518,10 +513,10 @@ def new_win():
                                                 corner_radius=30,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(faculty_information))
     pg4_button_faculty.place(x=100, y=314, height=134,width=562)
 
-        # Attendace Record Button
-    att_rec_btn = PhotoImage(file = "pic/attendance_rec.png")
+        # Activity Log Button
+    att_rec_btn = PhotoImage(file = "pic/act_log.png")
     pg4_button_att_rec = customtkinter.CTkButton(master=page4,image=att_rec_btn, text="" ,
-                                                corner_radius=30,bg_color='#ffffff', fg_color="#cc9900",hover_color="#fdca34", command=lambda: show_frame(attendance_record))
+                                                corner_radius=30,bg_color='#ffffff', fg_color="#cc9900",hover_color="#fdca34", command=lambda: show_frame(activity_log))
     pg4_button_att_rec.place(x=100, y=469, height=178,width=330)
 
         # About Button
@@ -530,10 +525,10 @@ def new_win():
                                                 corner_radius=30,bg_color='#ffffff', fg_color="#cc9900",hover_color="#fdca34", command=lambda: show_frame(about))
     pg4_button_photo.place(x=456, y=469, height=178,width=197)
 
-        # Photo Button
-    photo_btn = PhotoImage(file = "pic/photo.png")
+        # Attendace Record Button
+    photo_btn = PhotoImage(file = "pic/attendance_rec.png")
     pg4_button_train_img = customtkinter.CTkButton(master=page4,image=photo_btn, text="" ,
-                                                corner_radius=30,bg_color='#ffffff', fg_color="#cc9900",hover_color="#fdca34", command=lambda:'')
+                                                corner_radius=30,bg_color='#ffffff', fg_color="#cc9900",hover_color="#fdca34", command=lambda:show_frame(attendance_record))
     pg4_button_train_img.place(x=683, y=315, height=333,width=348)
 
         # Developers Button
@@ -1284,8 +1279,8 @@ def new_win():
     data_table_math_rec.column("Department", anchor=W, width=200)
     data_table_math_rec.column("Time in", anchor=W, width=100)
     data_table_math_rec.column("Time out", anchor=W, width=100)
-    data_table_math_rec .column("Date", anchor=W, width=100)
-    data_table_math_rec .column("Status", anchor=W, width=100)
+    data_table_math_rec.column("Date", anchor=W, width=100)
+    data_table_math_rec.column("Status", anchor=W, width=100)
 
     # Create Headings
     data_table_math_rec.heading("Employee No.", text="Employee No.", anchor=CENTER)
@@ -1293,8 +1288,8 @@ def new_win():
     data_table_math_rec.heading("Department", text="Department", anchor=CENTER)
     data_table_math_rec.heading("Time in", text="Time in", anchor=CENTER)
     data_table_math_rec.heading("Time out", text="Time out", anchor=CENTER)
-    data_table_math_rec .heading("Date", text="Date", anchor=CENTER)
-    data_table_math_rec .heading("Status", text="Status", anchor=CENTER)
+    data_table_math_rec.heading("Date", text="Date", anchor=CENTER)
+    data_table_math_rec.heading("Status", text="Status", anchor=CENTER)
 
     data_table_math_rec.bind("<ButtonRelease-1>", select_row_math)
 
@@ -1600,8 +1595,8 @@ def new_win():
     data_table_psyc.column("Department", anchor=W, width=200)
     data_table_psyc.column("Time in", anchor=W, width=100)
     data_table_psyc.column("Time out", anchor=W, width=100)
-    data_table_psyc .column("Date", anchor=W, width=100)
-    data_table_psyc .column("Status", anchor=W, width=100)
+    data_table_psyc.column("Date", anchor=W, width=100)
+    data_table_psyc.column("Status", anchor=W, width=100)
 
     # Create Headings
     data_table_psyc.heading("Employee No.", text="Employee No.", anchor=CENTER)
@@ -1609,8 +1604,8 @@ def new_win():
     data_table_psyc.heading("Department", text="Department", anchor=CENTER)
     data_table_psyc.heading("Time in", text="Time in", anchor=CENTER)
     data_table_psyc.heading("Time out", text="Time out", anchor=CENTER)
-    data_table_psyc .heading("Date", text="Date", anchor=CENTER)
-    data_table_psyc .heading("Status", text="Status", anchor=CENTER)
+    data_table_psyc.heading("Date", text="Date", anchor=CENTER)
+    data_table_psyc.heading("Status", text="Status", anchor=CENTER)
 
     data_table_psyc.bind("<ButtonRelease-1>", select_row_psyc)
 
@@ -1924,8 +1919,8 @@ def new_win():
     data_table_applied.heading("Department", text="Department", anchor=CENTER)
     data_table_applied.heading("Time in", text="Time in", anchor=CENTER)
     data_table_applied.heading("Time out", text="Time out", anchor=CENTER)
-    data_table_applied .heading("Date", text="Date", anchor=CENTER)
-    data_table_applied .heading("Status", text="Status", anchor=CENTER)
+    data_table_applied.heading("Date", text="Date", anchor=CENTER)
+    data_table_applied.heading("Status", text="Status", anchor=CENTER)
 
     data_table_applied.bind("<ButtonRelease-1>", select_row_applied)
 
@@ -2231,8 +2226,8 @@ def new_win():
     data_table_ite.column("Department", anchor=W, width=200)
     data_table_ite.column("Time in", anchor=W, width=100)
     data_table_ite.column("Time out", anchor=W, width=100)
-    data_table_ite .column("Date", anchor=W, width=100)
-    data_table_ite .column("Status", anchor=W, width=100)
+    data_table_ite.column("Date", anchor=W, width=100)
+    data_table_ite.column("Status", anchor=W, width=100)
 
     # Create Headings
     data_table_ite.heading("Employee No.", text="Employee No.", anchor=CENTER)
@@ -2240,8 +2235,8 @@ def new_win():
     data_table_ite.heading("Department", text="Department", anchor=CENTER)
     data_table_ite.heading("Time in", text="Time in", anchor=CENTER)
     data_table_ite.heading("Time out", text="Time out", anchor=CENTER)
-    data_table_ite .heading("Date", text="Date", anchor=CENTER)
-    data_table_ite .heading("Status", text="Status", anchor=CENTER)
+    data_table_ite.heading("Date", text="Date", anchor=CENTER)
+    data_table_ite.heading("Status", text="Status", anchor=CENTER)
 
     data_table_ite.bind("<ButtonRelease-1>", select_row_ite)
 
@@ -2344,6 +2339,67 @@ def new_win():
 
     time_ite()
     count_data_ite()
+
+    # ============= Acitivity Log In Frame ========================================================================================================================
+
+        # open background image
+    activity_log.act_image = Image.open('pic/7a.png')
+    activity_log.act_resize_image = activity_log.act_image.resize((1362, 692))
+    activity_log.photo = ImageTk.PhotoImage(activity_log.act_resize_image)
+    activity_log.act_bg_img_lb = Label(activity_log, image = activity_log.photo)
+    activity_log.act_bg_img_lb.pack()
+
+     # Data Table "TreeView"
+    scrollbary_act = Scrollbar(activity_log, orient=VERTICAL)
+    scrollbary_act.place(x=1030, y=230, height=350)
+
+    # style = ttk.Style()
+    # style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
+
+    data_table_act = ttk.Treeview(activity_log)
+    data_table_act.place(x=290, y=230, width=740, height=350)
+    data_table_act.configure(yscrollcommand=scrollbary_act.set)
+
+    scrollbary_act.configure(command=data_table_act.yview)
+
+    data_table_act['columns'] = ("Name","Activity","Department","Time","Date")
+    # Format Columns
+    data_table_act.column("#0", width=0, stretch=NO)
+    data_table_act.column("Name", anchor=CENTER, width=50)
+    data_table_act.column("Activity", anchor=CENTER, width=50)
+    data_table_act.column("Department", anchor=CENTER, width=50)
+    data_table_act.column("Time", anchor=CENTER, width=50)
+    data_table_act.column("Date", anchor=CENTER, width=50)
+
+    # Create Headings
+    data_table_act.heading("Name", text="Name", anchor=CENTER)
+    data_table_act.heading("Activity", text="Activity", anchor=CENTER)
+    data_table_act.heading("Department", text="Department", anchor=CENTER)
+    data_table_act.heading("Time", text="Time", anchor=CENTER)
+    data_table_act.heading("Date", text="Date", anchor=CENTER)
+
+    # Search Entry
+    search_entry_att_mon = StringVar()
+    search_att_mon = Entry(activity_log, textvariable = search_entry_att_mon)
+    search_att_mon.place(x=550, y=171, width=190)
+
+        # Search Button
+    search_btn_act = PhotoImage(file = "pic/btn_search.png")
+    act_button_search = customtkinter.CTkButton(master=activity_log,image=search_btn_act, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= "")
+    act_button_search.place(x=760, y=170, height=20,width=90)
+
+        # Show All Button
+    showall_btn_act = PhotoImage(file = "pic/btn_showall.png")
+    act_button_showall = customtkinter.CTkButton(master=activity_log,image=showall_btn_act, text="" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command="")
+    act_button_showall.place(x=625, y=594, height=27,width=110)
+
+        # Back Button
+    act_back = PhotoImage(file = "pic/btn_back_page.png")
+    act_button_back = customtkinter.CTkButton(master=activity_log,image=act_back, text="" ,
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(page4))
+    act_button_back.place(x=85, y=495, height=50,width=140)
 
     main_window.mainloop()
 
