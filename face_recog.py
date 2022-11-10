@@ -13,6 +13,7 @@ from tkinter import filedialog
 import collections
 from collections import defaultdict
 import shutil
+import datetime
 
 w=Tk()
 
@@ -145,7 +146,7 @@ def new_win():
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(page4)
+    show_frame(page1)
 
     # ============= Page 1 Frame =========================================================================================================================================
 
@@ -185,6 +186,12 @@ def new_win():
     pg2_button_admin = Button(page2,image=admin_img_btn, borderwidth=0, bg='#1f2a76',command=lambda: show_frame(page3))
     pg2_button_admin.place(x=99, y=422)
 
+        # Back Button
+    pg2_back = PhotoImage(file = "pic/btn_back_log.png")
+    pg2_button_back = customtkinter.CTkButton(master=page2,image=pg2_back, text="" ,
+                                                corner_radius=5,bg_color='#e4b50b', fg_color="#e4b50b",hover_color="#006699", command=lambda: show_frame(page1))
+    pg2_button_back.place(x=5, y=5, height=40,width=70)
+    
     # ============= Employee Sign In Frame ============================================================================================================================
 
         # open background image
@@ -260,6 +267,16 @@ def new_win():
                 empl_log_txtbox_username.delete(0, END)
                 empl_log_txtbox_pass.delete(0, END)
                 check_button_empl_log.deselect()
+
+                # currentDateTime = datetime.datetime.now()
+
+                # cursor.execute("""CREATE TABLE IF NOT EXISTS 
+                #     activity_log(ID INTEGER PRIMARY KEY,Name TEXT,Activity TEXT,
+                #     Department TEXT,Date_Time TIMESTAMP)""")
+
+                # insertdata = """INSERT INTO activity_log (Name,Activity,Department,Date_Time)
+                #         VAlUES(?,?,?,?,?);"""
+                # cursor.execute(insertdata, (get_Name,'login',get_Department,currentDateTime))
             else:
                 messagebox.showinfo("Error", "Please provide correct username and password!!")
 
@@ -280,6 +297,12 @@ def new_win():
             empl_log_txtbox_pass.configure(show='*')
     check_button_empl_log = Checkbutton(employee_login, text="show password",bg="#1f2a76", command=show_password_Employee, font="Arial", activebackground="#1f2a76",)
     check_button_empl_log.place(x=116,y=520)
+
+        # Back Button
+    empl_log_back = PhotoImage(file = "pic/btn_back_log.png")
+    empl_log_button_back = customtkinter.CTkButton(master=employee_login,image=empl_log_back, text="" ,
+                                                corner_radius=5,bg_color='#e4b50b', fg_color="#e4b50b",hover_color="#006699", command=lambda: show_frame(page2))
+    empl_log_button_back.place(x=5, y=5, height=40,width=70)
 
     # ============= Employee Attendance Record In Frame ========================================================================================================================
 
@@ -497,6 +520,12 @@ def new_win():
             pg3_txtbox_pass.configure(show='*')
     check_button = Checkbutton(page3, text="show password",bg="#1f2a76", command=show_password, font="Arial", activebackground="#1f2a76",)
     check_button.place(x=116,y=520)
+
+        # Back Button
+    pg3_back = PhotoImage(file = "pic/btn_back_log.png")
+    pg3_button_back = customtkinter.CTkButton(master=page3,image=pg3_back, text="" ,
+                                                corner_radius=5,bg_color='#e4b50b', fg_color="#e4b50b",hover_color="#006699", command=lambda: show_frame(page2))
+    pg3_button_back.place(x=5, y=5, height=40,width=70)
 
     # ============= Page 4 Home  Frame ====================================================================================================================
 
