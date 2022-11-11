@@ -146,7 +146,7 @@ def new_win():
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(page1)
+    show_frame(page3)
 
     # ============= Page 1 Frame =========================================================================================================================================
 
@@ -268,15 +268,24 @@ def new_win():
                 empl_log_txtbox_pass.delete(0, END)
                 check_button_empl_log.deselect()
 
-                # currentDateTime = datetime.datetime.now()
+                currentDateTime = datetime.datetime.now()
 
-                # cursor.execute("""CREATE TABLE IF NOT EXISTS 
-                #     activity_log(ID INTEGER PRIMARY KEY,Name TEXT,Activity TEXT,
-                #     Department TEXT,Date_Time TIMESTAMP)""")
+                cursor.execute("""CREATE TABLE IF NOT EXISTS 
+                    activity_log(
+                                "ID"    INTEGER,
+                                "Name"  TEXT,
+                                "Activity"  TEXT,
+                                "Department"    TEXT,
+                                "Date_Time" TIMESTAMP,
+                                PRIMARY KEY("ID" AUTOINCREMENT)
+                                )""")
 
-                # insertdata = """INSERT INTO activity_log (Name,Activity,Department,Date_Time)
-                #         VAlUES(?,?,?,?,?);"""
-                # cursor.execute(insertdata, (get_Name,'login',get_Department,currentDateTime))
+                eName = att_mon_lb_name.cget("text")
+                eDepartment = att_mon_lb_dept.cget("text")
+
+                insetdata = (eName,'login',eDepartment,currentDateTime)
+                cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                                    VAlUES(?,?,?,?);""", insetdata)
             else:
                 messagebox.showinfo("Error", "Please provide correct username and password!!")
 
@@ -326,7 +335,7 @@ def new_win():
         # get_Department = cursor.fetchone()
 
 
-        set_name='pano'
+        set_name=att_mon_lb_name.cget("text")
         # set_department=get_Department
 
         # Name =att_mon_lb_name.cget("text")
@@ -476,12 +485,39 @@ def new_win():
         else:
             cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(adm) + "' AND Status ='" + str(state) + "'")
             if cursor.fetchone():
+                cursor.execute("SELECT Employee_Name FROM faculty_data WHERE Username = '"+ str(uname)+"' AND Password = '"+ str(pwd)+"'")
+                get_Name = cursor.fetchone()
+                cursor.execute("SELECT College_Department FROM faculty_data WHERE Username = '"+ str(uname)+"' AND Password = '"+ str(pwd)+"'")
+                get_Department = cursor.fetchone()
+
                 show_frame(page4)
                 messagebox.showinfo("Messgae", "WELCOME USER")
 
                 pg3_txtbox_username.delete(0, END)
                 pg3_txtbox_pass.delete(0, END)
                 check_button.deselect()
+
+                pg4_lb_name.configure(text = get_Name)
+                pg4_lb_dept.configure(text = get_Department)
+
+                currentDateTime = datetime.datetime.now()
+
+                cursor.execute("""CREATE TABLE IF NOT EXISTS 
+                    activity_log(
+                                "ID"    INTEGER,
+                                "Name"  TEXT,
+                                "Activity"  TEXT,
+                                "Department"    TEXT,
+                                "Date_Time" TIMESTAMP,
+                                PRIMARY KEY("ID" AUTOINCREMENT)
+                                )""")
+
+                eName = pg4_lb_name.cget("text")
+                eDepartment = pg4_lb_dept.cget("text")
+
+                insetdata = str(eName),'login',str(eDepartment),currentDateTime
+                cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                                    VAlUES(?,?,?,?)""", insetdata)
             else:
                 while count !=0:
                     messagebox.showinfo("Error", "Reamaining Attempt: "+ str(count))
@@ -506,6 +542,7 @@ def new_win():
         #         messagebox.showinfo("Error", "Please provide correct username and password!!")
 
         conn.commit()
+        conn.close()
 
         # Login Button
     login_img_btn = PhotoImage(file = "pic/login.png")
@@ -535,6 +572,14 @@ def new_win():
     page4.photo = ImageTk.PhotoImage(page4.pg4_resize_image)
     page4.pg4_bg_img_lb = Label(page4, image = page4.photo)
     page4.pg4_bg_img_lb.pack()
+
+        # Admin Name Label
+    pg4_lb_name = Label(page4, bg ='#ffffff', fg='#ffffff', font = "Heltvetica 9")
+    pg4_lb_name.place(x=540, y=10)
+
+        # Admin Department Label
+    pg4_lb_dept = Label(page4, bg ='#ffffff', fg='#ffffff', font = "Heltvetica 9")
+    pg4_lb_dept.place(x=640, y=10)
 
         # Faculty Information Button
     faculty_info_btn = PhotoImage(file = "pic/faculty_info.png")
@@ -858,7 +903,7 @@ def new_win():
             if check_duplicate() == False:
                 messagebox.showinfo("Messgae", "Data Added!!")
                 insert(str(save_employee_number),str(save_email),str(save_employee_name),str(save_gender),str(save_age),str(save_contact_number),str(save_address),str(save_college_department),str(save_username),str(save_password),str(save_position),str(save_status)) 
-                clear()
+                clear() 
             else:
                 messagebox.showinfo("Error", "Employee Number, Email or Contact Number Already Exist")
                 return
@@ -2378,6 +2423,75 @@ def new_win():
     activity_log.act_bg_img_lb = Label(activity_log, image = activity_log.photo)
     activity_log.act_bg_img_lb.pack()
 
+            # Get And Disply the data in the table
+    def log_read():
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM activity_log")
+        results_ite = cursor.fetchall()
+        conn.commit()
+        return results_ite
+
+        # Refresh the tabble on Treeview
+    def refreshTable_log():
+
+        for data_log in data_table_act.get_children():
+            data_table_act.delete(data_log)
+
+        for results_log in reverse(log_read()):
+            data_table_act.insert(parent='', index='end', iid=results_log, text="", values=(results_log), tag="orow")
+        data_table_act.tag_configure('orow', background='#EEEEEE')
+
+    def search_data_log():
+        lookup_record = search_act.get()
+
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        # Clear the Treeview
+        for record in data_table_act.get_children():
+            data_table_act.delete(record)
+        
+        cursor.execute("SELECT * FROM activity_log WHERE Name = '" + str(lookup_record) + "' or  Activity = '" + str(lookup_record) + "'or Department = '" + str(lookup_record) + "' or Date_Time = '" + str(lookup_record) + "'")
+        records = cursor.fetchall()
+
+        global count
+        count = 0
+
+        for record in records:
+            if count % 2 == 0:
+                data_table_act.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
+            else:
+                data_table_act.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
+            count += 1
+            data_table_act.tag_configure('evenrow', background='#EEEEEE')
+            data_table_act.tag_configure('oddrow', background='#EEEEEE')
+            search_act.delete(0, END)
+
+        conn.commit()
+        conn.close()
+
+    # def Log_read():
+    #     conn = sqlite3.connect("data/data.db")
+    #     cursor = conn.cursor()
+
+    #     cursor.execute("SELECT * FROM activity_log")
+    #     results_user = cursor.fetchall()
+    #     conn.commit()
+        
+    #     global num
+    #     num = 0
+
+    #     for record in results_user:
+    #         if num % 2 == 0:
+    #             data_table_act.insert(parent='', index='end', iid=num, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
+    #         else:
+    #             data_table_act.insert(parent='', index='end', iid=num, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
+    #         num += 1
+    #         data_table_act.tag_configure('evenrow', background='#EEEEEE')
+    #         data_table_act.tag_configure('oddrow', background='#EEEEEE')
+
      # Data Table "TreeView"
     scrollbary_act = Scrollbar(activity_log, orient=VERTICAL)
     scrollbary_act.place(x=1030, y=230, height=350)
@@ -2391,37 +2505,39 @@ def new_win():
 
     scrollbary_act.configure(command=data_table_act.yview)
 
-    data_table_act['columns'] = ("Name","Activity","Department","Time","Date")
+    data_table_act['columns'] = ("ID","Name","Activity","Department","Date & Time")
     # Format Columns
     data_table_act.column("#0", width=0, stretch=NO)
+    data_table_act.column("ID", anchor=CENTER,width=0)
     data_table_act.column("Name", anchor=CENTER, width=50)
     data_table_act.column("Activity", anchor=CENTER, width=50)
     data_table_act.column("Department", anchor=CENTER, width=50)
-    data_table_act.column("Time", anchor=CENTER, width=50)
-    data_table_act.column("Date", anchor=CENTER, width=50)
+    data_table_act.column("Date & Time", anchor=CENTER, width=50)
 
     # Create Headings
+    data_table_act.heading("ID", text="ID", anchor=CENTER)
     data_table_act.heading("Name", text="Name", anchor=CENTER)
     data_table_act.heading("Activity", text="Activity", anchor=CENTER)
     data_table_act.heading("Department", text="Department", anchor=CENTER)
-    data_table_act.heading("Time", text="Time", anchor=CENTER)
-    data_table_act.heading("Date", text="Date", anchor=CENTER)
+    data_table_act.heading("Date & Time", text="Date & Time", anchor=CENTER)
+
+    refreshTable_log()
 
     # Search Entry
-    search_entry_att_mon = StringVar()
-    search_att_mon = Entry(activity_log, textvariable = search_entry_att_mon)
-    search_att_mon.place(x=550, y=171, width=190)
+    search_entry_act = StringVar()
+    search_act = Entry(activity_log, textvariable = search_entry_act)
+    search_act.place(x=550, y=171, width=190)
 
         # Search Button
     search_btn_act = PhotoImage(file = "pic/btn_search.png")
     act_button_search = customtkinter.CTkButton(master=activity_log,image=search_btn_act, text="" ,
-                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= "")
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=search_data_log)
     act_button_search.place(x=760, y=170, height=20,width=90)
 
         # Show All Button
     showall_btn_act = PhotoImage(file = "pic/btn_showall.png")
     act_button_showall = customtkinter.CTkButton(master=activity_log,image=showall_btn_act, text="" ,
-                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command="")
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=refreshTable_log)
     act_button_showall.place(x=625, y=594, height=27,width=110)
 
         # Back Button
