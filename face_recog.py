@@ -280,6 +280,7 @@ def new_win():
                 insetdata = (eName,'login',eDepartment,currentDateTime)
                 cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
                                     VAlUES(?,?,?,?);""", insetdata)
+                refreshTable_log()
             else:
                 messagebox.showinfo("Error", "Please provide correct username and password!!")
 
@@ -412,10 +413,38 @@ def new_win():
                                                 corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=refreshTable_attrec)
     att_mon_button_showall.place(x=680, y=655, height=27,width=110)
 
+    def logout_employee():
+        show_frame(employee_login)
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        currentDateTime = datetime.datetime.now()
+
+        cursor.execute("""CREATE TABLE IF NOT EXISTS 
+            activity_log(
+                        "ID"    INTEGER,
+                        "Name"  TEXT,
+                        "Activity"  TEXT,
+                        "Department"    TEXT,
+                        "Date_Time" TIMESTAMP,
+                        PRIMARY KEY("ID" AUTOINCREMENT)
+                        )""")
+
+        eName = att_mon_lb_name.cget("text")
+        eDepartment = att_mon_lb_dept.cget("text")
+
+        insetdata = (eName,'Logout',eDepartment,currentDateTime)
+        cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                            VAlUES(?,?,?,?);""", insetdata)
+        conn.commit()
+        conn.close()
+        refreshTable_log()
+
+
         # Logout Button
     att_mon_logout = PhotoImage(file = "pic/btn_logout.png")
     att_mon_button_logout = customtkinter.CTkButton(master=attendance_monitoring,image=att_mon_logout, text="" ,
-                                                corner_radius=20,bg_color='#ffffff', fg_color="#ffffff",hover_color="#6699cc", command=lambda: show_frame(employee_login))
+                                                corner_radius=20,bg_color='#ffffff', fg_color="#ffffff",hover_color="#6699cc", command=logout_employee)
     att_mon_button_logout.place(x=30, y=565, height=100,width=100)
 
     refreshTable_attrec()
@@ -520,6 +549,7 @@ def new_win():
                 insetdata = str(eName),'login',str(eDepartment),currentDateTime
                 cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
                                     VAlUES(?,?,?,?)""", insetdata)
+                refreshTable_log()
             else:
                 counter += 1
                 messagebox.showinfo("Error", "Reamaining Attempt: "+ str(counter))
@@ -619,10 +649,37 @@ def new_win():
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command=lambda: show_frame(developers))
     pg4_button_developers.place(x=1048, y=314, height=134,width=246)
 
+    def logout():
+        show_frame(page3)
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        currentDateTime = datetime.datetime.now()
+
+        cursor.execute("""CREATE TABLE IF NOT EXISTS 
+            activity_log(
+                        "ID"    INTEGER,
+                        "Name"  TEXT,
+                        "Activity"  TEXT,
+                        "Department"    TEXT,
+                        "Date_Time" TIMESTAMP,
+                        PRIMARY KEY("ID" AUTOINCREMENT)
+                        )""")
+
+        eName = pg4_lb_name.cget("text")
+        eDepartment = pg4_lb_dept.cget("text")
+
+        insetdata = str(eName),'Logout',str(eDepartment),currentDateTime
+        cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                            VAlUES(?,?,?,?)""", insetdata)
+        conn.commit()
+        conn.close()
+        refreshTable_log()
+
         # Logout Button
     logout_btn = PhotoImage(file = "pic/logout.png")
     pg4_button_logout = customtkinter.CTkButton(master=page4,image=logout_btn, text="" ,
-                                                corner_radius=30,bg_color='#ffffff', fg_color="#ffffff",hover_color="#6699cc", command=lambda: show_frame(page3))
+                                                corner_radius=30,bg_color='#ffffff', fg_color="#ffffff",hover_color="#6699cc", command=logout)
     pg4_button_logout.place(x=1075, y=469, height=178,width=197)
 
     # ============= Developers Frame ========================================================================================================================================
@@ -912,6 +969,32 @@ def new_win():
                 messagebox.showinfo("Messgae", "Data Added!!")
                 insert(str(save_employee_number),str(save_email),str(save_employee_name),str(save_gender),str(save_age),str(save_contact_number),str(save_address),str(save_college_department),str(save_username),str(save_password),str(save_position),str(save_status)) 
                 clear() 
+
+                conn = sqlite3.connect("data/data.db")
+                cursor = conn.cursor()
+
+                currentDateTime = datetime.datetime.now()
+
+                cursor.execute("""CREATE TABLE IF NOT EXISTS 
+                    activity_log(
+                                "ID"    INTEGER,
+                                "Name"  TEXT,
+                                "Activity"  TEXT,
+                                "Department"    TEXT,
+                                "Date_Time" TIMESTAMP,
+                                PRIMARY KEY("ID" AUTOINCREMENT)
+                                )""")
+
+                eName = pg4_lb_name.cget("text")
+                eDepartment = pg4_lb_dept.cget("text")
+
+                insetdata = str(eName),'Add Faculty',str(eDepartment),currentDateTime
+                cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                                    VAlUES(?,?,?,?)""", insetdata)
+                conn.commit()
+                conn.close()
+                refreshTable_log()
+
             else:
                 messagebox.showinfo("Error", "Employee Number, Email or Contact Number Already Exist")
                 return
@@ -962,7 +1045,33 @@ def new_win():
             messagebox.showinfo("Messgae", "Data Updated!!")
             update(save_employee_number,save_email,save_employee_name,save_gender,save_age,save_contact_number,save_address,save_college_department,save_username,save_password,save_position,save_status,update_name)
             clear()     
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            currentDateTime = datetime.datetime.now()
+
+            cursor.execute("""CREATE TABLE IF NOT EXISTS 
+                activity_log(
+                            "ID"    INTEGER,
+                            "Name"  TEXT,
+                            "Activity"  TEXT,
+                            "Department"    TEXT,
+                            "Date_Time" TIMESTAMP,
+                            PRIMARY KEY("ID" AUTOINCREMENT)
+                            )""")
+
+            eName = pg4_lb_name.cget("text")
+            eDepartment = pg4_lb_dept.cget("text")
+
+            insetdata = str(eName),'Update',str(eDepartment),currentDateTime
+            cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                                VAlUES(?,?,?,?)""", insetdata)
+            conn.commit()
+            conn.close()
+            refreshTable_log()
         refreshTable()
+
 
          # Data Table "TreeView"
     scrollbarx = Scrollbar(faculty_information, orient=HORIZONTAL)
@@ -1334,6 +1443,30 @@ def new_win():
         source = "excelfile/new_datasave.xlsx"
         if file:
             shutil.copy(source,file)
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            currentDateTime = datetime.datetime.now()
+
+            cursor.execute("""CREATE TABLE IF NOT EXISTS 
+                activity_log(
+                            "ID"    INTEGER,
+                            "Name"  TEXT,
+                            "Activity"  TEXT,
+                            "Department"    TEXT,
+                            "Date_Time" TIMESTAMP,
+                            PRIMARY KEY("ID" AUTOINCREMENT)
+                            )""")
+
+            eName = pg4_lb_name.cget("text")
+            eDepartment = pg4_lb_dept.cget("text")
+
+            insetdata = str(eName),'Print',str(eDepartment),currentDateTime
+            cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                                VAlUES(?,?,?,?)""", insetdata)
+            conn.commit()
+            conn.close()
+            refreshTable_log()
         else:
             messagebox.showinfo("Message", "You did not save the file!!")
 
@@ -1650,6 +1783,30 @@ def new_win():
         source = "excelfile/new_datasave_psychology.xlsx"
         if file:
             shutil.copy(source,file)
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            currentDateTime = datetime.datetime.now()
+
+            cursor.execute("""CREATE TABLE IF NOT EXISTS 
+                activity_log(
+                            "ID"    INTEGER,
+                            "Name"  TEXT,
+                            "Activity"  TEXT,
+                            "Department"    TEXT,
+                            "Date_Time" TIMESTAMP,
+                            PRIMARY KEY("ID" AUTOINCREMENT)
+                            )""")
+
+            eName = pg4_lb_name.cget("text")
+            eDepartment = pg4_lb_dept.cget("text")
+
+            insetdata = str(eName),'Print',str(eDepartment),currentDateTime
+            cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                                VAlUES(?,?,?,?)""", insetdata)
+            conn.commit()
+            conn.close()
+            refreshTable_log()
         else:
             messagebox.showinfo("Message", "You did not save the file!!")
 
@@ -1965,6 +2122,30 @@ def new_win():
         source = "excelfile/new_datasave_appliedphysics.xlsx"
         if file:
             shutil.copy(source,file)
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            currentDateTime = datetime.datetime.now()
+
+            cursor.execute("""CREATE TABLE IF NOT EXISTS 
+                activity_log(
+                            "ID"    INTEGER,
+                            "Name"  TEXT,
+                            "Activity"  TEXT,
+                            "Department"    TEXT,
+                            "Date_Time" TIMESTAMP,
+                            PRIMARY KEY("ID" AUTOINCREMENT)
+                            )""")
+
+            eName = pg4_lb_name.cget("text")
+            eDepartment = pg4_lb_dept.cget("text")
+
+            insetdata = str(eName),'Print',str(eDepartment),currentDateTime
+            cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                                VAlUES(?,?,?,?)""", insetdata)
+            conn.commit()
+            conn.close()
+            refreshTable_log()
         else:
             messagebox.showinfo("Message", "You did not save the file!!")
 
@@ -2106,7 +2287,7 @@ def new_win():
     time_applied()
     count_data_applied()
 
-    # ============= Applied Physics Attendance Record Frame =============================================================================
+    # ============= ITE Attendance Record Frame =============================================================================
 
         # open background image
     ite_att_record.ite_image = Image.open('pic/10c.png')
@@ -2281,6 +2462,30 @@ def new_win():
         source = "excelfile/new_datasave_ite.xlsx"
         if file:
             shutil.copy(source,file)
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            currentDateTime = datetime.datetime.now()
+
+            cursor.execute("""CREATE TABLE IF NOT EXISTS 
+                activity_log(
+                            "ID"    INTEGER,
+                            "Name"  TEXT,
+                            "Activity"  TEXT,
+                            "Department"    TEXT,
+                            "Date_Time" TIMESTAMP,
+                            PRIMARY KEY("ID" AUTOINCREMENT)
+                            )""")
+
+            eName = pg4_lb_name.cget("text")
+            eDepartment = pg4_lb_dept.cget("text")
+
+            insetdata = str(eName),'Print',str(eDepartment),currentDateTime
+            cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                                VAlUES(?,?,?,?)""", insetdata)
+            conn.commit()
+            conn.close()
+            refreshTable_log()
         else:
             messagebox.showinfo("Message", "You did not save the file!!")
 
