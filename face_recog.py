@@ -212,19 +212,6 @@ def new_win():
     empl_log_txtbox_pass = Entry(employee_login, borderwidth=0, width=16, font=('Arial', 30), show='*')
     empl_log_txtbox_pass.place(x=116, y=422, height=90) 
 
-    global emp_uname 
-    global emp_pass
-    
-    emp_uname=''
-    emp_pass=''
-    
-    def get_value_uname():
-        emp_uname = empl_log_txtbox_username.get()
-        return emp_uname
-    def get_value_pass():
-        emp_pass = empl_log_txtbox_pass.get()
-        return emp_pass
-
         # Account verification
     def verify():
         conn = sqlite3.connect("data/data.db")
@@ -242,7 +229,7 @@ def new_win():
         if uname=='' or pwd=='':
             messagebox.showinfo("Error", "Please Fill The Empty Field!!")
         else:
-            cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(emply) + "'")
+            cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(emply) + "' AND Status='On'")
             if cursor.fetchone():
                 cursor.execute("SELECT Employee_Name FROM faculty_data WHERE Username like '"+ str(uname)+"' AND Password like '"+ str(pwd)+"'")
                 get_Name = cursor.fetchone()
@@ -260,6 +247,13 @@ def new_win():
                 att_mon_lb_empnum.configure(text = get_ID_Number)
                 att_mon_lb_eml.configure(text = get_Email)
                 att_mon_lb_cont.configure(text = get_Phone)
+
+                hidetext.configure(state='normal')
+                hidetext.insert(0,get_Name)
+                text = hidetext.get()
+                hidename.configure(text = text)
+                hidetext.configure(state='disabled')
+                refreshTable_attrec()
 
                 show_frame(attendance_monitoring)
                 messagebox.showinfo("Messgae", "WELCOME USER" )
@@ -322,40 +316,34 @@ def new_win():
     attendance_monitoring.att_mon_bg_img_lb = Label(attendance_monitoring, image = attendance_monitoring.photo)
     attendance_monitoring.att_mon_bg_img_lb.pack()
 
-    def user_read():
+    def reverse(tuples):
+        new_tup = tuples[::-1]
+        return new_tup
+
+        # Get And Disply the data in the table
+    def attrec_read():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        # uname = get_value_uname()
-        # pwd = get_value_pass()
-
-        # cursor.execute("SELECT Employee_Name FROM faculty_data WHERE Username like '"+ str(uname)+"' AND Password like '"+ str(pwd)+"'")
-        # get_Name = cursor.fetchone()
-        # cursor.execute("SELECT College_Department FROM faculty_data WHERE Username like '"+ str(uname)+"' AND Password like '"+ str(pwd)+"'")
-        # get_Department = cursor.fetchone()
-
-
-        set_name=att_mon_lb_name.cget("text")
-        # set_department=get_Department
-
-        # Name =att_mon_lb_name.cget("text")
-        print(set_name)
+        set_name = hidename.cget("text")
 
         cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Name='"+ str(set_name) +"' AND Department='Psychology'")
         results_user = cursor.fetchall()
         conn.commit()
-        
-        global num
-        num = 0
+        return results_user
 
-        for record in results_user:
-            if num % 2 == 0:
-                data_table_emp_att_rec.insert(parent='', index='end', iid=num, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
-            else:
-                data_table_emp_att_rec.insert(parent='', index='end', iid=num, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
-            num += 1
-            data_table_emp_att_rec.tag_configure('evenrow', background='#EEEEEE')
-            data_table_emp_att_rec.tag_configure('oddrow', background='#EEEEEE')
+        # Refresh the tabble on Treeview
+    def refreshTable_attrec():
+
+        for data_attrec in data_table_emp_att_rec.get_children():
+            data_table_emp_att_rec.delete(data_attrec)
+
+        for results_attrec in reverse(attrec_read()):
+            data_table_emp_att_rec.insert(parent='', index='end', iid=results_attrec, text="", values=(results_attrec), tag="orow")
+        data_table_emp_att_rec.tag_configure('orow', background='#EEEEEE')
+
+    hidetext = Entry(attendance_monitoring,borderwidth=0,fg='#ffffff',bg='#ffffff',state='disabled')
+    hidetext.place(x=500, y=350 )
 
          # Data Table "TreeView"
     scrollbary_emp_att_rec = Scrollbar(attendance_monitoring, orient=VERTICAL)
@@ -383,6 +371,9 @@ def new_win():
     data_table_emp_att_rec.heading("Time out", text="Time out", anchor=CENTER)
     data_table_emp_att_rec.heading("Date", text="Date", anchor=CENTER)
     data_table_emp_att_rec.heading("Status", text="Status", anchor=CENTER)
+
+    hidename = Label(attendance_monitoring, bg ='#ffffff',fg='#ffffff')
+    hidename.place(x=50, y=400)
 
         # Employee Name Label
     att_mon_lb_name = Label(attendance_monitoring, bg ='#ffd636', font = "Heltvetica 30 bold")
@@ -418,7 +409,7 @@ def new_win():
         # Show All Button
     showall_btn_att_mon = PhotoImage(file = "pic/btn_showall.png")
     att_mon_button_showall = customtkinter.CTkButton(master=attendance_monitoring,image=showall_btn_att_mon, text="" ,
-                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command="")
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=refreshTable_attrec)
     att_mon_button_showall.place(x=680, y=655, height=27,width=110)
 
         # Logout Button
@@ -427,7 +418,7 @@ def new_win():
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#ffffff",hover_color="#6699cc", command=lambda: show_frame(employee_login))
     att_mon_button_logout.place(x=30, y=565, height=100,width=100)
 
-    user_read()
+    refreshTable_attrec()
 
     #     # Attendace Record Button
     # record_btn_att_mon = PhotoImage(file = "pic/btn_attendace_rec.png")
@@ -450,6 +441,10 @@ def new_win():
     page3.pg3_bg_img_lb = Label(page3, image = page3.photo)
     page3.pg3_bg_img_lb.pack() 
 
+    
+    counter = 1
+
+
         # Text Box Username and Password
     username_lbl_pg3 = Label(page3, text='Username', fg='Black', bg ='#1f2a76', font = "Heltvetica 27 bold")
     username_lbl_pg3.place(x=116, y=207)
@@ -463,6 +458,8 @@ def new_win():
     # pg3_txtbox_pass.insert(0,"Password")
     pg3_txtbox_pass.place(x=116, y=422, height=90)
 
+    
+
         # Account verification
     def verify():
         conn = sqlite3.connect("data/data.db")
@@ -473,16 +470,21 @@ def new_win():
 
         # cursor.execute("INSERT INTO user_login (Username,Password) VALUES ('admin', '123' , 'admin')")
 
+        
+        # global pg3_txtbox_username
+        # global pg3_txtbox_pass
+        global counter
+        counter = 1
         uname = pg3_txtbox_username.get()
         pwd = pg3_txtbox_pass.get()
         adm = "Admin"
         state = "On"
 
-        count = 3
+        # count = 3
         
         if uname=='' or pwd=='':
             messagebox.showinfo("Error", "Please Fill The Empty Field!!")
-        else:
+        elif counter <=3:
             cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(adm) + "' AND Status ='" + str(state) + "'")
             if cursor.fetchone():
                 cursor.execute("SELECT Employee_Name FROM faculty_data WHERE Username = '"+ str(uname)+"' AND Password = '"+ str(pwd)+"'")
@@ -519,12 +521,18 @@ def new_win():
                 cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
                                     VAlUES(?,?,?,?)""", insetdata)
             else:
-                while count !=0:
-                    messagebox.showinfo("Error", "Reamaining Attempt: "+ str(count))
-                    count-=1
+                counter += 1
+                messagebox.showinfo("Error", "Reamaining Attempt: "+ str(counter))
+                pg3_txtbox_username.delete(0, END)
+                pg3_txtbox_pass.delete(0, END)
+                check_button.deselect()
+                
+                # while count !=0:
+                #     messagebox.showinfo("Error", "Reamaining Attempt: "+ str(count))
+                #     count-=1
 
-                else:
-                    messagebox.showinfo("Error", "Access denied, Out of try !!")
+                # else:
+                #     messagebox.showinfo("Error", "Access denied, Out of try !!")
 
 
         # if uname=='' or pwd=='':
@@ -2423,15 +2431,15 @@ def new_win():
     activity_log.act_bg_img_lb = Label(activity_log, image = activity_log.photo)
     activity_log.act_bg_img_lb.pack()
 
-            # Get And Disply the data in the table
+        # Get And Disply the data in the table
     def log_read():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
         cursor.execute("SELECT * FROM activity_log")
-        results_ite = cursor.fetchall()
+        results_log = cursor.fetchall()
         conn.commit()
-        return results_ite
+        return results_log
 
         # Refresh the tabble on Treeview
     def refreshTable_log():
@@ -2471,26 +2479,6 @@ def new_win():
 
         conn.commit()
         conn.close()
-
-    # def Log_read():
-    #     conn = sqlite3.connect("data/data.db")
-    #     cursor = conn.cursor()
-
-    #     cursor.execute("SELECT * FROM activity_log")
-    #     results_user = cursor.fetchall()
-    #     conn.commit()
-        
-    #     global num
-    #     num = 0
-
-    #     for record in results_user:
-    #         if num % 2 == 0:
-    #             data_table_act.insert(parent='', index='end', iid=num, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
-    #         else:
-    #             data_table_act.insert(parent='', index='end', iid=num, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
-    #         num += 1
-    #         data_table_act.tag_configure('evenrow', background='#EEEEEE')
-    #         data_table_act.tag_configure('oddrow', background='#EEEEEE')
 
      # Data Table "TreeView"
     scrollbary_act = Scrollbar(activity_log, orient=VERTICAL)
