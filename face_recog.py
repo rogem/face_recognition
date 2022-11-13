@@ -139,6 +139,7 @@ def new_win():
     applied_physics_att_record = Frame(main_window)
     ite_att_record = Frame(main_window)
     activity_log = Frame(main_window)
+    
 
     for frame in (page1, page2, page3, page4, attendance_record,faculty_information,mathematics_att_record,employee_login,attendance_monitoring,developers,about,about_clg_goal,about_program,psychology_att_record,applied_physics_att_record,ite_att_record,activity_log):
         frame.grid(row=0, column=0, sticky='nsew')
@@ -146,7 +147,7 @@ def new_win():
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(page3)
+    show_frame(ite_att_record)
 
     # ============= Page 1 Frame =========================================================================================================================================
 
@@ -470,10 +471,6 @@ def new_win():
     page3.pg3_bg_img_lb = Label(page3, image = page3.photo)
     page3.pg3_bg_img_lb.pack() 
 
-    
-    counter = 1
-
-
         # Text Box Username and Password
     username_lbl_pg3 = Label(page3, text='Username', fg='Black', bg ='#1f2a76', font = "Heltvetica 27 bold")
     username_lbl_pg3.place(x=116, y=207)
@@ -487,10 +484,9 @@ def new_win():
     # pg3_txtbox_pass.insert(0,"Password")
     pg3_txtbox_pass.place(x=116, y=422, height=90)
 
-    
-
+   
         # Account verification
-    def verify():
+    def verify_admin():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
@@ -499,10 +495,6 @@ def new_win():
 
         # cursor.execute("INSERT INTO user_login (Username,Password) VALUES ('admin', '123' , 'admin')")
 
-        
-        # global pg3_txtbox_username
-        # global pg3_txtbox_pass
-        global counter
         counter = 1
         uname = pg3_txtbox_username.get()
         pwd = pg3_txtbox_pass.get()
@@ -551,7 +543,7 @@ def new_win():
                                     VAlUES(?,?,?,?)""", insetdata)
                 refreshTable_log()
             else:
-                counter += 1
+                counter+=1
                 messagebox.showinfo("Error", "Reamaining Attempt: "+ str(counter))
                 pg3_txtbox_username.delete(0, END)
                 pg3_txtbox_pass.delete(0, END)
@@ -561,8 +553,8 @@ def new_win():
                 #     messagebox.showinfo("Error", "Reamaining Attempt: "+ str(count))
                 #     count-=1
 
-                # else:
-                #     messagebox.showinfo("Error", "Access denied, Out of try !!")
+        else:
+            messagebox.showinfo("Error", "Access denied, Out of try !!")
 
 
         # if uname=='' or pwd=='':
@@ -584,7 +576,7 @@ def new_win():
 
         # Login Button
     login_img_btn = PhotoImage(file = "pic/login.png")
-    pg3_button = Button(page3, image=login_img_btn, borderwidth=0, bg='#1f2a76', command=verify)
+    pg3_button = Button(page3, image=login_img_btn, borderwidth=0, bg='#1f2a76', command=verify_admin)
     pg3_button.place(x=180, y=557)
 
         # show and hide Password
@@ -1250,6 +1242,140 @@ def new_win():
     fac_inf_button_back = customtkinter.CTkButton(master=faculty_information,image=fac_inf_back, text="" ,
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(page4))
     fac_inf_button_back.place(x=20, y=595, height=50,width=140)
+
+    # ============= Summary Report In Frame ========================================================================================================================
+
+    def summary():
+        popupwindow = Toplevel(main_window)
+        popupwindow.title("Individual Summary Report")
+        popupwindow.geometry('1020x650')
+        popupwindow.grab_set()
+        popupwindow.resizable(False,False)
+
+            # open background image
+        popupwindow.summary_image = Image.open('pic/16.png')
+        popupwindow.summary_resize_image = popupwindow.summary_image.resize((1020,650))
+        popupwindow.photo = ImageTk.PhotoImage(popupwindow.summary_resize_image)
+        popupwindow.summary_bg_img_lb = Label(popupwindow, image = popupwindow.photo)
+        popupwindow.summary_bg_img_lb.pack()
+
+                 # Data Table "TreeView"
+        scrollbarx_summary = Scrollbar(popupwindow, orient=HORIZONTAL)
+        scrollbarx_summary.place(x=500, y=584, width=367)
+        scrollbary_summary = Scrollbar(popupwindow, orient=VERTICAL)
+        scrollbary_summary.place(x=869, y=225, height=358)
+
+        # style = ttk.Style()
+        # style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
+
+        data_table_summary = ttk.Treeview(popupwindow)
+        data_table_summary.place(x=500, y=225, width=368, height=358)
+        data_table_summary.configure(yscrollcommand=scrollbary_summary.set, xscrollcommand=scrollbarx_summary.set)
+
+        scrollbarx_summary.configure(command=data_table_summary.xview)
+        scrollbary_summary.configure(command=data_table_summary.yview)
+
+        data_table_summary['columns'] = ("Time in","Time out","Date","Remarks")
+        # Format Columns
+        data_table_summary.column("#0", width=0, stretch=NO)
+        data_table_summary.column("Time in", anchor=W, width=100)
+        data_table_summary.column("Time out", anchor=W, width=100)
+        data_table_summary.column("Date", anchor=W, width=100)
+        data_table_summary.column("Remarks", anchor=W, width=100)
+
+        # Create Headings
+        data_table_summary.heading("Time in", text="Time in", anchor=CENTER)
+        data_table_summary.heading("Time out", text="Time out", anchor=CENTER)
+        data_table_summary.heading("Date", text="Date", anchor=CENTER)
+        data_table_summary.heading("Remarks", text="Remarks", anchor=CENTER)
+
+                # Time Text
+        time_lb = Label(popupwindow, text='Time:', fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+        time_lb.place(x=360, y=10)
+
+            # date Text
+        date_lb = Label(popupwindow, text='Date:', fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+        date_lb.place(x=530, y=10)
+
+            # Time Label
+        time_lb_summary = Label(popupwindow, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+        time_lb_summary.place(x=490, y=10)
+
+            # date Label
+        date_lb_summary = Label(popupwindow, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+        date_lb_summary.place(x=660, y=10)
+
+            # ComboBox College Department
+        summary_department_combobox = ttk.Combobox(popupwindow, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
+        summary_department_combobox.place(x=253, y=245, width=175)
+
+            # Entry Employee Number
+        employee_num_summary = Entry(popupwindow)
+        employee_num_summary.place(x=240, y=308, width=80)
+
+            # Entry Employee Name
+        employee_name_summary = Entry(popupwindow)
+        employee_name_summary.place(x=240, y=330, width=80)
+
+            # Entry Attendance Satatus
+        att_status_summary = Entry(popupwindow)
+        att_status_summary.place(x=240, y=352, width=80)
+
+            # Entry Time In
+        time_in_summary = Entry(popupwindow)
+        time_in_summary.place(x=370, y=308, width=80)
+
+            # Entry Time Out
+        time_out_summary = Entry(popupwindow)
+        time_out_summary.place(x=370, y=330, width=80)
+
+            # Entry Date
+        date_summary = Entry(popupwindow)
+        date_summary.place(x=370, y=352, width=80)
+
+           # Entry dtr
+        dtr_summary = Entry(popupwindow)
+        dtr_summary.place(x=152, y=470, width=80)
+
+            # Button Present
+        present_btn_summary = PhotoImage(file = "pic/btn_present.png")
+        summary_button_present = customtkinter.CTkButton(master=popupwindow,image=present_btn_summary, text="" ,
+                                                    corner_radius=10,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command='')
+        summary_button_present.place(x=175, y=103, height=78,width=150)
+
+            # Button Late
+        late_btn_summary = PhotoImage(file = "pic/btn_late.png")
+        summary_button_late = customtkinter.CTkButton(master=popupwindow,image=late_btn_summary, text="" ,
+                                                    corner_radius=10,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command='')
+        summary_button_late.place(x=355, y=103, height=78,width=150)
+
+            # Button Absent
+        absent_btn_summary = PhotoImage(file = "pic/btn_absent.png")
+        summary_button_absent = customtkinter.CTkButton(master=popupwindow,image=absent_btn_summary, text="" ,
+                                                    corner_radius=10,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command='')
+        summary_button_absent.place(x=525, y=103, height=78,width=150)
+
+            # Button Early Dismisal
+        ed_btn_summary = PhotoImage(file = "pic/btn_early_dis.png")
+        summary_button_ed = customtkinter.CTkButton(master=popupwindow,image=ed_btn_summary, text="" ,
+                                                    corner_radius=10,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command='')
+        summary_button_ed.place(x=705, y=103, height=78,width=150)
+
+            # Total Present Label
+        total_faculty_lb_summary = Label(popupwindow, text='000', fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
+        total_faculty_lb_summary.place(x=225, y=136)
+
+            # Total Late Label
+        total_present_lb_summary = Label(popupwindow, text='000', fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
+        total_present_lb_summary.place(x=405, y=136)
+
+            # Total Absent Label
+        total_absent_lb_summary = Label(popupwindow, text='000', fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
+        total_absent_lb_summary.place(x=575, y=136)
+
+            # Total Early Dismisal Label
+        total_late_lb_summary = Label(popupwindow, text='000', fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
+        total_late_lb_summary.place(x=755, y=136)
 
 
     # ============= Mathematics Attendance Record Frame =============================================================================
@@ -2609,7 +2735,7 @@ def new_win():
         # Reset Button
     reset_btn_ite = PhotoImage(file = "pic/btn_reset_small.png")
     ite_button_reset = customtkinter.CTkButton(master=ite_att_record,image=reset_btn_ite, text="" ,
-                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=reset_ite)
+                                                corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=summary)
     ite_button_reset.place(x=510, y=519, height=25,width=100)
 
         # Print Button
@@ -2738,6 +2864,8 @@ def new_win():
     act_button_back = customtkinter.CTkButton(master=activity_log,image=act_back, text="" ,
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(page4))
     act_button_back.place(x=85, y=495, height=50,width=140)
+
+    
 
     main_window.mainloop()
 
