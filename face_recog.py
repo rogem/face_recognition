@@ -1375,7 +1375,25 @@ def new_win():
 
             # Total Early Dismisal Label
         total_late_lb_summary = Label(popupwindow, text='000', fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
+        total_late_lb_summary.bind("<Button-1>",)
         total_late_lb_summary.place(x=755, y=136)
+
+            # Print Button
+        print_btn_summary = PhotoImage(file = "pic/btn_print.png")
+        summary_button_print = customtkinter.CTkButton(master=popupwindow,image=print_btn_summary, text="",
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command='')
+        summary_button_print.place(x=258, y=375, height=20,width=80)
+
+            # Generate Button
+        generate_btn_summary = PhotoImage(file = "pic/btn_generate.png")
+        summary_button_generate = customtkinter.CTkButton(master=popupwindow,image=generate_btn_summary, text="",
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command='')
+        summary_button_generate.place(x=258, y=468, height=20,width=80)
+
+            # Print Button
+        summary_button_print1 = customtkinter.CTkButton(master=popupwindow,image=print_btn_summary, text="",
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command='')
+        summary_button_print1.place(x=358, y=468, height=20,width=80)
 
 
     # ============= Mathematics Attendance Record Frame =============================================================================
