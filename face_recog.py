@@ -999,18 +999,22 @@ def new_win():
         selected = data_table.focus()
         values = data_table.item(selected, 'values')
 
-        employee_num_fac_inf.insert(0, values[0])
-        email_fac_inf.insert(0, values[1])
-        employee_name_fac_inf.insert(0, values[2])
-        gender_combobox_fac_inf.insert(0, values[3])
-        age_fac_inf.insert(0, values[4])
-        con_num_fac_inf.insert(0, values[5])
-        address_fac_inf.insert(0, values[6])
-        department_combobox.insert(0, values[7])
-        username_fac_inf.insert(0, values[8])
-        password_fac_inf.insert(0, values[9])
-        position_fac_inf.insert(0, values[10])
-        status_combobox_fac_inf.insert(0,values[11])
+        if values:
+            employee_num_fac_inf.insert(0, values[0])
+            email_fac_inf.insert(0, values[1])
+            employee_name_fac_inf.insert(0, values[2])
+            gender_combobox_fac_inf.insert(0, values[3])
+            age_fac_inf.insert(0, values[4])
+            con_num_fac_inf.insert(0, values[5])
+            address_fac_inf.insert(0, values[6])
+            department_combobox.insert(0, values[7])
+            username_fac_inf.insert(0, values[8])
+            password_fac_inf.insert(0, values[9])
+            position_fac_inf.insert(0, values[10])
+            status_combobox_fac_inf.insert(0,values[11])
+        else:
+            messagebox.showinfo("Error", "There is no data on the table !!")
+        
 
         # Updating Selected Data
     def Update_Data():
@@ -1680,35 +1684,6 @@ def new_win():
     mathematics_att_record.math_rec_bg_img_lb = Label(mathematics_att_record, image = mathematics_att_record.photo)
     mathematics_att_record.math_rec_bg_img_lb.pack()
 
-    # def normal():
-    #     employee_num_math_rec.configure(state='normal')
-    #     employee_name_math_rec.configure(state='normal')
-    #     math_rec_department_combobox.configure(state='normal')
-    #     time_in_math_rec.configure(state='normal')
-    #     time_out_math_rec.configure(state='normal')
-    #     date_math_rec.configure(state='normal')
-    #     att_status_math_rec.configure(state='normal')
-
-    # def disable_text():
-    #     employee_num_math_rec.configure(state='disabled',text='')
-    #     employee_name_math_rec.configure(state='disabled')
-    #     math_rec_department_combobox.configure(state='disabled')
-    #     time_in_math_rec.configure(state='disabled')
-    #     time_out_math_rec.configure(state='disabled')
-    #     date_math_rec.configure(state='disabled')
-    #     att_status_math_rec.configure(state='disabled')
-
-    # def reset():
-    #     normal()
-    #     employee_num_math_rec.delete(0, END)
-    #     employee_name_math_rec.delete(0, END)
-    #     math_rec_department_combobox.delete(0, END)
-    #     time_in_math_rec.delete(0, END)
-    #     time_out_math_rec.delete(0, END)
-    #     date_math_rec.delete(0, END)
-    #     att_status_math_rec.delete(0, END)
-    #     disable_text()
-
          # Get Current Time and Date
     def time():
         string_time = strftime('%I:%M:%S %p')
@@ -1814,81 +1789,6 @@ def new_win():
         conn.commit()
         conn.close()
 
-    # def select_row_math(e):
-    #     selected = data_table_math_rec.focus()
-    #     values = data_table_math_rec.item(selected, 'values')
-
-    #     normal()
-
-    #     employee_num_math_rec.delete(0, END)
-    #     employee_name_math_rec.delete(0, END)
-    #     math_rec_department_combobox.delete(0, END)
-    #     time_in_math_rec.delete(0, END)
-    #     time_out_math_rec.delete(0, END)
-    #     date_math_rec.delete(0, END)
-    #     att_status_math_rec.delete(0, END)
-
-    #     employee_num_math_rec.insert(0, values[0])
-    #     employee_name_math_rec.insert(0, values[1])
-    #     math_rec_department_combobox.insert(0, values[2])
-    #     time_in_math_rec.insert(0, values[3])
-    #     time_out_math_rec.insert(0, values[4])
-    #     date_math_rec.insert(0, values[5])
-    #     att_status_math_rec.insert(0, values[6])
-
-    #     disable_text()
-
-    # def print_data_math():
-    #     file = filedialog.asksaveasfilename(title="Select file",initialfile="datafile.xlsx", defaultextension=".xlsx",filetypes=[("Execl file","*.xlsx")])
-
-    #     cols = ['Employee No.','Name','Department','Time in','Time out','Date','Status']
-    #     path = 'excelfile/read_data_employee_mathematics.csv'
-    #     excel_name = 'excelfile/new_datasave.xlsx'
-    #     lst = []
-    #     with open(path,"w",newline='') as myfile:
-    #         csvwriter = csv.writer(myfile, delimiter=',')
-    #         for row_id in data_table_math_rec.get_children():
-    #             row = data_table_math_rec.item(row_id,'values')
-    #             lst.append(row)
-    #         lst = list(map(list,lst))
-    #         lst.insert(0,cols)
-    #         for row in lst:
-    #             csvwriter.writerow(row)
-
-    #     writer = pd.ExcelWriter(excel_name)
-    #     df = pd.read_csv(path)
-    #     df.to_excel(writer,'sheet1')
-    #     writer.save()
-    #     source = "excelfile/new_datasave.xlsx"
-    #     if file:
-    #         shutil.copy(source,file)
-    #         conn = sqlite3.connect("data/data.db")
-    #         cursor = conn.cursor()
-
-    #         currentDateTime = datetime.datetime.now()
-
-    #         cursor.execute("""CREATE TABLE IF NOT EXISTS 
-    #             activity_log(
-    #                         "ID"    INTEGER,
-    #                         "Name"  TEXT,
-    #                         "Activity"  TEXT,
-    #                         "Department"    TEXT,
-    #                         "Date_Time" TIMESTAMP,
-    #                         PRIMARY KEY("ID" AUTOINCREMENT)
-    #                         )""")
-
-    #         eName = pg4_lb_name.cget("text")
-    #         eDepartment = pg4_lb_dept.cget("text")
-
-    #         insetdata = str(eName),'Print',str(eDepartment),currentDateTime
-    #         cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
-    #                             VAlUES(?,?,?,?)""", insetdata)
-    #         conn.commit()
-    #         conn.close()
-    #         refreshTable_log()
-    #     else:
-    #         messagebox.showinfo("Message", "You did not save the file!!")
-
          # Data Table "TreeView"
     scrollbarx_math_rec = Scrollbar(mathematics_att_record, orient=HORIZONTAL)
     scrollbarx_math_rec.place(x=710, y=584, width=347)
@@ -1931,17 +1831,20 @@ def new_win():
         selected = data_table_math_rec_IR.focus()
         values = data_table_math_rec_IR.item(selected, 'values')
 
-        employee_num_math_rec.configure(state='normal')
-        employee_name_math_rec.configure(state='normal')
-        
-        employee_num_math_rec.delete(0, END)
-        employee_name_math_rec.delete(0, END)
+        if values :
+            employee_num_math_rec.configure(state='normal')
+            employee_name_math_rec.configure(state='normal')
+            
+            employee_num_math_rec.delete(0, END)
+            employee_name_math_rec.delete(0, END)
 
-        employee_num_math_rec.insert(0, values[0])
-        employee_name_math_rec.insert(0, values[1])
-        
-        employee_num_math_rec.configure(state='disabled',text='')
-        employee_name_math_rec.configure(state='disabled')
+            employee_num_math_rec.insert(0, values[0])
+            employee_name_math_rec.insert(0, values[1])
+            
+            employee_num_math_rec.configure(state='disabled',text='')
+            employee_name_math_rec.configure(state='disabled')
+        else:
+            messagebox.showinfo("Error", "There is no selected data on the table !!")
 
     def math_read_IR():
         conn = sqlite3.connect("data/data.db")
@@ -2053,10 +1956,6 @@ def new_win():
     total_late_lb_math_rec = Label(mathematics_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
     total_late_lb_math_rec.place(x=948, y=190)
 
-    #     # ComboBox College Department
-    # math_rec_department_combobox = ttk.Combobox(mathematics_att_record, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
-    # math_rec_department_combobox.place(x=445, y=305, width=200)
-
     def error():
         emp_num = employee_num_math_rec.get()
         emp_name = employee_name_math_rec.get()
@@ -2072,28 +1971,12 @@ def new_win():
 
         # Entry Employee Name
     employee_name_math_rec = Entry(mathematics_att_record)
-    employee_name_math_rec.place(x=425, y=586, width=110)
+    employee_name_math_rec.place(x=425, y=586, width=100)
 
         # Summary Report Button 
     math_rec_button_report = customtkinter.CTkButton(master=mathematics_att_record, text="Summary Report" ,
                                                 corner_radius=3,bg='#ffffff', fg_color="#C0C0C0",hover_color="#006699", command=error)
     math_rec_button_report.place(x=550, y=586, height=21,width=110)
-
-    #     # Entry Attendance Satatus
-    # att_status_math_rec = Entry(mathematics_att_record)
-    # att_status_math_rec.place(x=404, y=428, width=110)
-
-    #     # Entry Time In
-    # time_in_math_rec = Entry(mathematics_att_record)
-    # time_in_math_rec.place(x=565, y=366, width=110)
-
-    #     # Entry Time Out
-    # time_out_math_rec = Entry(mathematics_att_record)
-    # time_out_math_rec.place(x=565, y=397, width=110)
-
-    #     # Entry Date
-    # date_math_rec = Entry(mathematics_att_record)
-    # date_math_rec.place(x=565, y=428, width=110)
 
          # Search Entry Individual Report
     search_ent_math_rec_IR = StringVar()
@@ -2129,18 +2012,6 @@ def new_win():
                                                 corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=refreshTable_math)
     math_rec_button_showall.place(x=843, y=608, height=21,width=90)
 
-    #     # Reset Button
-    # reset_btn_math_rec = PhotoImage(file = "pic/btn_reset_small.png")
-    # math_rec_button_reset = customtkinter.CTkButton(master=mathematics_att_record,image=reset_btn_math_rec, text="" ,
-    #                                             corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=reset)
-    # math_rec_button_reset.place(x=510, y=519, height=25,width=100)
-
-    #     # Print Button
-    # print_btn_math_rec = PhotoImage(file = "pic/btn_print.png")
-    # math_rec_button_print = customtkinter.CTkButton(master=mathematics_att_record,image=print_btn_math_rec, text="" ,
-    #                                             corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=print_data_math)
-    # math_rec_button_print.place(x=372, y=519, height=25,width=100)
-
         # Back Button
     math_rec_back = PhotoImage(file = "pic/btn_back_page.png")
     math_rec_button_back = customtkinter.CTkButton(master=mathematics_att_record,image=math_rec_back, text="" ,
@@ -2149,6 +2020,433 @@ def new_win():
 
     time()
     count_data()
+
+    # ============= Summary Report In Frame ========================================================================================================================
+
+    def summary_psyc():
+        popupwindow_psyc = Toplevel(main_window)
+        popupwindow_psyc.title("Individual Summary Report")
+        popupwindow_psyc.geometry('1020x650')
+        popupwindow_psyc.grab_set()
+        popupwindow_psyc.resizable(False,False)
+
+            # open background image
+        popupwindow_psyc.summary_image = Image.open('pic/16.png')
+        popupwindow_psyc.summary_resize_image = popupwindow_psyc.summary_image.resize((1020,650))
+        popupwindow_psyc.photo = ImageTk.PhotoImage(popupwindow_psyc.summary_resize_image)
+        popupwindow_psyc.summary_bg_img_lb = Label(popupwindow_psyc, image = popupwindow_psyc.photo)
+        popupwindow_psyc.summary_bg_img_lb.pack()
+
+        emp_num = employee_num_psyc.get()
+        emp_name = employee_name_psyc.get()
+
+             # Get Current Time and Date
+        def time_report():
+            string_time = strftime('%I:%M:%S %p')
+            time_lb_summary_psyc.configure(text = string_time)
+            time_lb_summary_psyc.after(1000, time_report)
+
+            string_date = strftime('%d/%m/20%y')
+            date_lb_summary_psyc.configure(text = string_date)
+
+        def display_info():
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT Department FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            dept = cursor.fetchone()
+
+            cursor.execute("SELECT Status FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            st = cursor.fetchone()
+
+            cursor.execute("SELECT Time_in FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            Tmin = cursor.fetchone()
+
+            cursor.execute("SELECT Time_out FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            Tmout = cursor.fetchone()
+
+            cursor.execute("SELECT _Date FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            dt = cursor.fetchone()
+
+            summary_department_combobox_psyc.configure(state='normal')
+            employee_num_summary_psyc.configure(state='normal')
+            employee_name_summary_psyc.configure(state='normal')
+            att_status_summary_psyc.configure(state='normal')
+            time_in_summary_psyc.configure(state='normal')
+            time_out_summary_psyc.configure(state='normal')
+            date_summary_psyc_psyc.configure(state='normal')
+
+            summary_department_combobox_psyc.insert(0,dept)
+            employee_num_summary_psyc.insert(0,emp_num)
+            employee_name_summary_psyc.insert(0,emp_name)
+            att_status_summary_psyc.insert(0,st)
+            time_in_summary_psyc.insert(0,Tmin)
+            time_out_summary_psyc.insert(0,Tmout)
+            date_summary_psyc_psyc.insert(0,dt)
+
+            summary_department_combobox_psyc.configure(state='disabled')
+            employee_num_summary_psyc.configure(state='disabled')
+            employee_name_summary_psyc.configure(state='disabled')
+            att_status_summary_psyc.configure(state='disabled')
+            time_in_summary_psyc.configure(state='disabled')
+            time_out_summary_psyc.configure(state='disabled')
+            date_summary_psyc_psyc.configure(state='disabled')
+
+            conn.commit()
+            conn.close()
+
+        def count_data_report():
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            date_psychology = date_lb_summary_psyc.cget("text")
+
+            cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Psychology' AND Status='Present' AND _Date='"+ str(date_psychology) +"'")
+            present_psyc = cursor.fetchall()
+
+            cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='Psychology' AND Status='Late' AND _Date='"+ str(date_psychology) +"'")
+            late_psyc = cursor.fetchall()
+
+            cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Psychology' AND Status='Absent' AND _Date='"+ str(date_psychology) +"'")
+            absent_psyc = cursor.fetchall()
+
+            cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='Psychology' AND Status='Early Dismissal' AND _Date='"+ str(date_psychology) +"'")
+            earldis_psyc = cursor.fetchall()
+
+            total_present_lb_summary_psyc.configure(text=present_psyc)
+            total_late_lb_summary_psyc.configure(text=late_psyc)
+            total_absent_lb_summary_psyc.configure(text=absent_psyc)
+            total_earldis_lb_summary_psyc.configure(text=earldis_psyc)
+
+            conn.commit()
+            conn.close()
+
+        def psyc_read_report():
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            results_report = cursor.fetchall()
+            conn.commit()
+            return results_report
+
+        def refreshTable_psyc_report():
+            for data_report in data_table_summary_psyc.get_children():
+                data_table_summary_psyc.delete(data_report)
+
+            for results_report in reverse(psyc_read_report()):
+                data_table_summary_psyc.insert(parent='', index='end', iid=results_report, text="", values=(results_report), tag="orow")
+            data_table_summary_psyc.tag_configure('orow', background='#EEEEEE')
+
+        def search_present():
+            date_psychology = date_lb_summary_psyc.cget("text")
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_summary_psyc.get_children():
+                data_table_summary_psyc.delete(record)
+            
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE  Department='Psychology' AND Status='Present' AND _Date='"+ str(date_psychology) +"'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                else:
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                count += 1
+                data_table_summary_psyc.tag_configure('evenrow', background='#EEEEEE')
+                data_table_summary_psyc.tag_configure('oddrow', background='#EEEEEE')
+
+            conn.commit()
+            conn.close()
+
+        def search_late():
+            date_psychology = date_lb_summary_psyc.cget("text")
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_summary_psyc.get_children():
+                data_table_summary_psyc.delete(record)
+            
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE  Department='Psychology' AND Status='Late' AND _Date='"+ str(date_psychology) +"'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                else:
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                count += 1
+                data_table_summary_psyc.tag_configure('evenrow', background='#EEEEEE')
+                data_table_summary_psyc.tag_configure('oddrow', background='#EEEEEE')
+
+            conn.commit()
+            conn.close()
+
+        def search_absent():
+            date_psychology = date_lb_summary_psyc.cget("text")
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_summary_psyc.get_children():
+                data_table_summary_psyc.delete(record)
+            
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE  Department='Psychology' AND Status='Absent' AND _Date='"+ str(date_psychology) +"'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                else:
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                count += 1
+                data_table_summary_psyc.tag_configure('evenrow', background='#EEEEEE')
+                data_table_summary_psyc.tag_configure('oddrow', background='#EEEEEE')
+
+            conn.commit()
+            conn.close()
+
+        def search_earlydismissal():
+            date_psychology = date_lb_summary_psyc.cget("text")
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_summary_psyc.get_children():
+                data_table_summary_psyc.delete(record)
+            
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE  Department='Psychology' AND Status='Early Dismissal' AND _Date='"+ str(date_psychology) +"'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                else:
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                count += 1
+                data_table_summary_psyc.tag_configure('evenrow', background='#EEEEEE')
+                data_table_summary_psyc.tag_configure('oddrow', background='#EEEEEE')
+
+            conn.commit()
+            conn.close()
+
+        def print_data_psyc():
+            file = filedialog.asksaveasfilename(title="Select file",initialfile="datafile.xlsx", defaultextension=".xlsx",filetypes=[("Execl file","*.xlsx")])
+
+            cols = ['Time in','Time out','Date','Status']
+            path = 'excelfile/read_data_employee_psychology.csv'
+            excel_name = 'excelfile/new_datasave_psychology.xlsx'
+            lst = []
+            with open(path,"w",newline='') as myfile:
+                csvwriter = csv.writer(myfile, delimiter=',')
+                for row_id in data_table_psyc.get_children():
+                    row = data_table_psyc.item(row_id,'values')
+                    lst.append(row)
+                lst = list(map(list,lst))
+                lst.insert(0,cols)
+                for row in lst:
+                    csvwriter.writerow(row)
+
+            writer = pd.ExcelWriter(excel_name)
+            df = pd.read_csv(path)
+            df.to_excel(writer,'sheet1')
+            writer.save()
+            source = "excelfile/new_datasave_psychology.xlsx"
+            if file:
+                shutil.copy(source,file)
+                conn = sqlite3.connect("data/data.db")
+                cursor = conn.cursor()
+
+                currentDateTime = datetime.datetime.now()
+
+                cursor.execute("""CREATE TABLE IF NOT EXISTS 
+                    activity_log(
+                                "ID"    INTEGER,
+                                "Name"  TEXT,
+                                "Activity"  TEXT,
+                                "Department"    TEXT,
+                                "Date_Time" TIMESTAMP,
+                                PRIMARY KEY("ID" AUTOINCREMENT)
+                                )""")
+
+                eName = pg4_lb_name.cget("text")
+                eDepartment = pg4_lb_dept.cget("text")
+
+                insetdata = str(eName),'Print',str(eDepartment),currentDateTime
+                cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                                    VAlUES(?,?,?,?)""", insetdata)
+                conn.commit()
+                conn.close()
+                refreshTable_log()
+            else:
+                messagebox.showinfo("Message", "You did not save the file!!")
+
+                 # Data Table "TreeView"
+        scrollbarx_summary_psyc = Scrollbar(popupwindow_psyc, orient=HORIZONTAL)
+        scrollbarx_summary_psyc.place(x=500, y=584, width=367)
+        scrollbary_summary_psyc = Scrollbar(popupwindow_psyc, orient=VERTICAL)
+        scrollbary_summary_psyc.place(x=869, y=225, height=358)
+
+        # style = ttk.Style()
+        # style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
+
+        data_table_summary_psyc = ttk.Treeview(popupwindow_psyc)
+        data_table_summary_psyc.place(x=500, y=225, width=368, height=358)
+        data_table_summary_psyc.configure(yscrollcommand=scrollbary_summary_psyc.set, xscrollcommand=scrollbarx_summary_psyc.set)
+
+        scrollbarx_summary_psyc.configure(command=data_table_summary_psyc.xview)
+        scrollbary_summary_psyc.configure(command=data_table_summary_psyc.yview)
+
+        data_table_summary_psyc['columns'] = ("Time in","Time out","Date","Remarks")
+        # Format Columns
+        data_table_summary_psyc.column("#0", width=0, stretch=NO)
+        data_table_summary_psyc.column("Time in", anchor=W, width=100)
+        data_table_summary_psyc.column("Time out", anchor=W, width=100)
+        data_table_summary_psyc.column("Date", anchor=W, width=100)
+        data_table_summary_psyc.column("Remarks", anchor=W, width=100)
+
+        # Create Headings
+        data_table_summary_psyc.heading("Time in", text="Time in", anchor=CENTER)
+        data_table_summary_psyc.heading("Time out", text="Time out", anchor=CENTER)
+        data_table_summary_psyc.heading("Date", text="Date", anchor=CENTER)
+        data_table_summary_psyc.heading("Remarks", text="Remarks", anchor=CENTER)
+
+        refreshTable_psyc_report()
+
+                # Time Text
+        time_lb = Label(popupwindow_psyc, text='Time:', fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+        time_lb.place(x=360, y=10)
+
+            # date Text
+        date_lb = Label(popupwindow_psyc, text='Date:', fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+        date_lb.place(x=530, y=10)
+
+            # Time Label
+        time_lb_summary_psyc = Label(popupwindow_psyc, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+        time_lb_summary_psyc.place(x=410, y=10)
+
+            # date Label
+        date_lb_summary_psyc = Label(popupwindow_psyc, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+        date_lb_summary_psyc.place(x=580, y=10)
+
+            # ComboBox College Department
+        summary_department_combobox_psyc = ttk.Combobox(popupwindow_psyc, state='disabled', values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
+        summary_department_combobox_psyc.place(x=253, y=245, width=175)
+
+            # Entry Employee Number
+        employee_num_summary_psyc = Entry(popupwindow_psyc, state='disabled')
+        employee_num_summary_psyc.place(x=240, y=308, width=80)
+
+            # Entry Employee Name
+        employee_name_summary_psyc = Entry(popupwindow_psyc, state='disabled')
+        employee_name_summary_psyc.place(x=240, y=330, width=80)
+
+            # Entry Attendance Satatus
+        att_status_summary_psyc = Entry(popupwindow_psyc, state='disabled')
+        att_status_summary_psyc.place(x=240, y=352, width=80)
+
+            # Entry Time In
+        time_in_summary_psyc = Entry(popupwindow_psyc, state='disabled')
+        time_in_summary_psyc.place(x=370, y=308, width=80)
+
+            # Entry Time Out
+        time_out_summary_psyc = Entry(popupwindow_psyc, state='disabled')
+        time_out_summary_psyc.place(x=370, y=330, width=80)
+
+            # Entry Date
+        date_summary_psyc_psyc = Entry(popupwindow_psyc, state='disabled')
+        date_summary_psyc_psyc.place(x=370, y=352, width=80)
+
+           # Entry dtr
+        dtr_summary_psyc_psyc = Entry(popupwindow_psyc, state='disabled')
+        dtr_summary_psyc_psyc.place(x=152, y=470, width=80)
+
+            # Button Present
+        present_btn_summary_psyc = PhotoImage(file = "pic/btn_present.png")
+        summary_button_present_psyc = customtkinter.CTkButton(master=popupwindow_psyc,image=present_btn_summary_psyc, text="" ,
+                                                    corner_radius=10,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command=search_present)
+        summary_button_present_psyc.place(x=175, y=103, height=78,width=150)
+
+            # Button Late
+        late_btn_summary_psyc = PhotoImage(file = "pic/btn_late.png")
+        summary_button_late_psyc = customtkinter.CTkButton(master=popupwindow_psyc,image=late_btn_summary_psyc, text="" ,
+                                                    corner_radius=10,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command=search_late)
+        summary_button_late_psyc.place(x=355, y=103, height=78,width=150)
+
+            # Button Absent
+        absent_btn_summary_psyc = PhotoImage(file = "pic/btn_absent.png")
+        summary_button_absent_psyc = customtkinter.CTkButton(master=popupwindow_psyc,image=absent_btn_summary_psyc, text="" ,
+                                                    corner_radius=10,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command=search_absent)
+        summary_button_absent_psyc.place(x=525, y=103, height=78,width=150)
+
+            # Button Early Dismisal
+        ed_btn_summary_psyc = PhotoImage(file = "pic/btn_early_dis.png")
+        summary_button_ed_psyc = customtkinter.CTkButton(master=popupwindow_psyc,image=ed_btn_summary_psyc, text="" ,
+                                                    corner_radius=10,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command=search_earlydismissal)
+        summary_button_ed_psyc.place(x=705, y=103, height=78,width=150)
+
+            # Total Present Label
+        total_present_lb_summary_psyc = Label(popupwindow_psyc, text='000', fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
+        total_present_lb_summary_psyc.place(x=225, y=136)
+
+            # Total Late Label
+        total_late_lb_summary_psyc = Label(popupwindow_psyc, text='000', fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
+        total_late_lb_summary_psyc.place(x=405, y=136)
+
+            # Total Absent Label
+        total_absent_lb_summary_psyc = Label(popupwindow_psyc, text='000', fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
+        total_absent_lb_summary_psyc.place(x=575, y=136)
+
+            # Total Early Dismisal Label
+        total_earldis_lb_summary_psyc = Label(popupwindow_psyc, text='000', fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
+        total_earldis_lb_summary_psyc.place(x=755, y=136)
+
+            # Print Button
+        print_btn_summary_psyc = PhotoImage(file = "pic/btn_print.png")
+        summary_button_print_psyc = customtkinter.CTkButton(master=popupwindow_psyc,image=print_btn_summary_psyc, text="",
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command=print_data_psyc)
+        summary_button_print_psyc.place(x=258, y=375, height=20,width=80)
+
+            # Generate Button
+        generate_btn_summary_psyc = PhotoImage(file = "pic/btn_generate.png")
+        summary_button_generate_psyc = customtkinter.CTkButton(master=popupwindow_psyc,image=generate_btn_summary_psyc, text="",
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command='')
+        summary_button_generate_psyc.place(x=258, y=468, height=20,width=80)
+
+            # Print Button
+        summary_button_print1_psyc = customtkinter.CTkButton(master=popupwindow_psyc,image=print_btn_summary_psyc, text="",
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command='')
+        summary_button_print1_psyc.place(x=358, y=468, height=20,width=80)
+
+            # Show All Button
+        showall_btn_summary_psyc = PhotoImage(file = "pic/btn_showall_small.png")
+        summary_button_showall_psyc = customtkinter.CTkButton(master=popupwindow_psyc,image=showall_btn_summary_psyc, text="" ,
+                                                    corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=refreshTable_psyc_report)
+        summary_button_showall_psyc.place(x=650, y=598, height=20,width=90)
+
+        display_info()
+        time_report()
+        count_data_report()
 
     # ============= Psychology Attendance Record Frame =============================================================================
 
@@ -2389,6 +2687,26 @@ def new_win():
 
     refreshTable_psyc()
 
+    def select_row_psyc(e):
+        selected = data_table_psyc_IR.focus()
+        values = data_table_psyc_IR.item(selected, 'values')
+
+        if values:
+            employee_num_psyc.configure(state='normal')
+            employee_name_psyc.configure(state='normal')
+
+            employee_num_psyc.delete(0, END)
+            employee_name_psyc.delete(0, END)
+
+            employee_num_psyc.insert(0, values[0])
+            employee_name_psyc.insert(0, values[1])
+            
+            employee_num_psyc.configure(state='disabled')
+            employee_name_psyc.configure(state='disabled')
+        else:
+            messagebox.showinfo("Error", "There is no  selected data on the table !!")
+        
+
     def psyc_read_IR():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
@@ -2463,6 +2781,8 @@ def new_win():
     data_table_psyc_IR.heading("Employee No.", text="Employee No.", anchor=CENTER)
     data_table_psyc_IR.heading("Name", text="Name", anchor=CENTER)
 
+    data_table_psyc_IR.bind("<ButtonRelease-1>", select_row_psyc)
+
     refreshTable_psyc_IR()
 
         # Time Text
@@ -2501,13 +2821,28 @@ def new_win():
     # psyc_department_combobox = ttk.Combobox(psychology_att_record, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
     # psyc_department_combobox.place(x=445, y=305, width=200)
 
-    #     # Entry Employee Number
-    # employee_num_psyc = Entry(psychology_att_record)
-    # employee_num_psyc.place(x=404, y=366, width=110)
+    def error_psyc():
+        emp_num = employee_num_psyc.get()
+        emp_name = employee_name_psyc.get()
 
-    #     # Entry Employee Name
-    # employee_name_psyc = Entry(psychology_att_record)
-    # employee_name_psyc.place(x=404, y=397, width=110)
+        if emp_num == "" or emp_name == "":
+            messagebox.showinfo("Error", "Please Seleted a row on the table to open Summary Report !!")
+        else:
+            summary_psyc()
+
+        # Entry Employee Number
+    employee_num_psyc = Entry(psychology_att_record)
+    employee_num_psyc.place(x=315, y=586, width=100)
+
+        # Entry Employee Name
+    employee_name_psyc = Entry(psychology_att_record)
+    employee_name_psyc.place(x=425, y=586, width=100)
+
+    
+        # Summary Report Button 
+    psyc_button_report = customtkinter.CTkButton(master=psychology_att_record, text="Summary Report",
+                                                corner_radius=3,bg='#ffffff', fg_color="#C0C0C0",hover_color="#006699", command=error_psyc)
+    psyc_button_report.place(x=550, y=586, height=21,width=110)
 
     #     # Entry Attendance Satatus
     # att_status_psyc = Entry(psychology_att_record)
@@ -2819,6 +3154,26 @@ def new_win():
 
     refreshTable_applied()
 
+    def select_row_applied_IR(e):
+        selected = data_table_applied_IR.focus()
+        values = data_table_applied_IR.item(selected, 'values')
+
+        if values:
+            employee_num_applied.configure(state='normal')
+            employee_name_applied.configure(state='normal')
+            
+            employee_num_applied.delete(0, END)
+            employee_name_applied.delete(0, END)
+
+            employee_num_applied.insert(0, values[0])
+            employee_name_applied.insert(0, values[1])
+
+            employee_num_applied.configure(state='disabled')
+            employee_name_applied.configure(state='disabled')
+        else:
+            messagebox.showinfo("Error", "There is no data on the table !!")
+        
+
     def applied_read_IR():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
@@ -2893,6 +3248,8 @@ def new_win():
     data_table_applied_IR.heading("Employee No.", text="Employee No.", anchor=CENTER)
     data_table_applied_IR.heading("Name", text="Name", anchor=CENTER)
 
+    data_table_applied_IR.bind("<ButtonRelease-1>", select_row_applied_IR)
+
     refreshTable_applied_IR()
 
         # Time Text
@@ -2931,13 +3288,27 @@ def new_win():
     # applied_department_combobox = ttk.Combobox(applied_physics_att_record, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
     # applied_department_combobox.place(x=445, y=305, width=200)
 
-    #     # Entry Employee Number
-    # employee_num_applied = Entry(applied_physics_att_record)
-    # employee_num_applied.place(x=404, y=366, width=110)
+    # def error_applied():
+    #     emp_num = employee_num_applied.get()
+    #     emp_name = employee_name_applied.get()
 
-    #     # Entry Employee Name
-    # employee_name_applied = Entry(applied_physics_att_record)
-    # employee_name_applied.place(x=404, y=397, width=110)
+    #     if emp_num == "" or emp_name == "":
+    #         messagebox.showinfo("Error", "Please Seleted a row on the table to open Summary Report !!")
+    #     else:
+    #         summary()
+
+        # Entry Employee Number
+    employee_num_applied = Entry(applied_physics_att_record)
+    employee_num_applied.place(x=315, y=586, width=100)
+
+        # Entry Employee Name
+    employee_name_applied = Entry(applied_physics_att_record)
+    employee_name_applied.place(x=425, y=586, width=100)
+
+        # Summary Report Button 
+    applied_button_report = customtkinter.CTkButton(master=applied_physics_att_record, text="Summary Report" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#C0C0C0",hover_color="#006699", command="error")
+    applied_button_report.place(x=550, y=586, height=21,width=110)
 
     #     # Entry Attendance Satatus
     # att_status_applied = Entry(applied_physics_att_record)
@@ -3250,6 +3621,27 @@ def new_win():
 
     refreshTable_ite()
 
+    def select_row_ite_IR(e):
+        selected = data_table_ite_IR.focus()
+        values = data_table_ite_IR.item(selected, 'values')
+
+        if values:
+            employee_num_ite.configure(state='normal')
+            employee_name_ite.configure(state='normal')
+
+            employee_num_ite.delete(0, END)
+            employee_name_ite.delete(0, END)
+
+            employee_num_ite.insert(0, values[0])
+            employee_name_ite.insert(0, values[1])
+
+            employee_num_ite.configure(state='disabled',text='')
+            employee_name_ite.configure(state='disabled')
+
+        else:
+            messagebox.showinfo("Error", "There is no data on the table !!")
+        
+
     def ite_read_IR():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
@@ -3329,6 +3721,8 @@ def new_win():
     data_table_ite_IR.heading("Employee No.", text="Employee No.", anchor=CENTER)
     data_table_ite_IR.heading("Name", text="Name", anchor=CENTER)
 
+    data_table_ite_IR.bind("<ButtonRelease-1>", select_row_ite_IR)
+
     refreshTable_ite_IR()
 
         # Time Text
@@ -3367,13 +3761,27 @@ def new_win():
     # ite_department_combobox = ttk.Combobox(ite_att_record, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
     # ite_department_combobox.place(x=445, y=305, width=200)
 
-    #     # Entry Employee Number
-    # employee_num_ite = Entry(ite_att_record)
-    # employee_num_ite.place(x=404, y=366, width=110)
+    # def error():
+    #     emp_num = employee_num_ite.get()
+    #     emp_name = employee_name_ite.get()
 
-    #     # Entry Employee Name
-    # employee_name_ite = Entry(ite_att_record)
-    # employee_name_ite.place(x=404, y=397, width=110)
+    #     if emp_num == "" or emp_name == "":
+    #         messagebox.showinfo("Error", "Please Seleted a row on the table to open Summary Report !!")
+    #     else:
+    #         summary()
+
+        # Entry Employee Number
+    employee_num_ite = Entry(ite_att_record)
+    employee_num_ite.place(x=315, y=586, width=100)
+
+        # Entry Employee Name
+    employee_name_ite = Entry(ite_att_record)
+    employee_name_ite.place(x=425, y=586, width=100)
+
+         # Summary Report Button 
+    ite_button_report = customtkinter.CTkButton(master=ite_att_record, text="Summary Report" ,
+                                                corner_radius=3,bg='#ffffff', fg_color="#C0C0C0",hover_color="#006699", command="error")
+    ite_button_report.place(x=550, y=586, height=21,width=110)
 
     #     # Entry Attendance Satatus
     # att_status_ite = Entry(ite_att_record)
