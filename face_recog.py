@@ -2140,6 +2140,8 @@ def new_win():
 
         def search_present():
             date_psychology = date_lb_summary_psyc.cget("text")
+            employee_num_summary_psyc.configure(state='normal')
+            emplno = employee_num_summary_psyc.get()
 
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
@@ -2148,7 +2150,7 @@ def new_win():
             for record in data_table_summary_psyc.get_children():
                 data_table_summary_psyc.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE  Department='Psychology' AND Status='Present' AND _Date='"+ str(date_psychology) +"'")
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Psychology' AND Status='Present' AND _Date='"+ str(date_psychology) +"'")
             records = cursor.fetchall()
 
             global count
@@ -2162,12 +2164,18 @@ def new_win():
                 count += 1
                 data_table_summary_psyc.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_psyc.tag_configure('oddrow', background='#EEEEEE')
+                employee_num_summary_psyc.configure(state='disabled')
+                summary_button_print1_psyc.configure(state='disabled')
+            employee_num_summary_psyc.configure(state='disabled')
+            summary_button_print1_psyc.configure(state='disabled')
 
             conn.commit()
             conn.close()
 
         def search_late():
             date_psychology = date_lb_summary_psyc.cget("text")
+            employee_num_summary_psyc.configure(state='normal')
+            emplno = employee_num_summary_psyc.get()
 
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
@@ -2176,7 +2184,7 @@ def new_win():
             for record in data_table_summary_psyc.get_children():
                 data_table_summary_psyc.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE  Department='Psychology' AND Status='Late' AND _Date='"+ str(date_psychology) +"'")
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Psychology' AND Status='Late' AND _Date='"+ str(date_psychology) +"'")
             records = cursor.fetchall()
 
             global count
@@ -2190,12 +2198,18 @@ def new_win():
                 count += 1
                 data_table_summary_psyc.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_psyc.tag_configure('oddrow', background='#EEEEEE')
+                employee_num_summary_psyc.configure(state='disabled')
+                summary_button_print1_psyc.configure(state='disabled')
+            employee_num_summary_psyc.configure(state='disabled')
+            summary_button_print1_psyc.configure(state='disabled')
 
             conn.commit()
             conn.close()
 
         def search_absent():
             date_psychology = date_lb_summary_psyc.cget("text")
+            employee_num_summary_psyc.configure(state='normal')
+            emplno = employee_num_summary_psyc.get()
 
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
@@ -2204,7 +2218,7 @@ def new_win():
             for record in data_table_summary_psyc.get_children():
                 data_table_summary_psyc.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE  Department='Psychology' AND Status='Absent' AND _Date='"+ str(date_psychology) +"'")
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Psychology' AND Status='Absent' AND _Date='"+ str(date_psychology) +"'")
             records = cursor.fetchall()
 
             global count
@@ -2218,12 +2232,18 @@ def new_win():
                 count += 1
                 data_table_summary_psyc.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_psyc.tag_configure('oddrow', background='#EEEEEE')
+                employee_num_summary_psyc.configure(state='disabled')
+                summary_button_print1_psyc.configure(state='disabled')
+            employee_num_summary_psyc.configure(state='disabled')
+            summary_button_print1_psyc.configure(state='disabled')
 
             conn.commit()
             conn.close()
 
         def search_earlydismissal():
             date_psychology = date_lb_summary_psyc.cget("text")
+            employee_num_summary_psyc.configure(state='normal')
+            emplno = employee_num_summary_psyc.get()
 
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
@@ -2232,7 +2252,7 @@ def new_win():
             for record in data_table_summary_psyc.get_children():
                 data_table_summary_psyc.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE  Department='Psychology' AND Status='Early Dismissal' AND _Date='"+ str(date_psychology) +"'")
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Psychology' AND Status='Early Dismissal' AND _Date='"+ str(date_psychology) +"'")
             records = cursor.fetchall()
 
             global count
@@ -2246,6 +2266,44 @@ def new_win():
                 count += 1
                 data_table_summary_psyc.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_psyc.tag_configure('oddrow', background='#EEEEEE')
+                employee_num_summary_psyc.configure(state='disabled')
+                summary_button_print1_psyc.configure(state='disabled')
+            employee_num_summary_psyc.configure(state='disabled')
+            summary_button_print1_psyc.configure(state='disabled')
+
+            conn.commit()
+            conn.close()
+
+        def search_date_psyc():
+            date_psychology = dtr_summary_psyc.get()
+            employee_num_summary_psyc.configure(state='normal')
+            emplno = employee_num_summary_psyc.get()
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_summary_psyc.get_children():
+                data_table_summary_psyc.delete(record)
+            
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Psychology' AND _Date='"+ str(date_psychology) +"'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                else:
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                count += 1
+                data_table_summary_psyc.tag_configure('evenrow', background='#EEEEEE')
+                data_table_summary_psyc.tag_configure('oddrow', background='#EEEEEE')
+                employee_num_summary_psyc.configure(state='disabled')
+                summary_button_print1_psyc.configure(state='normal')
+                dtr_summary_psyc.delete(0,END)
+            employee_num_summary_psyc.configure(state='disabled')
 
             conn.commit()
             conn.close()
@@ -2298,6 +2356,7 @@ def new_win():
                 conn.commit()
                 conn.close()
                 refreshTable_log()
+                summary_button_print1_psyc.configure(state='disabled')
             else:
                 messagebox.showinfo("Message", "You did not save the file!!")
 
@@ -2378,8 +2437,8 @@ def new_win():
         date_summary_psyc_psyc.place(x=370, y=352, width=80)
 
            # Entry dtr
-        dtr_summary_psyc_psyc = Entry(popupwindow_psyc, state='disabled')
-        dtr_summary_psyc_psyc.place(x=152, y=470, width=80)
+        dtr_summary_psyc = Entry(popupwindow_psyc,)
+        dtr_summary_psyc.place(x=152, y=470, width=80)
 
             # Button Present
         present_btn_summary_psyc = PhotoImage(file = "pic/btn_present.png")
@@ -2430,12 +2489,12 @@ def new_win():
             # Generate Button
         generate_btn_summary_psyc = PhotoImage(file = "pic/btn_generate.png")
         summary_button_generate_psyc = customtkinter.CTkButton(master=popupwindow_psyc,image=generate_btn_summary_psyc, text="",
-                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command='')
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command=search_date_psyc)
         summary_button_generate_psyc.place(x=258, y=468, height=20,width=80)
 
             # Print Button
-        summary_button_print1_psyc = customtkinter.CTkButton(master=popupwindow_psyc,image=print_btn_summary_psyc, text="",
-                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command='')
+        summary_button_print1_psyc = customtkinter.CTkButton(master=popupwindow_psyc,state='disabled',image=print_btn_summary_psyc, text="",
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command=print_data_psyc)
         summary_button_print1_psyc.place(x=358, y=468, height=20,width=80)
 
             # Show All Button
@@ -2923,6 +2982,7 @@ def new_win():
                 employee_num_summary_applied.configure(state='disabled')
                 summary_button_print1_applied.configure(state='disabled')
             summary_button_print1_applied.configure(state='disabled')
+            employee_num_summary_applied.configure(state='disabled')
 
             conn.commit()
             conn.close()
@@ -2956,6 +3016,7 @@ def new_win():
                 employee_num_summary_applied.configure(state='disabled')
                 summary_button_print1_applied.configure(state='disabled')
             summary_button_print1_applied.configure(state='disabled')
+            employee_num_summary_applied.configure(state='disabled')
 
             conn.commit()
             conn.close()
@@ -2989,6 +3050,7 @@ def new_win():
                 employee_num_summary_applied.configure(state='disabled')
                 summary_button_print1_applied.configure(state='disabled')
             summary_button_print1_applied.configure(state='disabled')
+            employee_num_summary_applied.configure(state='disabled')
 
             conn.commit()
             conn.close()
@@ -3022,6 +3084,7 @@ def new_win():
                 employee_num_summary_applied.configure(state='disabled')
                 summary_button_print1_applied.configure(state='disabled')
             summary_button_print1_applied.configure(state='disabled')
+            employee_num_summary_applied.configure(state='disabled')
 
             conn.commit()
             conn.close()
@@ -3736,6 +3799,7 @@ def new_win():
                 employee_name_summary_ite.configure(state='disabled')
                 summary_button_print1_ite.configure(state='disabled')
             summary_button_print1_ite.configure(state='disabled')
+            employee_name_summary_ite.configure(state='disabled')
 
             conn.commit()
             conn.close()
@@ -3769,6 +3833,7 @@ def new_win():
                 employee_name_summary_ite.configure(state='disabled')
                 summary_button_print1_ite.configure(state='disabled')
             summary_button_print1_ite.configure(state='disabled')
+            employee_name_summary_ite.configure(state='disabled')
 
             conn.commit()
             conn.close()
@@ -3802,6 +3867,7 @@ def new_win():
                 employee_name_summary_ite.configure(state='disabled')
                 summary_button_print1_ite.configure(state='disabled')
             summary_button_print1_ite.configure(state='disabled')
+            employee_name_summary_ite.configure(state='disabled')
 
             conn.commit()
             conn.close()
@@ -3835,6 +3901,7 @@ def new_win():
                 employee_name_summary_ite.configure(state='disabled')
                 summary_button_print1_ite.configure(state='disabled')
             summary_button_print1_ite.configure(state='disabled')
+            employee_name_summary_ite.configure(state='disabled')
 
             conn.commit()
             conn.close()
