@@ -2896,6 +2896,8 @@ def new_win():
 
         def search_present():
             date_physics = date_lb_summary_applied.cget("text")
+            employee_num_summary_applied.configure(state='normal')
+            emplno = employee_num_summary_applied.get()
 
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
@@ -2904,7 +2906,7 @@ def new_win():
             for record in data_table_summary_applied.get_children():
                 data_table_summary_applied.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE  Department='Applied Physics' AND Status='Present' AND _Date='"+ str(date_physics) +"'")
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Applied Physics' AND Status='Present' AND _Date='"+ str(date_physics) +"'")
             records = cursor.fetchall()
 
             global count
@@ -2918,12 +2920,17 @@ def new_win():
                 count += 1
                 data_table_summary_applied.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_applied.tag_configure('oddrow', background='#EEEEEE')
+                employee_num_summary_applied.configure(state='disabled')
+                summary_button_print1_applied.configure(state='disabled')
+            summary_button_print1_applied.configure(state='disabled')
 
             conn.commit()
             conn.close()
 
         def search_late():
             date_physics = date_lb_summary_applied.cget("text")
+            employee_num_summary_applied.configure(state='normal')
+            emplno = employee_num_summary_applied.get()
 
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
@@ -2932,7 +2939,7 @@ def new_win():
             for record in data_table_summary_applied.get_children():
                 data_table_summary_applied.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE  Department='Applied Physics' AND Status='Late' AND _Date='"+ str(date_physics) +"'")
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Applied Physics' AND Status='Late' AND _Date='"+ str(date_physics) +"'")
             records = cursor.fetchall()
 
             global count
@@ -2946,12 +2953,17 @@ def new_win():
                 count += 1
                 data_table_summary_applied.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_applied.tag_configure('oddrow', background='#EEEEEE')
+                employee_num_summary_applied.configure(state='disabled')
+                summary_button_print1_applied.configure(state='disabled')
+            summary_button_print1_applied.configure(state='disabled')
 
             conn.commit()
             conn.close()
 
         def search_absent():
             date_physics = date_lb_summary_applied.cget("text")
+            employee_num_summary_applied.configure(state='normal')
+            emplno = employee_num_summary_applied.get()
 
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
@@ -2960,7 +2972,7 @@ def new_win():
             for record in data_table_summary_applied.get_children():
                 data_table_summary_applied.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE  Department='Applied Physics' AND Status='Absent' AND _Date='"+ str(date_physics) +"'")
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Applied Physics' AND Status='Absent' AND _Date='"+ str(date_physics) +"'")
             records = cursor.fetchall()
 
             global count
@@ -2974,12 +2986,17 @@ def new_win():
                 count += 1
                 data_table_summary_applied.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_applied.tag_configure('oddrow', background='#EEEEEE')
+                employee_num_summary_applied.configure(state='disabled')
+                summary_button_print1_applied.configure(state='disabled')
+            summary_button_print1_applied.configure(state='disabled')
 
             conn.commit()
             conn.close()
 
         def search_earlydismissal():
             date_physics= date_lb_summary_applied.cget("text")
+            employee_num_summary_applied.configure(state='normal')
+            emplno = employee_num_summary_applied.get()
 
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
@@ -2988,7 +3005,7 @@ def new_win():
             for record in data_table_summary_applied.get_children():
                 data_table_summary_applied.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE  Department='Applied Physics' AND Status='Early Dismissal' AND _Date='"+ str(date_physics) +"'")
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Applied Physics' AND Status='Early Dismissal' AND _Date='"+ str(date_physics) +"'")
             records = cursor.fetchall()
 
             global count
@@ -3002,6 +3019,43 @@ def new_win():
                 count += 1
                 data_table_summary_applied.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_applied.tag_configure('oddrow', background='#EEEEEE')
+                employee_num_summary_applied.configure(state='disabled')
+                summary_button_print1_applied.configure(state='disabled')
+            summary_button_print1_applied.configure(state='disabled')
+
+            conn.commit()
+            conn.close()
+
+        def search_date_applied():
+            date_physics= dtr_summary_applied.get()
+            employee_num_summary_applied.configure(state='normal')
+            emplno = employee_num_summary_applied.get()
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_summary_applied.get_children():
+                data_table_summary_applied.delete(record)
+            
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Applied Physics' AND _Date='"+ str(date_physics) +"'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                else:
+                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                count += 1
+                data_table_summary_applied.tag_configure('evenrow', background='#EEEEEE')
+                data_table_summary_applied.tag_configure('oddrow', background='#EEEEEE')
+                dtr_summary_applied.delete(0,END)
+                employee_num_summary_applied.configure(state='disabled')
+                summary_button_print1_applied.configure(state='normal')
+            employee_num_summary_applied.configure(state='disabled')
 
             conn.commit()
             conn.close()
@@ -3054,6 +3108,7 @@ def new_win():
                 conn.commit()
                 conn.close()
                 refreshTable_log()
+                summary_button_print1_applied.configure(state='disabled')
             else:
                 messagebox.showinfo("Message", "You did not save the file!!")
 
@@ -3134,7 +3189,7 @@ def new_win():
         date_summary_applied.place(x=370, y=352, width=80)
 
            # Entry dtr
-        dtr_summary_applied = Entry(popupwindow_applied, state='disabled')
+        dtr_summary_applied = Entry(popupwindow_applied)
         dtr_summary_applied.place(x=152, y=470, width=80)
 
             # Button Present
@@ -3186,12 +3241,12 @@ def new_win():
             # Generate Button
         generate_btn_summary_applied = PhotoImage(file = "pic/btn_generate.png")
         summary_button_generate_applied = customtkinter.CTkButton(master=popupwindow_applied,image=generate_btn_summary_applied, text="",
-                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command='')
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command=search_date_applied)
         summary_button_generate_applied.place(x=258, y=468, height=20,width=80)
 
             # Print Button
-        summary_button_print1_applied = customtkinter.CTkButton(master=popupwindow_applied,image=print_btn_summary_applied, text="",
-                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command='')
+        summary_button_print1_applied = customtkinter.CTkButton(master=popupwindow_applied,state='disabled',image=print_btn_summary_applied, text="",
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command=print_data_applied)
         summary_button_print1_applied.place(x=358, y=468, height=20,width=80)
 
             # Show All Button
