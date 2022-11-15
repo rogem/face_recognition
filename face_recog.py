@@ -3222,59 +3222,6 @@ def new_win():
         string_date_applied = strftime('%d/%m/20%y')
         date_lb_applied.configure(text = string_date_applied)
 
-    # def normal_applied():
-    #     employee_num_applied.configure(state='normal')
-    #     employee_name_applied.configure(state='normal')
-    #     applied_department_combobox.configure(state='normal')
-    #     time_in_applied.configure(state='normal')
-    #     time_out_applied.configure(state='normal')
-    #     date_applied.configure(state='normal')
-    #     att_status_applied.configure(state='normal')
-
-    # def disable_text_applied():
-    #     employee_num_applied.configure(state='disabled',text='')
-    #     employee_name_applied.configure(state='disabled')
-    #     applied_department_combobox.configure(state='disabled')
-    #     time_in_applied.configure(state='disabled')
-    #     time_out_applied.configure(state='disabled')
-    #     date_applied.configure(state='disabled')
-    #     att_status_applied.configure(state='disabled')
-
-    # def reset_applied():
-    #     normal_applied()
-    #     employee_num_applied.delete(0, END)
-    #     employee_name_applied.delete(0, END)
-    #     applied_department_combobox.delete(0, END)
-    #     time_in_applied.delete(0, END)
-    #     time_out_applied.delete(0, END)
-    #     date_applied.delete(0, END)
-    #     att_status_applied.delete(0, END)
-    #     disable_text_applied()
-
-    # def select_row_applied(e):
-    #     selected = data_table_applied.focus()
-    #     values = data_table_applied.item(selected, 'values')
-
-    #     normal_applied()
-
-    #     employee_num_applied.delete(0, END)
-    #     employee_name_applied.delete(0, END)
-    #     applied_department_combobox.delete(0, END)
-    #     time_in_applied.delete(0, END)
-    #     time_out_applied.delete(0, END)
-    #     date_applied.delete(0, END)
-    #     att_status_applied.delete(0, END)
-
-    #     employee_num_applied.insert(0, values[0])
-    #     employee_name_applied.insert(0, values[1])
-    #     applied_department_combobox.insert(0, values[2])
-    #     time_in_applied.insert(0, values[3])
-    #     time_out_applied.insert(0, values[4])
-    #     date_applied.insert(0, values[5])
-    #     att_status_applied.insert(0, values[6])
-
-    #     disable_text_applied()
-
             # Get And Disply the data in the table
     def applied_read():
         conn = sqlite3.connect("data/data.db")
@@ -3353,57 +3300,6 @@ def new_win():
 
         conn.commit()
         conn.close()
-
-    # def print_data_applied():
-    #     file = filedialog.asksaveasfilename(title="Select file",initialfile="datafile.xlsx", defaultextension=".xlsx",filetypes=[("Execl file","*.xlsx")])
-
-    #     cols = ['Employee No.','Name','Department','Time in','Time out','Date','Status']
-    #     path = 'excelfile/read_data_employee_appliedphysics.csv'
-    #     excel_name = 'excelfile/new_datasave_appliedphysics.xlsx'
-    #     lst = []
-    #     with open(path,"w",newline='') as myfile:
-    #         csvwriter = csv.writer(myfile, delimiter=',')
-    #         for row_id in data_table_applied.get_children():
-    #             row = data_table_applied.item(row_id,'values')
-    #             lst.append(row)
-    #         lst = list(map(list,lst))
-    #         lst.insert(0,cols)
-    #         for row in lst:
-    #             csvwriter.writerow(row)
-
-    #     writer = pd.ExcelWriter(excel_name)
-    #     df = pd.read_csv(path)
-    #     df.to_excel(writer,'sheet1')
-    #     writer.save()
-    #     source = "excelfile/new_datasave_appliedphysics.xlsx"
-    #     if file:
-    #         shutil.copy(source,file)
-    #         conn = sqlite3.connect("data/data.db")
-    #         cursor = conn.cursor()
-
-    #         currentDateTime = datetime.datetime.now()
-
-    #         cursor.execute("""CREATE TABLE IF NOT EXISTS 
-    #             activity_log(
-    #                         "ID"    INTEGER,
-    #                         "Name"  TEXT,
-    #                         "Activity"  TEXT,
-    #                         "Department"    TEXT,
-    #                         "Date_Time" TIMESTAMP,
-    #                         PRIMARY KEY("ID" AUTOINCREMENT)
-    #                         )""")
-
-    #         eName = pg4_lb_name.cget("text")
-    #         eDepartment = pg4_lb_dept.cget("text")
-
-    #         insetdata = str(eName),'Print',str(eDepartment),currentDateTime
-    #         cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
-    #                             VAlUES(?,?,?,?)""", insetdata)
-    #         conn.commit()
-    #         conn.close()
-    #         refreshTable_log()
-    #     else:
-    #         messagebox.showinfo("Message", "You did not save the file!!")
 
          # Data Table "TreeView"
     scrollbarx_applied = Scrollbar(applied_physics_att_record, orient=HORIZONTAL)
@@ -3573,10 +3469,6 @@ def new_win():
     total_late_lb_applied = Label(applied_physics_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
     total_late_lb_applied.place(x=990, y=190)
 
-    #     # ComboBox College Department
-    # applied_department_combobox = ttk.Combobox(applied_physics_att_record, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
-    # applied_department_combobox.place(x=445, y=305, width=200)
-
     def error_applied():
         emp_num = employee_num_applied.get()
         emp_name = employee_name_applied.get()
@@ -3598,22 +3490,6 @@ def new_win():
     applied_button_report = customtkinter.CTkButton(master=applied_physics_att_record, text="Summary Report" ,
                                                 corner_radius=3,bg='#ffffff', fg_color="#C0C0C0",hover_color="#006699", command=error_applied)
     applied_button_report.place(x=550, y=586, height=21,width=110)
-
-    #     # Entry Attendance Satatus
-    # att_status_applied = Entry(applied_physics_att_record)
-    # att_status_applied.place(x=404, y=428, width=110)
-
-    #     # Entry Time In
-    # time_in_applied = Entry(applied_physics_att_record)
-    # time_in_applied.place(x=565, y=366, width=110)
-
-    #     # Entry Time Out
-    # time_out_applied = Entry(applied_physics_att_record)
-    # time_out_applied.place(x=565, y=397, width=110)
-
-    #     # Entry Date
-    # date_applied = Entry(applied_physics_att_record)
-    # date_applied.place(x=565, y=428, width=110)
 
          # Search Entry Individual Report
     search_ent_applied_IR = StringVar()
@@ -3649,18 +3525,6 @@ def new_win():
                                                 corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=refreshTable_applied)
     applied_button_showall.place(x=843, y=608, height=21,width=90)
 
-    #     # Reset Button
-    # reset_btn_applied = PhotoImage(file = "pic/btn_reset_small.png")
-    # applied_button_reset = customtkinter.CTkButton(master=applied_physics_att_record,image=reset_btn_applied, text="" ,
-    #                                             corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=reset_applied)
-    # applied_button_reset.place(x=510, y=519, height=25,width=100)
-
-    #     # Print Button
-    # print_btn_applied = PhotoImage(file = "pic/btn_print.png")
-    # applied_button_print = customtkinter.CTkButton(master=applied_physics_att_record,image=print_btn_applied, text="" ,
-    #                                             corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=print_data_applied)
-    # applied_button_print.place(x=372, y=519, height=25,width=100)
-
         # Back Button
     applied_back = PhotoImage(file = "pic/btn_back_page.png")
     applied_button_back = customtkinter.CTkButton(master=applied_physics_att_record,image=applied_back, text="" ,
@@ -3669,6 +3533,490 @@ def new_win():
 
     time_applied()
     count_data_applied()
+
+    # ============= Summary Report In Frame ========================================================================================================================
+
+    def summary_ite():
+        popupwindow_ite = Toplevel(main_window)
+        popupwindow_ite.title("Individual Summary Report")
+        popupwindow_ite.geometry('1020x650')
+        popupwindow_ite.grab_set()
+        popupwindow_ite.resizable(False,False)
+
+            # open background image
+        popupwindow_ite.summary_image = Image.open('pic/16.png')
+        popupwindow_ite.summary_resize_image = popupwindow_ite.summary_image.resize((1020,650))
+        popupwindow_ite.photo = ImageTk.PhotoImage(popupwindow_ite.summary_resize_image)
+        popupwindow_ite.summary_bg_img_lb = Label(popupwindow_ite, image = popupwindow_ite.photo)
+        popupwindow_ite.summary_bg_img_lb.pack()
+
+        emp_num = employee_num_ite.get()
+        emp_name = employee_name_ite.get()
+
+             # Get Current Time and Date
+        def time_report():
+            string_time = strftime('%I:%M:%S %p')
+            time_lb_summary_ite.configure(text = string_time)
+            time_lb_summary_ite.after(1000, time_report)
+
+            string_date = strftime('%d/%m/20%y')
+            date_lb_summary_ite.configure(text = string_date)
+
+        def display_info():
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT Department FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            dept = cursor.fetchone()
+
+            cursor.execute("SELECT Status FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            st = cursor.fetchone()
+
+            cursor.execute("SELECT Time_in FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            Tmin = cursor.fetchone()
+
+            cursor.execute("SELECT Time_out FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            Tmout = cursor.fetchone()
+
+            cursor.execute("SELECT _Date FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            dt = cursor.fetchone()
+
+
+            summary_department_combobox_ite.configure(state='normal')
+            employee_num_summary_ite.configure(state='normal')
+            employee_name_summary_ite.configure(state='normal')
+            att_status_summary_ite.configure(state='normal')
+            time_in_summary_ite.configure(state='normal')
+            time_out_summary_ite.configure(state='normal')
+            date_summary_ite.configure(state='normal')
+
+            summary_department_combobox_ite.insert(0,dept)
+            employee_num_summary_ite.insert(0,emp_num)
+            employee_name_summary_ite.insert(0,emp_name)
+            att_status_summary_ite.insert(0,st)
+            time_in_summary_ite.insert(0,Tmin)
+            time_out_summary_ite.insert(0,Tmout)
+            date_summary_ite.insert(0,dt)
+
+            summary_department_combobox_ite.configure(state='disabled')
+            employee_num_summary_ite.configure(state='disabled')
+            employee_name_summary_ite.configure(state='disabled')
+            att_status_summary_ite.configure(state='disabled')
+            time_in_summary_ite.configure(state='disabled')
+            time_out_summary_ite.configure(state='disabled')
+            date_summary_ite.configure(state='disabled')
+
+            conn.commit()
+            conn.close()
+
+        def count_data_report():
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            date_IT = date_lb_summary_ite.cget("text")
+
+            cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='ITE' AND Status='Present' AND _Date='"+ str(date_IT) +"'")
+            present_math = cursor.fetchall()
+
+            cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE  Department='ITE' AND Status='Late' AND _Date='"+ str(date_IT) +"'")
+            late_math = cursor.fetchall()
+
+            cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='ITE' AND Status='Absent' AND _Date='"+ str(date_IT) +"'")
+            absent_math = cursor.fetchall()
+
+            cursor.execute("SELECT COUNT(Status) FROM attendance_record WHERE Department='ITE' AND Status='Early Dismissal' AND _Date='"+ str(date_IT) +"'")
+            earldis_math = cursor.fetchall()
+
+            total_present_lb_summary_ite.configure(text=present_math)
+            total_late_lb_summary_ite.configure(text=late_math)
+            total_absent_lb_summary_ite.configure(text=absent_math)
+            total_earldis_lb_summary_ite.configure(text=earldis_math)
+
+            conn.commit()
+            conn.close()
+
+        def ite_read_report():
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            results_math_report = cursor.fetchall()
+            conn.commit()
+            return results_math_report
+
+        def refreshTable_ite_report():
+            for data_report in data_table_summary_ite.get_children():
+                data_table_summary_ite.delete(data_report)
+
+            for results_report in reverse(ite_read_report()):
+                data_table_summary_ite.insert(parent='', index='end', iid=results_report, text="", values=(results_report), tag="orow")
+            data_table_summary_ite.tag_configure('orow', background='#EEEEEE')
+
+        def search_present():
+            date_IT = date_lb_summary_ite.cget("text")
+            employee_name_summary_ite.configure(state='normal')
+            sname = employee_name_summary_ite.get()
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_summary_ite.get_children():
+                data_table_summary_ite.delete(record)
+            
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Name ='"+ str(sname) +"' AND Department='ITE' AND Status='Present' AND _Date='"+ str(date_IT) +"'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                else:
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                count += 1
+                data_table_summary_ite.tag_configure('evenrow', background='#EEEEEE')
+                data_table_summary_ite.tag_configure('oddrow', background='#EEEEEE')
+                employee_name_summary_ite.configure(state='disabled')
+                summary_button_print1_ite.configure(state='disabled')
+            summary_button_print1_ite.configure(state='disabled')
+
+            conn.commit()
+            conn.close()
+
+        def search_late():
+            date_IT = date_lb_summary_ite.cget("text")
+            employee_name_summary_ite.configure(state='normal')
+            sname = employee_name_summary_ite.get()
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_summary_ite.get_children():
+                data_table_summary_ite.delete(record)
+            
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Name ='"+ str(sname) +"' AND Department='ITE' AND Status='Late' AND _Date='"+ str(date_IT) +"'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                else:
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                count += 1
+                data_table_summary_ite.tag_configure('evenrow', background='#EEEEEE')
+                data_table_summary_ite.tag_configure('oddrow', background='#EEEEEE')
+                employee_name_summary_ite.configure(state='disabled')
+                summary_button_print1_ite.configure(state='disabled')
+            summary_button_print1_ite.configure(state='disabled')
+
+            conn.commit()
+            conn.close()
+
+        def search_absent():
+            date_IT = date_lb_summary_ite.cget("text")
+            employee_name_summary_ite.configure(state='normal')
+            sname = employee_name_summary_ite.get()
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_summary_ite.get_children():
+                data_table_summary_ite.delete(record)
+            
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Name ='"+ str(sname) +"' AND Department='ITE' AND Status='Absent' AND _Date='"+ str(date_IT) +"'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                else:
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                count += 1
+                data_table_summary_ite.tag_configure('evenrow', background='#EEEEEE')
+                data_table_summary_ite.tag_configure('oddrow', background='#EEEEEE')
+                employee_name_summary_ite.configure(state='disabled')
+                summary_button_print1_ite.configure(state='disabled')
+            summary_button_print1_ite.configure(state='disabled')
+
+            conn.commit()
+            conn.close()
+
+        def search_earlydismissal():
+            date_IT = date_lb_summary_ite.cget("text")
+            employee_name_summary_ite.configure(state='normal')
+            sname = employee_name_summary_ite.get()
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_summary_ite.get_children():
+                data_table_summary_ite.delete(record)
+            
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Name ='"+ str(sname) +"' AND Department='ITE' AND Status='Early Dismissal' AND _Date='"+ str(date_IT) +"'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                else:
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                count += 1
+                data_table_summary_ite.tag_configure('evenrow', background='#EEEEEE')
+                data_table_summary_ite.tag_configure('oddrow', background='#EEEEEE')
+                employee_name_summary_ite.configure(state='disabled')
+                summary_button_print1_ite.configure(state='disabled')
+            summary_button_print1_ite.configure(state='disabled')
+
+            conn.commit()
+            conn.close()
+
+        def search_date():
+            date_IT = dtr_summary_ite.get()
+            employee_name_summary_ite.configure(state='normal')
+            sname = employee_name_summary_ite.get()
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_summary_ite.get_children():
+                data_table_summary_ite.delete(record)
+            
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Name ='"+ str(sname) +"' AND Department='ITE' AND _Date='"+ str(date_IT) +"'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                else:
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                count += 1
+                data_table_summary_ite.tag_configure('evenrow', background='#EEEEEE')
+                data_table_summary_ite.tag_configure('oddrow', background='#EEEEEE')
+                dtr_summary_ite.delete(0,END)
+                employee_name_summary_ite.configure(state='disabled')
+                summary_button_print1_ite.configure(state='normal')
+            employee_name_summary_ite.configure(state='disabled')
+
+            conn.commit()
+            conn.close()
+
+        def print_data_ite():
+            file = filedialog.asksaveasfilename(title="Select file",initialfile="datafile.xlsx", defaultextension=".xlsx",filetypes=[("Execl file","*.xlsx")])
+
+            cols = ['Time in','Time out','Date','Status']
+            path = 'excelfile/read_data_employee_ite.csv'
+            excel_name = 'excelfile/new_datasave_ite.xlsx'
+            lst = []
+            with open(path,"w",newline='') as myfile:
+                csvwriter = csv.writer(myfile, delimiter=',')
+                for row_id in data_table_summary_ite.get_children():
+                    row = data_table_summary_ite.item(row_id,'values')
+                    lst.append(row)
+                lst = list(map(list,lst))
+                lst.insert(0,cols)
+                for row in lst:
+                    csvwriter.writerow(row)
+
+            writer = pd.ExcelWriter(excel_name)
+            df = pd.read_csv(path)
+            df.to_excel(writer,'sheet1')
+            writer.save()
+            source = "excelfile/new_datasave_ite.xlsx"
+            if file:
+                shutil.copy(source,file)
+                conn = sqlite3.connect("data/data.db")
+                cursor = conn.cursor()
+
+                currentDateTime = datetime.datetime.now()
+
+                cursor.execute("""CREATE TABLE IF NOT EXISTS 
+                    activity_log(
+                                "ID"    INTEGER,
+                                "Name"  TEXT,
+                                "Activity"  TEXT,
+                                "Department"    TEXT,
+                                "Date_Time" TIMESTAMP,
+                                PRIMARY KEY("ID" AUTOINCREMENT)
+                                )""")
+
+                eName = pg4_lb_name.cget("text")
+                eDepartment = pg4_lb_dept.cget("text")
+
+                insetdata = str(eName),'Print',str(eDepartment),currentDateTime
+                cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                                    VAlUES(?,?,?,?)""", insetdata)
+                conn.commit()
+                conn.close()
+                refreshTable_log()
+                summary_button_print1_ite.configure(state='disabled')
+            else:
+                messagebox.showinfo("Message", "You did not save the file!!")
+
+                 # Data Table "TreeView"
+        scrollbarx_summary_ite = Scrollbar(popupwindow_ite, orient=HORIZONTAL)
+        scrollbarx_summary_ite.place(x=500, y=584, width=367)
+        scrollbary_summary_ite = Scrollbar(popupwindow_ite, orient=VERTICAL)
+        scrollbary_summary_ite.place(x=869, y=225, height=358)
+
+        # style = ttk.Style()
+        # style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
+
+        data_table_summary_ite = ttk.Treeview(popupwindow_ite)
+        data_table_summary_ite.place(x=500, y=225, width=368, height=358)
+        data_table_summary_ite.configure(yscrollcommand=scrollbary_summary_ite.set, xscrollcommand=scrollbarx_summary_ite.set)
+
+        scrollbarx_summary_ite.configure(command=data_table_summary_ite.xview)
+        scrollbary_summary_ite.configure(command=data_table_summary_ite.yview)
+
+        data_table_summary_ite['columns'] = ("Time in","Time out","Date","Remarks")
+        # Format Columns
+        data_table_summary_ite.column("#0", width=0, stretch=NO)
+        data_table_summary_ite.column("Time in", anchor=W, width=100)
+        data_table_summary_ite.column("Time out", anchor=W, width=100)
+        data_table_summary_ite.column("Date", anchor=W, width=100)
+        data_table_summary_ite.column("Remarks", anchor=W, width=100)
+
+        # Create Headings
+        data_table_summary_ite.heading("Time in", text="Time in", anchor=CENTER)
+        data_table_summary_ite.heading("Time out", text="Time out", anchor=CENTER)
+        data_table_summary_ite.heading("Date", text="Date", anchor=CENTER)
+        data_table_summary_ite.heading("Remarks", text="Remarks", anchor=CENTER)
+
+        refreshTable_ite_report()
+
+                # Time Text
+        time_lb = Label(popupwindow_ite, text='Time:', fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+        time_lb.place(x=360, y=10)
+
+            # date Text
+        date_lb = Label(popupwindow_ite, text='Date:', fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+        date_lb.place(x=530, y=10)
+
+            # Time Label
+        time_lb_summary_ite = Label(popupwindow_ite, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+        time_lb_summary_ite.place(x=410, y=10)
+
+            # date Label
+        date_lb_summary_ite = Label(popupwindow_ite, fg='#000000', bg ='#ffffff', font = "Heltvetica 12 bold")
+        date_lb_summary_ite.place(x=580, y=10)
+
+            # ComboBox College Department
+        summary_department_combobox_ite = ttk.Combobox(popupwindow_ite, state='disabled', values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
+        summary_department_combobox_ite.place(x=253, y=245, width=175)
+
+            # Entry Employee Number
+        employee_num_summary_ite = Entry(popupwindow_ite, state='disabled')
+        employee_num_summary_ite.place(x=240, y=308, width=80)
+
+            # Entry Employee Name
+        employee_name_summary_ite = Entry(popupwindow_ite, state='disabled')
+        employee_name_summary_ite.place(x=240, y=330, width=80)
+
+            # Entry Attendance Satatus
+        att_status_summary_ite = Entry(popupwindow_ite, state='disabled')
+        att_status_summary_ite.place(x=240, y=352, width=80)
+
+            # Entry Time In
+        time_in_summary_ite = Entry(popupwindow_ite, state='disabled')
+        time_in_summary_ite.place(x=370, y=308, width=80)
+
+            # Entry Time Out
+        time_out_summary_ite = Entry(popupwindow_ite, state='disabled')
+        time_out_summary_ite.place(x=370, y=330, width=80)
+
+            # Entry Date
+        date_summary_ite = Entry(popupwindow_ite, state='disabled')
+        date_summary_ite.place(x=370, y=352, width=80)
+
+           # Entry dtr
+        dtr_summary_ite = Entry(popupwindow_ite)
+        dtr_summary_ite.place(x=152, y=470, width=80)
+
+            # Button Present
+        present_btn_summary_ite = PhotoImage(file = "pic/btn_present.png")
+        summary_button_present_ite = customtkinter.CTkButton(master=popupwindow_ite,image=present_btn_summary_ite, text="" ,
+                                                    corner_radius=10,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command=search_present)
+        summary_button_present_ite.place(x=175, y=103, height=78,width=150)
+
+            # Button Late
+        late_btn_summary_ite = PhotoImage(file = "pic/btn_late.png")
+        summary_button_late_ite = customtkinter.CTkButton(master=popupwindow_ite,image=late_btn_summary_ite, text="" ,
+                                                    corner_radius=10,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command=search_late)
+        summary_button_late_ite.place(x=355, y=103, height=78,width=150)
+
+            # Button Absent
+        absent_btn_summary_ite = PhotoImage(file = "pic/btn_absent.png")
+        summary_button_absent_ite = customtkinter.CTkButton(master=popupwindow_ite,image=absent_btn_summary_ite, text="" ,
+                                                    corner_radius=10,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command=search_absent)
+        summary_button_absent_ite.place(x=525, y=103, height=78,width=150)
+
+            # Button Early Dismisal
+        ed_btn_summary_ite = PhotoImage(file = "pic/btn_early_dis.png")
+        summary_button_ed_ite = customtkinter.CTkButton(master=popupwindow_ite,image=ed_btn_summary_ite, text="" ,
+                                                    corner_radius=10,bg_color='#ffffff', fg_color="#00436e",hover_color="#006699", command=search_earlydismissal)
+        summary_button_ed_ite.place(x=705, y=103, height=78,width=150)
+
+            # Total Present Label
+        total_present_lb_summary_ite = Label(popupwindow_ite, text='000', fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
+        total_present_lb_summary_ite.place(x=225, y=136)
+
+            # Total Late Label
+        total_late_lb_summary_ite = Label(popupwindow_ite, text='000', fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
+        total_late_lb_summary_ite.place(x=405, y=136)
+
+            # Total Absent Label
+        total_absent_lb_summary_ite = Label(popupwindow_ite, text='000', fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
+        total_absent_lb_summary_ite.place(x=575, y=136)
+
+            # Total Early Dismisal Label
+        total_earldis_lb_summary_ite = Label(popupwindow_ite, text='000', fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
+        total_earldis_lb_summary_ite.place(x=755, y=136)
+
+            # Print Button
+        print_btn_summary_ite = PhotoImage(file = "pic/btn_print.png")
+        summary_button_print_ite = customtkinter.CTkButton(master=popupwindow_ite,image=print_btn_summary_ite, text="",
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command=print_data_ite)
+        summary_button_print_ite.place(x=258, y=375, height=20,width=80)
+
+            # Generate Button
+        generate_btn_summary_ite = PhotoImage(file = "pic/btn_generate.png")
+        summary_button_generate_ite = customtkinter.CTkButton(master=popupwindow_ite,image=generate_btn_summary_ite, text="",
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command=search_date)
+        summary_button_generate_ite.place(x=258, y=468, height=20,width=80)
+
+            # Print Button
+        summary_button_print1_ite = customtkinter.CTkButton(master=popupwindow_ite,state='disabled',image=print_btn_summary_ite, text="",
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command=print_data_ite)
+        summary_button_print1_ite.place(x=358, y=468, height=20,width=80)
+
+            # Show All Button
+        showall_btn_summary_ite = PhotoImage(file = "pic/btn_showall_small.png")
+        summary_button_showall_ite = customtkinter.CTkButton(master=popupwindow_ite,image=showall_btn_summary_ite, text="" ,
+                                                    corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=refreshTable_ite_report)
+        summary_button_showall_ite.place(x=650, y=598, height=20,width=90)
+
+        display_info()
+        time_report()
+        count_data_report()
+
 
     # ============= ITE Attendance Record Frame =============================================================================
 
@@ -3687,59 +4035,6 @@ def new_win():
 
         string_date_ite = strftime('%d/%m/20%y')
         date_lb_ite.configure(text = string_date_ite)
-
-    # def normal_ite():
-    #     employee_num_ite.configure(state='normal')
-    #     employee_name_ite.configure(state='normal')
-    #     ite_department_combobox.configure(state='normal')
-    #     time_in_ite.configure(state='normal')
-    #     time_out_ite.configure(state='normal')
-    #     date_ite.configure(state='normal')
-    #     att_status_ite.configure(state='normal')
-
-    # def disable_text_ite():
-    #     employee_num_ite.configure(state='disabled',text='')
-    #     employee_name_ite.configure(state='disabled')
-    #     ite_department_combobox.configure(state='disabled')
-    #     time_in_ite.configure(state='disabled')
-    #     time_out_ite.configure(state='disabled')
-    #     date_ite.configure(state='disabled')
-    #     att_status_ite.configure(state='disabled')
-
-    # def reset_ite():
-    #     normal_ite()
-    #     employee_num_ite.delete(0, END)
-    #     employee_name_ite.delete(0, END)
-    #     ite_department_combobox.delete(0, END)
-    #     time_in_ite.delete(0, END)
-    #     time_out_ite.delete(0, END)
-    #     date_ite.delete(0, END)
-    #     att_status_ite.delete(0, END)
-    #     disable_text_ite()
-
-    # def select_row_ite(e):
-    #     selected = data_table_ite.focus()
-    #     values = data_table_ite.item(selected, 'values')
-
-    #     normal_ite()
-
-    #     employee_num_ite.delete(0, END)
-    #     employee_name_ite.delete(0, END)
-    #     ite_department_combobox.delete(0, END)
-    #     time_in_ite.delete(0, END)
-    #     time_out_ite.delete(0, END)
-    #     date_ite.delete(0, END)
-    #     att_status_ite.delete(0, END)
-
-    #     employee_num_ite.insert(0, values[0])
-    #     employee_name_ite.insert(0, values[1])
-    #     ite_department_combobox.insert(0, values[2])
-    #     time_in_ite.insert(0, values[3])
-    #     time_out_ite.insert(0, values[4])
-    #     date_ite.insert(0, values[5])
-    #     att_status_ite.insert(0, values[6])
-
-    #     disable_text_ite()
 
             # Get And Disply the data in the table
     def ite_read():
@@ -3821,57 +4116,6 @@ def new_win():
         conn.commit()
         conn.close()
 
-    # def print_data_ite():
-    #     file = filedialog.asksaveasfilename(title="Select file",initialfile="datafile.xlsx", defaultextension=".xlsx",filetypes=[("Execl file","*.xlsx")])
-
-    #     cols = ['Employee No.','Name','Department','Time in','Time out','Date','Status']
-    #     path = 'excelfile/read_data_employee_ite.csv'
-    #     excel_name = 'excelfile/new_datasave_ite.xlsx'
-    #     lst = []
-    #     with open(path,"w",newline='') as myfile:
-    #         csvwriter = csv.writer(myfile, delimiter=',')
-    #         for row_id in data_table_ite.get_children():
-    #             row = data_table_ite.item(row_id,'values')
-    #             lst.append(row)
-    #         lst = list(map(list,lst))
-    #         lst.insert(0,cols)
-    #         for row in lst:
-    #             csvwriter.writerow(row)
-
-    #     writer = pd.ExcelWriter(excel_name)
-    #     df = pd.read_csv(path)
-    #     df.to_excel(writer,'sheet1')
-    #     writer.save()
-    #     source = "excelfile/new_datasave_ite.xlsx"
-    #     if file:
-    #         shutil.copy(source,file)
-    #         conn = sqlite3.connect("data/data.db")
-    #         cursor = conn.cursor()
-
-    #         currentDateTime = datetime.datetime.now()
-
-    #         cursor.execute("""CREATE TABLE IF NOT EXISTS 
-    #             activity_log(
-    #                         "ID"    INTEGER,
-    #                         "Name"  TEXT,
-    #                         "Activity"  TEXT,
-    #                         "Department"    TEXT,
-    #                         "Date_Time" TIMESTAMP,
-    #                         PRIMARY KEY("ID" AUTOINCREMENT)
-    #                         )""")
-
-    #         eName = pg4_lb_name.cget("text")
-    #         eDepartment = pg4_lb_dept.cget("text")
-
-    #         insetdata = str(eName),'Print',str(eDepartment),currentDateTime
-    #         cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
-    #                             VAlUES(?,?,?,?)""", insetdata)
-    #         conn.commit()
-    #         conn.close()
-    #         refreshTable_log()
-    #     else:
-    #         messagebox.showinfo("Message", "You did not save the file!!")
-
          # Data Table "TreeView"
     scrollbarx_ite = Scrollbar(ite_att_record, orient=HORIZONTAL)
     scrollbarx_ite.place(x=710, y=584, width=347)
@@ -3928,7 +4172,7 @@ def new_win():
             employee_name_ite.configure(state='disabled')
 
         else:
-            messagebox.showinfo("Error", "There is no data on the table !!")
+            messagebox.showinfo("Error", "There is no selected data on the table !!")
         
 
     def ite_read_IR():
@@ -4046,18 +4290,14 @@ def new_win():
     total_late_lb_ite = Label(ite_att_record, text='000', fg='white', bg ='#00436e', font = "Heltvetica 27 bold")
     total_late_lb_ite.place(x=990, y=190)
 
-    #     # ComboBox College Department
-    # ite_department_combobox = ttk.Combobox(ite_att_record, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
-    # ite_department_combobox.place(x=445, y=305, width=200)
+    def error_ite():
+        emp_num = employee_num_ite.get()
+        emp_name = employee_name_ite.get()
 
-    # def error():
-    #     emp_num = employee_num_ite.get()
-    #     emp_name = employee_name_ite.get()
-
-    #     if emp_num == "" or emp_name == "":
-    #         messagebox.showinfo("Error", "Please Seleted a row on the table to open Summary Report !!")
-    #     else:
-    #         summary()
+        if emp_num == "" or emp_name == "":
+            messagebox.showinfo("Error", "Please Seleted a row on the table to open Summary Report !!")
+        else:
+            summary_ite()
 
         # Entry Employee Number
     employee_num_ite = Entry(ite_att_record)
@@ -4069,24 +4309,8 @@ def new_win():
 
          # Summary Report Button 
     ite_button_report = customtkinter.CTkButton(master=ite_att_record, text="Summary Report" ,
-                                                corner_radius=3,bg='#ffffff', fg_color="#C0C0C0",hover_color="#006699", command="error")
+                                                corner_radius=3,bg='#ffffff', fg_color="#C0C0C0",hover_color="#006699", command=error_ite)
     ite_button_report.place(x=550, y=586, height=21,width=110)
-
-    #     # Entry Attendance Satatus
-    # att_status_ite = Entry(ite_att_record)
-    # att_status_ite.place(x=404, y=428, width=110)
-
-    #     # Entry Time In
-    # time_in_ite = Entry(ite_att_record)
-    # time_in_ite.place(x=565, y=366, width=110)
-
-    #     # Entry Time Out
-    # time_out_ite = Entry(ite_att_record)
-    # time_out_ite.place(x=565, y=397, width=110)
-
-    #     # Entry Date
-    # date_ite = Entry(ite_att_record)
-    # date_ite.place(x=565, y=428, width=110)
 
          # Search Entry Individual Report
     search_ent_ite_IR = StringVar()
@@ -4121,18 +4345,6 @@ def new_win():
     ite_button_showall = customtkinter.CTkButton(master=ite_att_record,image=showall_btn_ite, text="" ,
                                                 corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=refreshTable_ite)
     ite_button_showall.place(x=843, y=608, height=21,width=90)
-
-    #     # Reset Button
-    # reset_btn_ite = PhotoImage(file = "pic/btn_reset_small.png")
-    # ite_button_reset = customtkinter.CTkButton(master=ite_att_record,image=reset_btn_ite, text="" ,
-    #                                             corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=summary)
-    # ite_button_reset.place(x=510, y=519, height=25,width=100)
-
-    #     # Print Button
-    # print_btn_ite = PhotoImage(file = "pic/btn_print.png")
-    # ite_button_print = customtkinter.CTkButton(master=ite_att_record,image=print_btn_ite, text="" ,
-    #                                             corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=print_data_ite)
-    # ite_button_print.place(x=372, y=519, height=25,width=100)
 
         # Back Button
     ite_back = PhotoImage(file = "pic/btn_back_page.png")
