@@ -230,13 +230,13 @@ def new_win():
         pwd = empl_log_txtbox_pass.get()
         emply = "Employee"
 
-        cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(emply) + "' AND Status ='Off'")
+        cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(emply) + "' AND Status ='Deactivated'")
         inactive = cursor.fetchone()
 
         if uname=='' or pwd=='':
             messagebox.showinfo("Error", "Please Fill The Empty Field!!")
         elif attempuser >=0 and attempuser <=2:
-            cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(emply) + "' AND Status='On'")
+            cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(emply) + "' AND Status='Activated'")
             if cursor.fetchone():
                 cursor.execute("SELECT Employee_Name FROM faculty_data WHERE Username like '"+ str(uname)+"' AND Password like '"+ str(pwd)+"'")
                 get_Name = cursor.fetchone()
@@ -298,7 +298,7 @@ def new_win():
                 empl_log_txtbox_pass.delete(0, END)
                 check_button_empl_log.deselect()
         else:
-            cursor.execute("UPDATE faculty_data SET Status='Off' WHERE (Username = '" + str(uname) + "' or  Password = '" + str(pwd) + "') AND  Position = '" + str(emply) + "'")
+            cursor.execute("UPDATE faculty_data SET Status='Deactivated' WHERE (Username = '" + str(uname) + "' or  Password = '" + str(pwd) + "') AND  Position = '" + str(emply) + "'")
             messagebox.showinfo("Error", "Access denied, Out of try!!\n\nYour Account has Deactivate!!\n\nPlease contact your Admin!!")
             empl_log_txtbox_username.delete(0, END)
             empl_log_txtbox_pass.delete(0, END)
@@ -516,9 +516,9 @@ def new_win():
         uname = pg3_txtbox_username.get()
         pwd = pg3_txtbox_pass.get()
         adm = "Admin"
-        state = "On"
+        state = "Activated"
 
-        cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(adm) + "' AND Status ='Off'")
+        cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(adm) + "' AND Status ='Deactivated'")
         inactive = cursor.fetchone()
 
         if uname=='' or pwd=='':
@@ -572,7 +572,7 @@ def new_win():
                 check_button.deselect()
 
         else:
-            cursor.execute("UPDATE faculty_data SET Status='Off' WHERE (Username = '" + str(uname) + "' or  Password = '" + str(pwd) + "') AND  Position = '" + str(adm) + "'")
+            cursor.execute("UPDATE faculty_data SET Status='Deactivated' WHERE (Username = '" + str(uname) + "' or  Password = '" + str(pwd) + "') AND  Position = '" + str(adm) + "'")
             messagebox.showinfo("Error", "Access denied, Out of try!!\n\nYour Account has Deactivate!!\n\nPlease contact your Co-Admin!!")
             pg3_txtbox_username.delete(0, END)
             pg3_txtbox_pass.delete(0, END)
@@ -1165,7 +1165,7 @@ def new_win():
     status_fac_lb.place(x=382, y=390)
 
         # Entry Status
-    status_combobox_fac_inf = ttk.Combobox(faculty_information, values=["On", "Off"])
+    status_combobox_fac_inf = ttk.Combobox(faculty_information, values=["Activated", "Deactivated"])
     status_combobox_fac_inf.place(x=385, y=405, width=125)
 
         # Label Position
