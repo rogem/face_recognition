@@ -816,6 +816,11 @@ def new_win():
 
         # Clear Text Field
     def clear():
+        department_combobox.configure(state='normal')
+        gender_combobox_fac_inf.configure(state='normal')
+        status_combobox_fac_inf.configure(state='normal')
+        position_fac_inf.configure(state='normal')
+
         department_combobox.delete(0, END)
         employee_num_fac_inf.delete(0, END)
         gender_combobox_fac_inf.delete(0, END)
@@ -830,6 +835,10 @@ def new_win():
         password_fac_inf.delete(0, END)
         # check_button_fac_inf.deselect()
         # retype_password_fac_inf.delete(0, END)
+        department_combobox.configure(state='readonly')
+        gender_combobox_fac_inf.configure(state='readonly')
+        status_combobox_fac_inf.configure(state='readonly')
+        position_fac_inf.configure(state='readonly')
 
     def search_data():
         lookup_record = search_fac_inf.get()
@@ -936,7 +945,87 @@ def new_win():
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
-        cursor.execute("SELECT * FROM faculty_data WHERE Employee_No = '" + str(Employee_No) + "' or  Email = '" + str(Email) + "'  or Contact_Number = '" + str(Contact_Number) + "' or Username = '" + str(Username) + "' or Password = '" + str(Password) + "'")
+        cursor.execute("SELECT * FROM faculty_data WHERE Employee_No = '" + str(Employee_No) + "'")
+        records = cursor.fetchone()
+
+        if records is not None:
+            return True
+        else:
+            return False
+
+        conn.commit()
+
+    def check_duplicate_Email():
+        Employee_No = employee_num_fac_inf.get()
+        Email = email_fac_inf.get()
+        Contact_Number = con_num_fac_inf.get()
+        Username = username_fac_inf.get()
+        Password = password_fac_inf.get()
+
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM faculty_data WHERE Email = '" + str(Email) + "'")
+        records = cursor.fetchone()
+
+        if records is not None:
+            return True
+        else:
+            return False
+
+        conn.commit()
+
+    def check_duplicate_Con():
+        Employee_No = employee_num_fac_inf.get()
+        Email = email_fac_inf.get()
+        Contact_Number = con_num_fac_inf.get()
+        Username = username_fac_inf.get()
+        Password = password_fac_inf.get()
+
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM faculty_data WHERE Contact_Number = '" + str(Contact_Number) + "'")
+        records = cursor.fetchone()
+
+        if records is not None:
+            return True
+        else:
+            return False
+
+        conn.commit()
+
+    def check_duplicate_Username():
+        Employee_No = employee_num_fac_inf.get()
+        Email = email_fac_inf.get()
+        Contact_Number = con_num_fac_inf.get()
+        Username = username_fac_inf.get()
+        Password = password_fac_inf.get()
+
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(Username) + "'")
+        records = cursor.fetchone()
+
+        if records is not None:
+            return True
+        else:
+            return False
+
+        conn.commit()
+
+    def check_duplicate_Pass():
+        Employee_No = employee_num_fac_inf.get()
+        Email = email_fac_inf.get()
+        Contact_Number = con_num_fac_inf.get()
+        Username = username_fac_inf.get()
+        Password = password_fac_inf.get()
+
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM faculty_data WHERE Password = '" + str(Password) + "'")
         records = cursor.fetchone()
 
         if records is not None:
@@ -948,6 +1037,11 @@ def new_win():
 
         # Add Faculty 
     def Save_Data():
+        department_combobox.configure(state='normal')
+        gender_combobox_fac_inf.configure(state='normal')
+        status_combobox_fac_inf.configure(state='normal')
+        position_fac_inf.configure(state='normal')
+
         save_employee_number = employee_num_fac_inf.get()
         save_email = email_fac_inf.get()
         save_employee_name = employee_name_fac_inf.get()
@@ -965,9 +1059,29 @@ def new_win():
             messagebox.showinfo("Error", "Please fill up the blank entry!!")
             return
         else:
-            if check_duplicate() == False:
+            if check_duplicate() == True:
+                messagebox.showinfo("Error", "Employee Number Already Exist")
+                return
+            elif check_duplicate_Email()== True:
+                messagebox.showinfo("Error", "Email Already Exist")
+                return
+            elif check_duplicate_Con()== True:
+                messagebox.showinfo("Error", "Contact Number Already Exist")
+                return
+            elif check_duplicate_Username()== True:
+                messagebox.showinfo("Error", "Username Already Exist")
+                return
+            elif check_duplicate_Pass()== True:
+                messagebox.showinfo("Error", "Password Already Exist")
+                return
+            else:
                 messagebox.showinfo("Messgae", "Data Added!!")
                 insert(str(save_employee_number),str(save_email),str(save_employee_name),str(save_gender),str(save_age),str(save_contact_number),str(save_address),str(save_college_department),str(save_username),str(save_password),str(save_position),str(save_status)) 
+                
+                department_combobox.configure(state='readonly')
+                gender_combobox_fac_inf.configure(state='readonly')
+                status_combobox_fac_inf.configure(state='readonly')
+                position_fac_inf.configure(state='readonly')
                 clear() 
 
                 conn = sqlite3.connect("data/data.db")
@@ -994,10 +1108,6 @@ def new_win():
                 conn.commit()
                 conn.close()
                 refreshTable_log()
-
-            else:
-                messagebox.showinfo("Error", "Employee Number, Email or Contact Number Already Exist")
-                return
             
         refreshTable()
 
@@ -1008,6 +1118,11 @@ def new_win():
         values = data_table.item(selected, 'values')
 
         if values:
+            department_combobox.configure(state='normal')
+            gender_combobox_fac_inf.configure(state='normal')
+            status_combobox_fac_inf.configure(state='normal')
+            position_fac_inf.configure(state='normal')
+
             employee_num_fac_inf.insert(0, values[0])
             email_fac_inf.insert(0, values[1])
             employee_name_fac_inf.insert(0, values[2])
@@ -1020,12 +1135,21 @@ def new_win():
             password_fac_inf.insert(0, values[9])
             position_fac_inf.insert(0, values[10])
             status_combobox_fac_inf.insert(0,values[11])
+
+            department_combobox.configure(state='readonly')
+            gender_combobox_fac_inf.configure(state='readonly')
+            status_combobox_fac_inf.configure(state='readonly')
+            position_fac_inf.configure(state='readonly')
         else:
             messagebox.showinfo("Error", "There is no data on the table !!")
         
 
         # Updating Selected Data
     def Update_Data():
+        department_combobox.configure(state='normal')
+        gender_combobox_fac_inf.configure(state='normal')
+        status_combobox_fac_inf.configure(state='normal')
+        position_fac_inf.configure(state='normal')
 
         save_employee_number = employee_num_fac_inf.get()
         save_email = email_fac_inf.get()
@@ -1048,6 +1172,11 @@ def new_win():
         else:
             messagebox.showinfo("Messgae", "Data Updated!!")
             update(save_employee_number,save_email,save_employee_name,save_gender,save_age,save_contact_number,save_address,save_college_department,save_username,save_password,save_position,save_status,update_name)
+            
+            department_combobox.configure(state='readonly')
+            gender_combobox_fac_inf.configure(state='readonly')
+            status_combobox_fac_inf.configure(state='readonly')
+            position_fac_inf.configure(state='readonly')
             clear()     
 
             conn = sqlite3.connect("data/data.db")
@@ -1128,7 +1257,7 @@ def new_win():
     refreshTable()
 
         # ComboBox College Department
-    department_combobox = ttk.Combobox(faculty_information, values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
+    department_combobox = ttk.Combobox(faculty_information,state='readonly', values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
     department_combobox.place(x=382, y=202, width=200)
     # state="readonly"
     
@@ -1141,7 +1270,7 @@ def new_win():
     employee_name_fac_inf.place(x=385, y=288, width=125)
 
         # ComboBox Gender
-    gender_combobox_fac_inf = ttk.Combobox(faculty_information, values=["Male", "Female"])
+    gender_combobox_fac_inf = ttk.Combobox(faculty_information,state='readonly', values=["Male", "Female"])
     gender_combobox_fac_inf.place(x=200, y=328, width=125)
 
         # Entry Age
@@ -1165,7 +1294,7 @@ def new_win():
     status_fac_lb.place(x=382, y=390)
 
         # Entry Status
-    status_combobox_fac_inf = ttk.Combobox(faculty_information, values=["Activated", "Deactivated"])
+    status_combobox_fac_inf = ttk.Combobox(faculty_information,state='disabled', values=["Activated", "Deactivated"])
     status_combobox_fac_inf.place(x=385, y=405, width=125)
 
         # Label Position
@@ -1185,7 +1314,7 @@ def new_win():
     # retype_password_fac_lb.place(x=560, y=389)
 
         # Entry Position
-    position_fac_inf = ttk.Combobox(faculty_information, values=["Admin", "Employee"])
+    position_fac_inf = ttk.Combobox(faculty_information,state='readonly', values=["Admin", "Employee"])
     position_fac_inf.place(x=560, y=288, width=125)
 
         # Entry Username
