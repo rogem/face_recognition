@@ -14,6 +14,8 @@ import collections
 from collections import defaultdict
 import shutil
 import datetime
+attemptadmin = 0
+attempuser= 0
 
 w=Tk()
 
@@ -147,7 +149,7 @@ def new_win():
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(page4)
+    show_frame(page3)
 
     # ============= Page 1 Frame =========================================================================================================================================
 
@@ -483,8 +485,7 @@ def new_win():
     pg3_txtbox_pass = Entry(page3, borderwidth=0, width=16, font=('Arial', 30), show='*')
     # pg3_txtbox_pass.insert(0,"Password")
     pg3_txtbox_pass.place(x=116, y=422, height=90)
-
-   
+ 
         # Account verification
     def verify_admin():
         conn = sqlite3.connect("data/data.db")
@@ -494,18 +495,18 @@ def new_win():
         #     user_login(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, Username TEXT, Password TEXT, Position TEXt)""")
 
         # cursor.execute("INSERT INTO user_login (Username,Password) VALUES ('admin', '123' , 'admin')")
-
-        counter = 1
+        
+        global attemptadmin 
         uname = pg3_txtbox_username.get()
         pwd = pg3_txtbox_pass.get()
         adm = "Admin"
         state = "On"
 
-        # count = 3
-        
+        cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(adm) + "' AND Status ='Off'")
+        inactive = cursor.fetchone()
         if uname=='' or pwd=='':
             messagebox.showinfo("Error", "Please Fill The Empty Field!!")
-        elif counter <=3:
+        elif attemptadmin >=0 and attemptadmin <=2:
             cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(adm) + "' AND Status ='" + str(state) + "'")
             if cursor.fetchone():
                 cursor.execute("SELECT Employee_Name FROM faculty_data WHERE Username = '"+ str(uname)+"' AND Password = '"+ str(pwd)+"'")
@@ -542,34 +543,21 @@ def new_win():
                 cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
                                     VAlUES(?,?,?,?)""", insetdata)
                 refreshTable_log()
+
+            elif inactive:
+                messagebox.showinfo("Messgae", "Please inform the admin to activate your account!!/ Thank You!! ")
             else:
-                counter+=1
-                messagebox.showinfo("Error", "Reamaining Attempt: "+ str(counter))
+                attemptadmin += 1
+                count = 3 - attemptadmin
+                messagebox.showinfo("Messge", "Reamaining Attempt: "+ str(count))
                 pg3_txtbox_username.delete(0, END)
                 pg3_txtbox_pass.delete(0, END)
                 check_button.deselect()
-                
-                # while count !=0:
-                #     messagebox.showinfo("Error", "Reamaining Attempt: "+ str(count))
-                #     count-=1
 
         else:
+            cursor.execute("""UPDATE faculty_data SET Status='Off' WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(adm) + "'""")
             messagebox.showinfo("Error", "Access denied, Out of try !!")
-
-
-        # if uname=='' or pwd=='':
-        #     messagebox.showinfo("Error", "Please Fill The Empty Field!!")
-        # else:
-        #     cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(adm) + "' AND Status ='" + str(state) + "'")
-        #     if cursor.fetchone():
-        #         show_frame(page4)
-        #         messagebox.showinfo("Messgae", "WELCOME USER")
-
-        #         pg3_txtbox_username.delete(0, END)
-        #         pg3_txtbox_pass.delete(0, END)
-        #         check_button.deselect()
-        #     else:
-        #         messagebox.showinfo("Error", "Please provide correct username and password!!")
+            attemptadmin = attemptadmin - 3
 
         conn.commit()
         conn.close()
