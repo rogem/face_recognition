@@ -225,13 +225,17 @@ def new_win():
 
         # cursor.execute("INSERT INTO user_login (Username,Password) VALUES ('admin', '123' , 'admin')")
 
+        global attempuser
         uname = empl_log_txtbox_username.get()
         pwd = empl_log_txtbox_pass.get()
         emply = "Employee"
 
+        cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(emply) + "' AND Status ='Off'")
+        inactive = cursor.fetchone()
+
         if uname=='' or pwd=='':
             messagebox.showinfo("Error", "Please Fill The Empty Field!!")
-        else:
+        elif attempuser >=0 and attempuser <=2:
             cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(emply) + "' AND Status='On'")
             if cursor.fetchone():
                 cursor.execute("SELECT Employee_Name FROM faculty_data WHERE Username like '"+ str(uname)+"' AND Password like '"+ str(pwd)+"'")
@@ -284,10 +288,22 @@ def new_win():
                 cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
                                     VAlUES(?,?,?,?);""", insetdata)
                 refreshTable_log()
+            elif inactive:
+                messagebox.showinfo("Messgae", "Please inform the Admin to Activate your account!!\nThank You!! ")
             else:
-                messagebox.showinfo("Error", "Please provide correct username and password!!")
-
-                
+                attempuser += 1
+                count = 3 - attempuser
+                messagebox.showinfo("Messge", "Please provide correct Username and Password!!\n\nReamaining Attempt: "+ str(count))
+                empl_log_txtbox_username.delete(0, END)
+                empl_log_txtbox_pass.delete(0, END)
+                check_button_empl_log.deselect()
+        else:
+            cursor.execute("UPDATE faculty_data SET Status='Off' WHERE (Username = '" + str(uname) + "' or  Password = '" + str(pwd) + "') AND  Position = '" + str(emply) + "'")
+            messagebox.showinfo("Error", "Access denied, Out of try!!\n\nYour Account has Deactivate!!\n\nPlease contact your Admin!!")
+            empl_log_txtbox_username.delete(0, END)
+            empl_log_txtbox_pass.delete(0, END)
+            check_button_empl_log.deselect()
+            attempuser = attempuser - 3
 
         conn.commit()
 
@@ -504,6 +520,7 @@ def new_win():
 
         cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(adm) + "' AND Status ='Off'")
         inactive = cursor.fetchone()
+
         if uname=='' or pwd=='':
             messagebox.showinfo("Error", "Please Fill The Empty Field!!")
         elif attemptadmin >=0 and attemptadmin <=2:
@@ -545,18 +562,21 @@ def new_win():
                 refreshTable_log()
 
             elif inactive:
-                messagebox.showinfo("Messgae", "Please inform the admin to activate your account!!/ Thank You!! ")
+                messagebox.showinfo("Messgae", "Please inform the  Co-Admin to Activate your Account!!\nThank You!! ")
             else:
                 attemptadmin += 1
                 count = 3 - attemptadmin
-                messagebox.showinfo("Messge", "Reamaining Attempt: "+ str(count))
+                messagebox.showinfo("Messge", "Please provide correct Username and Password!!\n\nReamaining Attempt: "+ str(count))
                 pg3_txtbox_username.delete(0, END)
                 pg3_txtbox_pass.delete(0, END)
                 check_button.deselect()
 
         else:
-            cursor.execute("""UPDATE faculty_data SET Status='Off' WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(adm) + "'""")
-            messagebox.showinfo("Error", "Access denied, Out of try !!")
+            cursor.execute("UPDATE faculty_data SET Status='Off' WHERE (Username = '" + str(uname) + "' or  Password = '" + str(pwd) + "') AND  Position = '" + str(adm) + "'")
+            messagebox.showinfo("Error", "Access denied, Out of try!!\n\nYour Account has Deactivate!!\n\nPlease contact your Co-Admin!!")
+            pg3_txtbox_username.delete(0, END)
+            pg3_txtbox_pass.delete(0, END)
+            check_button.deselect()
             attemptadmin = attemptadmin - 3
 
         conn.commit()
