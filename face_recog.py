@@ -1720,7 +1720,7 @@ def new_win():
             for record in data_table_summary.get_children():
                 data_table_summary.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Mathematics' AND Status='Early Dismissal' AND _Date='"+ str(date_mathematics) +"'")
+            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Mathematics' AND _Date='"+ str(date_mathematics) +"'")
             records = cursor.fetchall()
 
             global count
@@ -2287,7 +2287,7 @@ def new_win():
     time()
     count_data()
 
-    # ============= Summary Report In  ========================================================================================================================
+    # ============= Summary Report  ========================================================================================================================
 
     def summary_psyc():
         popupwindow_psyc = Toplevel(main_window)
