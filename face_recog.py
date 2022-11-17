@@ -16,6 +16,7 @@ import shutil
 import datetime
 attemptadmin = 0
 attempuser= 0
+sched_id = 0
 
 w=Tk()
 
@@ -821,9 +822,100 @@ def new_win():
         popupwindow_sched.sched_bg_img_lb = Label(popupwindow_sched, image = popupwindow_sched.photo)
         popupwindow_sched.sched_bg_img_lb.pack()
 
+        name_emp = employee_name_fac_inf.get()
+        depart = department_combobox.get()
+
+        sched_name.configure(state='normal')
+        sched_department_combobox.configure(state='normal')
+        sched_name.insert(0, name_emp)
+        sched_department_combobox.insert(0, depart)
+        sched_name.configure(state='disabled')
+        sched_department_combobox.configure(state='disabled')
+
+        def save_sched():
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            currentDateTime = datetime.datetime.now()
+
+            cursor.execute("""CREATE TABLE IF NOT EXISTS 
+                schedule(
+                            "ID" INTEGER,
+                            "Name" TEXT,
+                            "Department" TEXT,
+                            "Day" TEXT,
+                            "Start_Time" TEXT,
+                            "End_Time" TEXT,
+                            "Subject" TEXT,
+                            "Room" TEXT,
+                            "Section" TEXT,
+                            PRIMARY KEY("ID" AUTOINCREMENT)
+                            )""")
+
+            sched_name.configure(state='normal')
+            sched_department_combobox.configure(state='normal')
+            hr_strttime_sched.configure(state='normal')
+            min_strttime_sched.configure(state='normal')
+            sec_strttime_sched.configure(state='normal')
+            p_strttime_sched.configure(state='normal')
+            hr_endtime_sched.configure(state='normal')
+            min_endtime_sched.configure(state='normal')
+            sec_endtime_sched.configure(state='normal')
+            p_endtime_sched.configure(state='normal')
+
+
+            Hour_Start=hr_strttime_sched.get()
+            Min_Start=min_strttime_sched.get()
+            Sec_Start=sec_strttime_sched.get()
+            P_Start=p_strttime_sched.get()
+
+            Hour_End=hr_endtime_sched.get()
+            Min_End=min_endtime_sched.get()
+            Sec_End=sec_endtime_sched.get()
+            P_End=p_endtime_sched.get()
+
+            Name=sched_name.get()
+            Department=sched_department_combobox.get()
+            Day=day_sched.get()
+            Start_time= Hour_Start + ':' + Min_Start + ':' + Sec_Start + ' ' + P_Start
+            End_time= Hour_End + ':' + Min_End + ':' + Sec_End + ' ' + P_End
+            Subject=sub_sched.get()
+            Room=room_sched.get()
+            Section=section_sched.get()
+
+            if Name == " " or Department == " " or Day == " " or Start_time == " " or End_time == " " or Subject == " " or Room == " " or Section == " ":
+                messagebox.showinfo("Error", "Please fill up the blank entry!!")
+            else:
+                insertdata = str(Name),str(Department),str(Day),str(Start_time),str(End_time),str(Subject),str(Room),str(Section)
+                cursor.execute("""INSERT INTO schedule (Name,Department,Day,Start_Time,End_Time,Subject,Room,Section) 
+                                    VAlUES(?,?,?,?,?,?,?,?)""", insertdata)
+                sched_name.configure(state='disabled')
+                sched_department_combobox.configure(state='disabled')
+                hr_strttime_sched.configure(state='readonly')
+                min_strttime_sched.configure(state='readonly')
+                sec_strttime_sched.configure(state='readonly')
+                p_strttime_sched.configure(state='readonly')
+                hr_endtime_sched.configure(state='readonly')
+                min_endtime_sched.configure(state='readonly')
+                sec_endtime_sched.configure(state='readonly')
+                p_endtime_sched.configure(state='readonly')
+
+            sched_name.configure(state='disabled')
+            sched_department_combobox.configure(state='disabled')
+            hr_strttime_sched.configure(state='readonly')
+            min_strttime_sched.configure(state='readonly')
+            sec_strttime_sched.configure(state='readonly')
+            p_strttime_sched.configure(state='readonly')
+            hr_endtime_sched.configure(state='readonly')
+            min_endtime_sched.configure(state='readonly')
+            sec_endtime_sched.configure(state='readonly')
+            p_endtime_sched.configure(state='readonly')
+            conn.commit()
+            conn.close()
+
             # Entry Employee Name
-        sched_name_summary = Entry(popupwindow_sched, state='disabled')
-        sched_name_summary.place(x=180, y=172, width=150)
+        sched_name = Entry(popupwindow_sched, state='disabled')
+        sched_name.place(x=180, y=172, width=150)
 
             # Entry Day
         day_sched = ttk.Combobox(popupwindow_sched,  state='readonly', values=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
@@ -837,18 +929,51 @@ def new_win():
         sched_department_combobox = ttk.Combobox(popupwindow_sched, state='disabled', values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
         sched_department_combobox.place(x=545, y=172, width=150)
         
-        time_format = f"{'%H:%M:%S %p'}"
-            # Entry Start Time
-        strttime_sched= Entry(popupwindow_sched,textvariable=time_format)
-        strttime_sched.place(x=545, y=209, width=150)
+        #     # Entry Start Time
+        # strttime_sched= Entry(popupwindow_sched,textvariable=time_format)
+        # strttime_sched.place(x=545, y=209, width=150)
+
+            # Entry Start Time Hour
+        hr_strttime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=12, format="%02.0f")
+        hr_strttime_sched.place(x=545, y=209, width=35)
+
+            # Entry Start Time Minute
+        min_strttime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f")
+        min_strttime_sched.place(x=585, y=209, width=35)
+
+            # Entry Start Time Second
+        sec_strttime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f")
+        sec_strttime_sched.place(x=625, y=209, width=35)
+
+            # ComboBox College Department
+        p_strttime_sched = ttk.Combobox(popupwindow_sched, state='readonly', values=["AM", "PM",])
+        p_strttime_sched.set("AM")
+        p_strttime_sched.place(x=665, y=209, width=45)
 
             # Entry Room
         room_sched = Entry(popupwindow_sched)
         room_sched.place(x=545, y=258, width=150)
 
-            # Entry End Time
-        endtime_sched = Entry(popupwindow_sched)
-        endtime_sched.place(x=810, y=209, width=150)
+        #     # Entry End Time
+        # endtime_sched = Entry(popupwindow_sched)
+        # endtime_sched.place(x=810, y=209, width=150)
+
+            # Entry End Time Hour
+        hr_endtime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=12, format="%02.0f")
+        hr_endtime_sched.place(x=810, y=209, width=35)
+
+            # Entry End Time Minute
+        min_endtime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f")
+        min_endtime_sched.place(x=850, y=209, width=35)
+
+            # Entry End Time Second
+        sec_endtime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f")
+        sec_endtime_sched.place(x=890, y=209, width=35)
+
+            # ComboBox College Department
+        p_endtime_sched = ttk.Combobox(popupwindow_sched, state='readonly', values=["AM", "PM",])
+        p_endtime_sched.set("AM")
+        p_endtime_sched.place(x=930, y=209, width=45)
 
             # Entry Section
         section_sched = Entry(popupwindow_sched)
@@ -903,6 +1028,7 @@ def new_win():
         gender_combobox_fac_inf.configure(state='readonly')
         status_combobox_fac_inf.configure(state='readonly')
         position_fac_inf.configure(state='readonly')
+        loads_button_fac_inf.configure(state='disabled')
 
     def search_data():
         lookup_record = search_fac_inf.get()
@@ -1171,6 +1297,7 @@ def new_win():
                                     VAlUES(?,?,?,?)""", insetdata)
                 conn.commit()
                 conn.close()
+                loads_button_fac_inf.configure(state='disabled')
                 refreshTable_log()
             
         refreshTable()
@@ -1204,6 +1331,7 @@ def new_win():
             gender_combobox_fac_inf.configure(state='readonly')
             status_combobox_fac_inf.configure(state='readonly')
             position_fac_inf.configure(state='readonly')
+            loads_button_fac_inf.configure(state='normal')
         else:
             messagebox.showinfo("Error", "There is no data on the table !!")
         
@@ -1266,6 +1394,7 @@ def new_win():
                                 VAlUES(?,?,?,?)""", insetdata)
             conn.commit()
             conn.close()
+            loads_button_fac_inf.configure(state='disabled')
             refreshTable_log()
         refreshTable()
 
@@ -1412,7 +1541,7 @@ def new_win():
 
         # Employee Loads Button
     loads_fac_btn = PhotoImage(file = "pic/btn_employee_loads.png")
-    loads_button_fac_inf = customtkinter.CTkButton(master=faculty_information,image=loads_fac_btn, text="" ,
+    loads_button_fac_inf = customtkinter.CTkButton(master=faculty_information,state='disabled',image=loads_fac_btn, text="" ,
                                                 corner_radius=6, fg_color="#00436e",hover_color="#006699", command=Schedule)
     loads_button_fac_inf.place(x=383, y=430, height=25,width=128)
 
