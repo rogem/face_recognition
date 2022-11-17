@@ -149,7 +149,7 @@ def new_win():
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(page3)
+    show_frame(faculty_information)
 
     # ============= Page 1 Frame =========================================================================================================================================
 
@@ -805,6 +805,70 @@ def new_win():
                                                 corner_radius=20,bg_color='#ffffff', fg_color="#fcd24f",hover_color="#006699", command=lambda: show_frame(page4))
     att_rec_button_back.place(x=45, y=595, height=50,width=140)
 
+     # ============= Schedule ========================================================================================================================
+
+    def Schedule():
+        popupwindow_sched = Toplevel(main_window)
+        popupwindow_sched.title("Individual Summary Report")
+        popupwindow_sched.geometry('1020x670')
+        popupwindow_sched.grab_set()
+        popupwindow_sched.resizable(False,False)
+
+            # open background image
+        popupwindow_sched.sched_image = Image.open('pic/12.png')
+        popupwindow_sched.sched_resize_image = popupwindow_sched.sched_image.resize((1020,670))
+        popupwindow_sched.photo = ImageTk.PhotoImage(popupwindow_sched.sched_resize_image)
+        popupwindow_sched.sched_bg_img_lb = Label(popupwindow_sched, image = popupwindow_sched.photo)
+        popupwindow_sched.sched_bg_img_lb.pack()
+
+            # Entry Employee Name
+        sched_name_summary = Entry(popupwindow_sched, state='disabled')
+        sched_name_summary.place(x=180, y=172, width=150)
+
+            # Entry Day
+        day_sched = ttk.Combobox(popupwindow_sched,  state='readonly', values=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
+        day_sched.place(x=180, y=209, width=150)
+
+            # Entry Subject
+        sub_sched = Entry(popupwindow_sched)
+        sub_sched.place(x=180, y=258, width=150)
+
+            # ComboBox College Department
+        sched_department_combobox = ttk.Combobox(popupwindow_sched, state='disabled', values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
+        sched_department_combobox.place(x=545, y=172, width=150)
+        
+        time_format = f"{'%H:%M:%S %p'}"
+            # Entry Start Time
+        strttime_sched= Entry(popupwindow_sched,textvariable=time_format)
+        strttime_sched.place(x=545, y=209, width=150)
+
+            # Entry Room
+        room_sched = Entry(popupwindow_sched)
+        room_sched.place(x=545, y=258, width=150)
+
+            # Entry End Time
+        endtime_sched = Entry(popupwindow_sched)
+        endtime_sched.place(x=810, y=209, width=150)
+
+            # Entry Section
+        section_sched = Entry(popupwindow_sched)
+        section_sched.place(x=810, y=258, width=150)
+
+            # Add Faculty Button
+        save_pic = PhotoImage(file = "pic/btn_save.png")
+        save_button_sched = customtkinter.CTkButton(master=popupwindow_sched,image=save_pic, text="" ,
+                                                    corner_radius=6, fg_color="#00436e",hover_color="#006699", command='')
+        save_button_sched.place(x=440, y=290, height=32,width=131)
+
+        #     # Entry Date
+        # date_summary = Entry(popupwindow_sched, state='disabled')
+        # date_summary.place(x=370, y=352, width=80)
+
+        #     # Total Present Label
+        # total_present_lb_summary = Label(popupwindow_sched, text='000', fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
+        # total_present_lb_summary.place(x=225, y=136)
+
+
     # ============= Faculty Information Frame ===================================================================================================================================================
 
         # open background image
@@ -1345,6 +1409,12 @@ def new_win():
     search_ent_val = StringVar()
     search_fac_inf = Entry(faculty_information, textvariable = search_ent_val)
     search_fac_inf.place(x=850, y=205, width=200)
+
+        # Employee Loads Button
+    loads_fac_btn = PhotoImage(file = "pic/btn_employee_loads.png")
+    loads_button_fac_inf = customtkinter.CTkButton(master=faculty_information,image=loads_fac_btn, text="" ,
+                                                corner_radius=6, fg_color="#00436e",hover_color="#006699", command=Schedule)
+    loads_button_fac_inf.place(x=383, y=430, height=25,width=128)
 
         # Add Faculty Button
     add_fac_btn = PhotoImage(file = "pic/btn_add_faculty.png")
