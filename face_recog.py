@@ -1743,19 +1743,28 @@ def new_win():
             return
         else:
             if check_duplicate() == True:
-                messagebox.showinfo("Error", "Employee Number Already Exist")
+                messagebox.showinfo("Error", "Employee Number Already Exist!!")
                 return
             elif check_duplicate_Email()== True:
-                messagebox.showinfo("Error", "Email Already Exist")
+                messagebox.showinfo("Error", "Email Already Exist!!")
                 return
             elif check_duplicate_Con()== True:
-                messagebox.showinfo("Error", "Contact Number Already Exist")
+                messagebox.showinfo("Error", "Contact Number Already Exist!!")
                 return
             elif check_duplicate_Username()== True:
-                messagebox.showinfo("Error", "Username Already Exist")
+                messagebox.showinfo("Error", "Username Already Exist!!")
                 return
             elif check_duplicate_Pass()== True:
-                messagebox.showinfo("Error", "Password Already Exist")
+                messagebox.showinfo("Error", "Password Already Exist!!")
+                return
+            elif '@' not in save_email or '.com' not in save_email:
+                messagebox.showinfo("Error","Not a valid Email Address, Enter a valid Email Address!!")
+                return
+            elif not save_contact_number.isdigit():
+                messagebox.showinfo("Error","Not a valid Contact Number, Please enter numbers only!!")
+                return
+            elif len(save_contact_number) > 11:
+                messagebox.showinfo("Error","Not a valid Contact Number, Please enter 11 numbers only!!")
                 return
             else:
                 messagebox.showinfo("Messgae", "Data Added!!")
@@ -1853,6 +1862,15 @@ def new_win():
         update_name = str(data_table.item(selected_item)['values'][0])
         if save_status == "" or save_employee_number == "" or save_email == "" or save_employee_name == "" or save_gender == "" or save_age == "" or save_contact_number == "" or save_address == "" or save_college_department == "" or save_username == "" or save_password == "" or save_position == "":
             messagebox.showinfo("Error", "Please fill up the blank entry!!")
+            return
+        elif '@' not in save_email or '.com' not in save_email:
+            messagebox.showinfo("Error","Not a valid Email Address, Enter a valid Email Address!!")
+            return
+        elif not save_contact_number.isdigit():
+            messagebox.showinfo("Error","Not a valid Contact Number, Please enter numbers only!!")
+            return
+        elif len(save_contact_number) > 11:
+            messagebox.showinfo("Error","Not a valid Contact Number, Please enter 11 numbers only!!")
             return
         else:
             messagebox.showinfo("Messgae", "Data Updated!!")
