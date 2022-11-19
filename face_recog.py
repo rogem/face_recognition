@@ -1228,11 +1228,13 @@ def new_win():
                 p_endtime_sched.insert(0,p_strttime)
                 
                 day_sched.insert(0,day)
+
+                sub_sched_lb.configure(text=subject)
+
                 day_sched.configure(state='readonly')
                 hr_strttime_sched.configure(state='readonly')
                 min_strttime_sched.configure(state='readonly')
                 sec_strttime_sched.configure(state='readonly')
-                p_strttime_sched.configure(state='readonly')
                 p_strttime_sched.configure(state='readonly')
                 hr_endtime_sched.configure(state='readonly')
                 min_endtime_sched.configure(state='readonly')
@@ -1245,6 +1247,85 @@ def new_win():
                 button_update_sched.configure(state='normal')
             else:
                 messagebox.showinfo("Error", "There is no data on the table !!")
+
+        def update_sched():
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            day_sched.configure(state='normal')
+            hr_strttime_sched.configure(state='normal')
+            min_strttime_sched.configure(state='normal')
+            sec_strttime_sched.configure(state='normal')
+            p_strttime_sched.configure(state='normal')
+            hr_endtime_sched.configure(state='normal')
+            min_endtime_sched.configure(state='normal')
+            sec_endtime_sched.configure(state='normal')
+            p_endtime_sched.configure(state='normal')
+
+            Hour_Start=hr_strttime_sched.get()
+            Min_Start=min_strttime_sched.get()
+            Sec_Start=sec_strttime_sched.get()
+            P_Start=p_strttime_sched.get()
+
+            Hour_End=hr_endtime_sched.get()
+            Min_End=min_endtime_sched.get()
+            Sec_End=sec_endtime_sched.get()
+            P_End=p_endtime_sched.get()
+
+            subj = sub_sched_lb.cget("text")
+
+            Day=day_sched.get()
+            Start_time= Hour_Start + ':' + Min_Start + ':' + Sec_Start + ' ' + P_Start
+            End_time= Hour_End + ':' + Min_End + ':' + Sec_End + ' ' + P_End
+            Subject=sub_sched.get()
+            Room=room_sched.get()
+            Section=section_sched.get()
+
+            cursor.execute("UPDATE schedule SET Day='"+ str(Day) +"',Start_Time='"+ str(Start_time) +"',End_Time='"+ str(End_time) +"',Subject='"+ str(Subject) +"',Room='"+ str(Room) +"',Section='"+ str(Section) +"' WHERE  Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subj) +"'")
+            
+            day_sched.delete(0,END)
+            sub_sched.delete(0,END)
+            room_sched.delete(0,END)
+            section_sched.delete(0,END)
+            p_strttime_sched.delete(0,END)
+            p_endtime_sched.delete(0,END)
+            p_strttime_sched.insert(0,"AM")
+            p_endtime_sched.insert(0,"AM")
+
+            zero= "00"
+            HR_strttime = IntVar()
+            HR_strttime.set(zero)
+            MIN_strttime = IntVar()
+            MIN_strttime.set(zero)
+            SEC_strttime = IntVar()
+            SEC_strttime.set(zero)
+            hr_strttime_sched.configure(textvariable=HR_strttime)
+            min_strttime_sched.configure(textvariable=MIN_strttime)
+            sec_strttime_sched.configure(textvariable=SEC_strttime)
+            HR_endtime = IntVar()
+            HR_endtime.set(zero)
+            MIN_endtime = IntVar()
+            MIN_endtime.set(zero)
+            SEC_endtime = IntVar()
+            SEC_endtime.set(zero)
+            hr_endtime_sched.configure(textvariable=HR_endtime)
+            min_endtime_sched.configure(textvariable=MIN_endtime)
+            sec_endtime_sched.configure(textvariable=SEC_endtime)
+
+            day_sched.configure(state='readonly')
+            hr_strttime_sched.configure(state='readonly')
+            min_strttime_sched.configure(state='readonly')
+            sec_strttime_sched.configure(state='readonly')
+            p_strttime_sched.configure(state='readonly')
+            hr_endtime_sched.configure(state='readonly')
+            min_endtime_sched.configure(state='readonly')
+            sec_endtime_sched.configure(state='readonly')
+            p_endtime_sched.configure(state='readonly')
+
+            button_update_sched.configure(state='disabled')
+
+            conn.commit()
+            conn.close()
 
             # Data Table "TreeView"
         scrollbary_sched = Scrollbar(popupwindow_sched, orient=VERTICAL)
@@ -1287,6 +1368,10 @@ def new_win():
         day_sched = ttk.Combobox(popupwindow_sched,  state='readonly', values=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
         day_sched.place(x=180, y=209, width=150)
 
+            # Subject Label
+        sub_sched_lb = Label(popupwindow_sched, fg='#f0f0f0', font = "Heltvetica 9")
+        sub_sched_lb.place(x=180, y=235)
+
             # Entry Subject
         sub_sched = Entry(popupwindow_sched)
         sub_sched.place(x=180, y=258, width=150)
@@ -1301,7 +1386,7 @@ def new_win():
 
             # Entry Start Time Hour
         var = IntVar()
-        var.set("%02.0f".format(00))
+        var.set(00)
         hr_strttime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=12, format="%02.0f",textvariable=var)
         hr_strttime_sched.place(x=545, y=209, width=35)
 
@@ -1363,7 +1448,7 @@ def new_win():
             # Updated Button
         update_pic = PhotoImage(file = "pic/btn_update.png")
         button_update_sched = customtkinter.CTkButton(master=popupwindow_sched,state='disabled',image=update_pic, text="" ,
-                                                    corner_radius=6, fg_color="#00436e",hover_color="#006699", command='')
+                                                    corner_radius=6, fg_color="#00436e",hover_color="#006699", command=update_sched)
         button_update_sched.place(x=515, y=290, height=32,width=131)
 
             # Moday Button
