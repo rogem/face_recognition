@@ -825,13 +825,6 @@ def new_win():
         name_emp = employee_name_fac_inf.get()
         depart = department_combobox.get()
 
-        sched_name.configure(state='normal')
-        sched_department_combobox.configure(state='normal')
-        sched_name.insert(0, name_emp)
-        sched_department_combobox.insert(0, depart)
-        sched_name.configure(state='disabled')
-        sched_department_combobox.configure(state='disabled')
-
         def save_sched():
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
@@ -862,7 +855,7 @@ def new_win():
             min_endtime_sched.configure(state='normal')
             sec_endtime_sched.configure(state='normal')
             p_endtime_sched.configure(state='normal')
-
+            day_sched.configure(state='normal')
 
             Hour_Start=hr_strttime_sched.get()
             Min_Start=min_strttime_sched.get()
@@ -889,6 +882,24 @@ def new_win():
                 insertdata = str(Name),str(Department),str(Day),str(Start_time),str(End_time),str(Subject),str(Room),str(Section)
                 cursor.execute("""INSERT INTO schedule (Name,Department,Day,Start_Time,End_Time,Subject,Room,Section) 
                                     VAlUES(?,?,?,?,?,?,?,?)""", insertdata)
+                
+                day_sched.delete(0,END)
+                sub_sched.delete(0,END)
+                room_sched.delete(0,END)
+                section_sched.delete(0,END)
+
+                # var = IntVar(popupwindow_sched)
+                # var.set(00)
+                # hr_strttime_sched.configure(textvariable=var)
+                # min_strttime_sched.configure(textvariable=var)
+                # sec_strttime_sched.configure(textvariable=var)
+                # p_strttime_sched.configure(state='readonly')
+                # hr_endtime_sched.configure(textvariable=var)
+                # min_endtime_sched.configure(textvariable=var)
+                # sec_endtime_sched.configure(textvariable=var)
+                # p_endtime_sched.configure(state='readonly')
+                
+                day_sched.configure(state='readonly')
                 sched_name.configure(state='disabled')
                 sched_department_combobox.configure(state='disabled')
                 hr_strttime_sched.configure(state='readonly')
@@ -900,6 +911,7 @@ def new_win():
                 sec_endtime_sched.configure(state='readonly')
                 p_endtime_sched.configure(state='readonly')
 
+            day_sched.configure(state='readonly')
             sched_name.configure(state='disabled')
             sched_department_combobox.configure(state='disabled')
             hr_strttime_sched.configure(state='readonly')
@@ -912,6 +924,35 @@ def new_win():
             p_endtime_sched.configure(state='readonly')
             conn.commit()
             conn.close()
+
+            # Data Table "TreeView"
+        scrollbary_sched = Scrollbar(popupwindow_sched, orient=VERTICAL)
+        scrollbary_sched.place(x=1030, y=230, height=350)
+
+        # style = ttk.Style()
+        # style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
+
+        data_table_sched = ttk.Treeview(popupwindow_sched)
+        data_table_sched.place(x=145, y=415, width=740, height=215)
+        data_table_sched.configure(yscrollcommand=scrollbary_sched.set)
+
+        scrollbary_sched.configure(command=data_table_sched.yview)
+
+        data_table_sched['columns'] = ("Start Time","End Time","Subject","Room","Section")
+        # Format Columns
+        data_table_sched.column("#0", width=0, stretch=NO)
+        data_table_sched.column("Start Time", anchor=CENTER,width=0)
+        data_table_sched.column("End Time", anchor=CENTER, width=50)
+        data_table_sched.column("Subject", anchor=CENTER, width=50)
+        data_table_sched.column("Room", anchor=CENTER, width=50)
+        data_table_sched.column("Section", anchor=CENTER, width=50)
+
+        # Create Headings
+        data_table_sched.heading("Start Time", text="Start Time", anchor=CENTER)
+        data_table_sched.heading("End Time", text="End Time", anchor=CENTER)
+        data_table_sched.heading("Subject", text="Subject", anchor=CENTER)
+        data_table_sched.heading("Room", text="Room", anchor=CENTER)
+        data_table_sched.heading("Section", text="Section", anchor=CENTER)
 
             # Entry Employee Name
         sched_name = Entry(popupwindow_sched, state='disabled')
@@ -979,11 +1020,108 @@ def new_win():
         section_sched = Entry(popupwindow_sched)
         section_sched.place(x=810, y=258, width=150)
 
-            # Add Faculty Button
+        sched_name.configure(state='normal')
+        sched_department_combobox.configure(state='normal')
+        sched_name.insert(0, name_emp)
+        sched_department_combobox.insert(0, depart)
+        sched_name.configure(state='disabled')
+        sched_department_combobox.configure(state='disabled')
+
+            # Save Data Button
         save_pic = PhotoImage(file = "pic/btn_save.png")
         save_button_sched = customtkinter.CTkButton(master=popupwindow_sched,image=save_pic, text="" ,
-                                                    corner_radius=6, fg_color="#00436e",hover_color="#006699", command='')
-        save_button_sched.place(x=440, y=290, height=32,width=131)
+                                                    corner_radius=6, fg_color="#00436e",hover_color="#006699", command=save_sched)
+        save_button_sched.place(x=370, y=290, height=32,width=131)
+
+            # Updated Button
+        update_pic = PhotoImage(file = "pic/btn_update.png")
+        button_update_sched = customtkinter.CTkButton(master=popupwindow_sched,image=update_pic, text="" ,
+                                                    corner_radius=6, fg_color="#00436e",hover_color="#006699", command= Update_Data)
+        button_update_sched.place(x=515, y=290, height=32,width=131)
+
+        def Monday():
+            btn_mon_sched.configure(fg_color="#00436e")
+            btn_tue_sched.configure(fg_color="#ffb000")
+            btn_wed_sched.configure(fg_color="#ffb000")
+            btn_thur_sched.configure(fg_color="#ffb000")
+            btn_fri_sched.configure(fg_color="#ffb000")
+            btn_sat_sched.configure(fg_color="#ffb000")
+
+            # Moday Button
+        mon_btn = PhotoImage(file = "pic/btn_update.png")
+        btn_mon_sched = customtkinter.CTkButton(master=popupwindow_sched,image=mon_btn, text="monday" ,
+                                                    corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Monday)
+        btn_mon_sched.place(x=90, y=373, height=28,width=131)
+
+        def Tuesday():
+            btn_mon_sched.configure(fg_color="#ffb000")
+            btn_tue_sched.configure(fg_color="#00436e")
+            btn_wed_sched.configure(fg_color="#ffb000")
+            btn_thur_sched.configure(fg_color="#ffb000")
+            btn_fri_sched.configure(fg_color="#ffb000")
+            btn_sat_sched.configure(fg_color="#ffb000")
+
+            # Tuesday Button
+        tue_btn = PhotoImage(file = "pic/btn_update.png")
+        btn_tue_sched = customtkinter.CTkButton(master=popupwindow_sched,image=tue_btn, text="Tuesday" ,
+                                                    corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Tuesday)
+        btn_tue_sched.place(x=235, y=373, height=28,width=131)
+
+        def Wednesday():
+            btn_mon_sched.configure(fg_color="#ffb000")
+            btn_tue_sched.configure(fg_color="#ffb000")
+            btn_wed_sched.configure(fg_color="#00436e")
+            btn_thur_sched.configure(fg_color="#ffb000")
+            btn_fri_sched.configure(fg_color="#ffb000")
+            btn_sat_sched.configure(fg_color="#ffb000")
+
+             # Wednesday Button
+        wed_btn = PhotoImage(file = "pic/btn_update.png")
+        btn_wed_sched = customtkinter.CTkButton(master=popupwindow_sched,image=wed_btn, text="Wednesday" ,
+                                                    corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Wednesday)
+        btn_wed_sched.place(x=380, y=373, height=28,width=131)
+
+        def Thursday():
+            btn_mon_sched.configure(fg_color="#ffb000")
+            btn_tue_sched.configure(fg_color="#ffb000")
+            btn_wed_sched.configure(fg_color="#ffb000")
+            btn_thur_sched.configure(fg_color="#00436e")
+            btn_fri_sched.configure(fg_color="#ffb000")
+            btn_sat_sched.configure(fg_color="#ffb000")
+
+             # Thursday Button
+        thur_btn = PhotoImage(file = "pic/btn_update.png")
+        btn_thur_sched = customtkinter.CTkButton(master=popupwindow_sched,image=thur_btn, text="Thursday" ,
+                                                    corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Thursday)
+        btn_thur_sched.place(x=525, y=373, height=28,width=131)
+
+        def Friday():
+            btn_mon_sched.configure(fg_color="#ffb000")
+            btn_tue_sched.configure(fg_color="#ffb000")
+            btn_wed_sched.configure(fg_color="#ffb000")
+            btn_thur_sched.configure(fg_color="#ffb000")
+            btn_fri_sched.configure(fg_color="#00436e")
+            btn_sat_sched.configure(fg_color="#ffb000")
+
+             # Friday Button
+        fri_btn = PhotoImage(file = "pic/btn_update.png")
+        btn_fri_sched = customtkinter.CTkButton(master=popupwindow_sched,image=fri_btn, text="Friday" ,
+                                                    corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Friday)
+        btn_fri_sched.place(x=670, y=373, height=28,width=131)
+
+        def Saturday():
+            btn_mon_sched.configure(fg_color="#ffb000")
+            btn_tue_sched.configure(fg_color="#ffb000")
+            btn_wed_sched.configure(fg_color="#ffb000")
+            btn_thur_sched.configure(fg_color="#ffb000")
+            btn_fri_sched.configure(fg_color="#ffb000")
+            btn_sat_sched.configure(fg_color="#00436e")
+
+             # Saturday Button
+        sat_btn = PhotoImage(file = "pic/btn_update.png")
+        btn_sat_sched = customtkinter.CTkButton(master=popupwindow_sched,image=sat_btn, text="Saturday" ,
+                                                    corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Saturday)
+        btn_sat_sched.place(x=815, y=373, height=28,width=131)
 
         #     # Entry Date
         # date_summary = Entry(popupwindow_sched, state='disabled')
@@ -1552,8 +1690,8 @@ def new_win():
     add_button_fac_inf.place(x=380, y=506, height=32,width=131)
 
         # Update Button
-    def Update():
-        print("update")
+    # def Update():
+    #     print("update")
     update_btn = PhotoImage(file = "pic/btn_update.png")
     button_update = customtkinter.CTkButton(master=faculty_information,image=update_btn, text="" ,
                                                 corner_radius=6, fg_color="#00436e",hover_color="#006699", command= Update_Data)
