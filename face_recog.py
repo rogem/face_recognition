@@ -810,7 +810,7 @@ def new_win():
 
     def Schedule():
         popupwindow_sched = Toplevel(main_window)
-        popupwindow_sched.title("Individual Summary Report")
+        popupwindow_sched.title("Schedule")
         popupwindow_sched.geometry('1020x670')
         popupwindow_sched.grab_set()
         popupwindow_sched.resizable(False,False)
@@ -925,6 +925,218 @@ def new_win():
             conn.commit()
             conn.close()
 
+        def sched_read():
+            # sched_name.configure(state='normal')
+            # sched_department_combobox.configure(state='normal')
+
+            # nm = sched_name.get()
+            # dpt = sched_department_combobox.get()
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT Start_Time,End_Time,Subject,Room,Section FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Day='Monday'")
+            results_sched = cursor.fetchall()
+            conn.commit()
+            return results_sched
+
+        def refreshTable_sched():
+            for data_sched in data_table_sched.get_children():
+                data_table_sched.delete(data_sched)
+
+            for results_sched in reverse(sched_read()):
+                data_table_sched.insert(parent='', index='end', iid=results_sched, text="", values=(results_sched), tag="orow")
+            data_table_sched.tag_configure('orow', background='#EEEEEE')
+
+        def Monday():
+            btn_mon_sched.configure(fg_color="#00436e")
+            btn_tue_sched.configure(fg_color="#ffb000")
+            btn_wed_sched.configure(fg_color="#ffb000")
+            btn_thur_sched.configure(fg_color="#ffb000")
+            btn_fri_sched.configure(fg_color="#ffb000")
+            btn_sat_sched.configure(fg_color="#ffb000")
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_sched.get_children():
+                data_table_sched.delete(record)
+            
+            cursor.execute("SELECT Start_Time,End_Time,Subject,Room,Section FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Day='Monday'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_sched.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
+                else:
+                    data_table_sched.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
+                count += 1
+                data_table_sched.tag_configure('evenrow', background='#EEEEEE')
+                data_table_sched.tag_configure('oddrow', background='#EEEEEE')
+
+            conn.commit()
+            conn.close()
+
+        def Tuesday():
+            btn_mon_sched.configure(fg_color="#ffb000")
+            btn_tue_sched.configure(fg_color="#00436e")
+            btn_wed_sched.configure(fg_color="#ffb000")
+            btn_thur_sched.configure(fg_color="#ffb000")
+            btn_fri_sched.configure(fg_color="#ffb000")
+            btn_sat_sched.configure(fg_color="#ffb000")
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_sched.get_children():
+                data_table_sched.delete(record)
+            
+            cursor.execute("SELECT Start_Time,End_Time,Subject,Room,Section FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Day='Tuesday'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_sched.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
+                else:
+                    data_table_sched.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
+                count += 1
+                data_table_sched.tag_configure('evenrow', background='#EEEEEE')
+                data_table_sched.tag_configure('oddrow', background='#EEEEEE')
+
+            conn.commit()
+            conn.close()
+
+        def Wednesday():
+            btn_mon_sched.configure(fg_color="#ffb000")
+            btn_tue_sched.configure(fg_color="#ffb000")
+            btn_wed_sched.configure(fg_color="#00436e")
+            btn_thur_sched.configure(fg_color="#ffb000")
+            btn_fri_sched.configure(fg_color="#ffb000")
+            btn_sat_sched.configure(fg_color="#ffb000")
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_sched.get_children():
+                data_table_sched.delete(record)
+            
+            cursor.execute("SELECT Start_Time,End_Time,Subject,Room,Section FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Day='Wednesday'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_sched.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
+                else:
+                    data_table_sched.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
+                count += 1
+                data_table_sched.tag_configure('evenrow', background='#EEEEEE')
+                data_table_sched.tag_configure('oddrow', background='#EEEEEE')
+
+            conn.commit()
+            conn.close()
+
+        def Thursday():
+            btn_mon_sched.configure(fg_color="#ffb000")
+            btn_tue_sched.configure(fg_color="#ffb000")
+            btn_wed_sched.configure(fg_color="#ffb000")
+            btn_thur_sched.configure(fg_color="#00436e")
+            btn_fri_sched.configure(fg_color="#ffb000")
+            btn_sat_sched.configure(fg_color="#ffb000")
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_sched.get_children():
+                data_table_sched.delete(record)
+            
+            cursor.execute("SELECT Start_Time,End_Time,Subject,Room,Section FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Day='Thursday'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_sched.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
+                else:
+                    data_table_sched.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
+                count += 1
+                data_table_sched.tag_configure('evenrow', background='#EEEEEE')
+                data_table_sched.tag_configure('oddrow', background='#EEEEEE')
+
+        def Friday():
+            btn_mon_sched.configure(fg_color="#ffb000")
+            btn_tue_sched.configure(fg_color="#ffb000")
+            btn_wed_sched.configure(fg_color="#ffb000")
+            btn_thur_sched.configure(fg_color="#ffb000")
+            btn_fri_sched.configure(fg_color="#00436e")
+            btn_sat_sched.configure(fg_color="#ffb000")
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_sched.get_children():
+                data_table_sched.delete(record)
+            
+            cursor.execute("SELECT Start_Time,End_Time,Subject,Room,Section FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Day='Friday'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_sched.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
+                else:
+                    data_table_sched.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
+                count += 1
+                data_table_sched.tag_configure('evenrow', background='#EEEEEE')
+                data_table_sched.tag_configure('oddrow', background='#EEEEEE')
+
+        def Saturday():
+            btn_mon_sched.configure(fg_color="#ffb000")
+            btn_tue_sched.configure(fg_color="#ffb000")
+            btn_wed_sched.configure(fg_color="#ffb000")
+            btn_thur_sched.configure(fg_color="#ffb000")
+            btn_fri_sched.configure(fg_color="#ffb000")
+            btn_sat_sched.configure(fg_color="#00436e")
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_sched.get_children():
+                data_table_sched.delete(record)
+            
+            cursor.execute("SELECT Start_Time,End_Time,Subject,Room,Section FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Day='Saturday'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_sched.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
+                else:
+                    data_table_sched.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
+                count += 1
+                data_table_sched.tag_configure('evenrow', background='#EEEEEE')
+                data_table_sched.tag_configure('oddrow', background='#EEEEEE')
+
             # Data Table "TreeView"
         scrollbary_sched = Scrollbar(popupwindow_sched, orient=VERTICAL)
         scrollbary_sched.place(x=1030, y=230, height=350)
@@ -953,6 +1165,8 @@ def new_win():
         data_table_sched.heading("Subject", text="Subject", anchor=CENTER)
         data_table_sched.heading("Room", text="Room", anchor=CENTER)
         data_table_sched.heading("Section", text="Section", anchor=CENTER)
+
+        refreshTable_sched()
 
             # Entry Employee Name
         sched_name = Entry(popupwindow_sched, state='disabled')
@@ -1035,91 +1249,43 @@ def new_win():
 
             # Updated Button
         update_pic = PhotoImage(file = "pic/btn_update.png")
-        button_update_sched = customtkinter.CTkButton(master=popupwindow_sched,image=update_pic, text="" ,
+        button_update_sched = customtkinter.CTkButton(master=popupwindow_sched,state='disabled',image=update_pic, text="" ,
                                                     corner_radius=6, fg_color="#00436e",hover_color="#006699", command= Update_Data)
         button_update_sched.place(x=515, y=290, height=32,width=131)
 
-        def Monday():
-            btn_mon_sched.configure(fg_color="#00436e")
-            btn_tue_sched.configure(fg_color="#ffb000")
-            btn_wed_sched.configure(fg_color="#ffb000")
-            btn_thur_sched.configure(fg_color="#ffb000")
-            btn_fri_sched.configure(fg_color="#ffb000")
-            btn_sat_sched.configure(fg_color="#ffb000")
-
             # Moday Button
-        mon_btn = PhotoImage(file = "pic/btn_update.png")
-        btn_mon_sched = customtkinter.CTkButton(master=popupwindow_sched,image=mon_btn, text="monday" ,
+        mon_btn = PhotoImage(file = "pic/btn_mon.png")
+        btn_mon_sched = customtkinter.CTkButton(master=popupwindow_sched,image=mon_btn, text="" ,
                                                     corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Monday)
         btn_mon_sched.place(x=90, y=373, height=28,width=131)
 
-        def Tuesday():
-            btn_mon_sched.configure(fg_color="#ffb000")
-            btn_tue_sched.configure(fg_color="#00436e")
-            btn_wed_sched.configure(fg_color="#ffb000")
-            btn_thur_sched.configure(fg_color="#ffb000")
-            btn_fri_sched.configure(fg_color="#ffb000")
-            btn_sat_sched.configure(fg_color="#ffb000")
-
             # Tuesday Button
-        tue_btn = PhotoImage(file = "pic/btn_update.png")
-        btn_tue_sched = customtkinter.CTkButton(master=popupwindow_sched,image=tue_btn, text="Tuesday" ,
+        tue_btn = PhotoImage(file = "pic/btn_tue.png")
+        btn_tue_sched = customtkinter.CTkButton(master=popupwindow_sched,image=tue_btn, text="" ,
                                                     corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Tuesday)
         btn_tue_sched.place(x=235, y=373, height=28,width=131)
 
-        def Wednesday():
-            btn_mon_sched.configure(fg_color="#ffb000")
-            btn_tue_sched.configure(fg_color="#ffb000")
-            btn_wed_sched.configure(fg_color="#00436e")
-            btn_thur_sched.configure(fg_color="#ffb000")
-            btn_fri_sched.configure(fg_color="#ffb000")
-            btn_sat_sched.configure(fg_color="#ffb000")
-
              # Wednesday Button
-        wed_btn = PhotoImage(file = "pic/btn_update.png")
-        btn_wed_sched = customtkinter.CTkButton(master=popupwindow_sched,image=wed_btn, text="Wednesday" ,
+        wed_btn = PhotoImage(file = "pic/btn_wed.png")
+        btn_wed_sched = customtkinter.CTkButton(master=popupwindow_sched,image=wed_btn, text="" ,
                                                     corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Wednesday)
         btn_wed_sched.place(x=380, y=373, height=28,width=131)
 
-        def Thursday():
-            btn_mon_sched.configure(fg_color="#ffb000")
-            btn_tue_sched.configure(fg_color="#ffb000")
-            btn_wed_sched.configure(fg_color="#ffb000")
-            btn_thur_sched.configure(fg_color="#00436e")
-            btn_fri_sched.configure(fg_color="#ffb000")
-            btn_sat_sched.configure(fg_color="#ffb000")
-
              # Thursday Button
-        thur_btn = PhotoImage(file = "pic/btn_update.png")
-        btn_thur_sched = customtkinter.CTkButton(master=popupwindow_sched,image=thur_btn, text="Thursday" ,
+        thur_btn = PhotoImage(file = "pic/btn_thu.png")
+        btn_thur_sched = customtkinter.CTkButton(master=popupwindow_sched,image=thur_btn, text="" ,
                                                     corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Thursday)
         btn_thur_sched.place(x=525, y=373, height=28,width=131)
 
-        def Friday():
-            btn_mon_sched.configure(fg_color="#ffb000")
-            btn_tue_sched.configure(fg_color="#ffb000")
-            btn_wed_sched.configure(fg_color="#ffb000")
-            btn_thur_sched.configure(fg_color="#ffb000")
-            btn_fri_sched.configure(fg_color="#00436e")
-            btn_sat_sched.configure(fg_color="#ffb000")
-
              # Friday Button
-        fri_btn = PhotoImage(file = "pic/btn_update.png")
-        btn_fri_sched = customtkinter.CTkButton(master=popupwindow_sched,image=fri_btn, text="Friday" ,
+        fri_btn = PhotoImage(file = "pic/btn_fri.png")
+        btn_fri_sched = customtkinter.CTkButton(master=popupwindow_sched,image=fri_btn, text="" ,
                                                     corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Friday)
         btn_fri_sched.place(x=670, y=373, height=28,width=131)
 
-        def Saturday():
-            btn_mon_sched.configure(fg_color="#ffb000")
-            btn_tue_sched.configure(fg_color="#ffb000")
-            btn_wed_sched.configure(fg_color="#ffb000")
-            btn_thur_sched.configure(fg_color="#ffb000")
-            btn_fri_sched.configure(fg_color="#ffb000")
-            btn_sat_sched.configure(fg_color="#00436e")
-
              # Saturday Button
-        sat_btn = PhotoImage(file = "pic/btn_update.png")
-        btn_sat_sched = customtkinter.CTkButton(master=popupwindow_sched,image=sat_btn, text="Saturday" ,
+        sat_btn = PhotoImage(file = "pic/btn_sat.png")
+        btn_sat_sched = customtkinter.CTkButton(master=popupwindow_sched,image=sat_btn, text="" ,
                                                     corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Saturday)
         btn_sat_sched.place(x=815, y=373, height=28,width=131)
 
