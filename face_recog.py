@@ -1077,6 +1077,9 @@ def new_win():
                 data_table_sched.tag_configure('evenrow', background='#EEEEEE')
                 data_table_sched.tag_configure('oddrow', background='#EEEEEE')
 
+            conn.commit()
+            conn.close()
+
         def Friday():
             btn_mon_sched.configure(fg_color="#ffb000")
             btn_tue_sched.configure(fg_color="#ffb000")
@@ -1106,6 +1109,9 @@ def new_win():
                 count += 1
                 data_table_sched.tag_configure('evenrow', background='#EEEEEE')
                 data_table_sched.tag_configure('oddrow', background='#EEEEEE')
+
+            conn.commit()
+            conn.close()
 
         def Saturday():
             btn_mon_sched.configure(fg_color="#ffb000")
@@ -1137,6 +1143,109 @@ def new_win():
                 data_table_sched.tag_configure('evenrow', background='#EEEEEE')
                 data_table_sched.tag_configure('oddrow', background='#EEEEEE')
 
+            conn.commit()
+            conn.close()
+
+        def select_row_sched(e):
+
+            selected = data_table_sched.focus()
+            values = data_table_sched.item(selected, 'values')
+
+            if values:
+                conn = sqlite3.connect("data/data.db")
+                cursor = conn.cursor()
+
+                day_sched.configure(state='normal')
+                hr_strttime_sched.configure(state='normal')
+                min_strttime_sched.configure(state='normal')
+                sec_strttime_sched.configure(state='normal')
+                p_strttime_sched.configure(state='normal')
+                hr_endtime_sched.configure(state='normal')
+                min_endtime_sched.configure(state='normal')
+                sec_endtime_sched.configure(state='normal')
+                p_endtime_sched.configure(state='normal')
+
+                day_sched.delete(0,END)
+                sub_sched.delete(0,END)
+                room_sched.delete(0,END)
+                section_sched.delete(0,END)
+                p_strttime_sched.delete(0,END)
+                p_endtime_sched.delete(0,END)
+                
+                sub_sched.insert(0,values[2])
+                room_sched.insert(0,values[3])
+                section_sched.insert(0,values[4])
+
+                subject = sub_sched.get()
+
+                cursor.execute("SELECT Day FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                day = cursor.fetchone()
+
+                cursor.execute("SELECT DISTINCT SUBSTR(Start_Time,1,2) FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                hr_strttime = cursor.fetchone()
+
+                cursor.execute("SELECT DISTINCT SUBSTR(Start_Time,4,2) FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                min_strttime = cursor.fetchone()
+
+                cursor.execute("SELECT DISTINCT SUBSTR(Start_Time,7,2) FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                sec_strttime = cursor.fetchone()
+
+                cursor.execute("SELECT DISTINCT SUBSTR(Start_Time,10,2) FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                p_strttime = cursor.fetchone()
+
+                cursor.execute("SELECT DISTINCT SUBSTR(End_Time,1,2) FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                hr_endtime = cursor.fetchone()
+
+                cursor.execute("SELECT DISTINCT SUBSTR(End_Time,4,2) FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                min_endtime = cursor.fetchone()
+
+                cursor.execute("SELECT DISTINCT SUBSTR(End_Time,7,2) FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                sec_endtime = cursor.fetchone()
+
+                cursor.execute("SELECT DISTINCT SUBSTR(End_Time,10,2) FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                p_endtime = cursor.fetchone()
+
+                HR_strttime = IntVar()
+                HR_strttime.set(hr_strttime)
+                MIN_strttime = IntVar()
+                MIN_strttime.set(min_strttime)
+                SEC_strttime = IntVar()
+                SEC_strttime.set(sec_strttime)
+                hr_strttime_sched.configure(textvariable=HR_strttime)
+                min_strttime_sched.configure(textvariable=MIN_strttime)
+                sec_strttime_sched.configure(textvariable=SEC_strttime)
+                p_strttime_sched.insert(0,p_strttime)
+
+                HR_endtime = IntVar()
+                HR_endtime.set(hr_endtime)
+                MIN_endtime = IntVar()
+                MIN_endtime.set(min_endtime)
+                SEC_endtime = IntVar()
+                SEC_endtime.set(sec_endtime)
+                hr_endtime_sched.configure(textvariable=HR_endtime)
+                min_endtime_sched.configure(textvariable=MIN_endtime)
+                sec_endtime_sched.configure(textvariable=SEC_endtime)
+                p_endtime_sched.insert(0,p_strttime)
+                
+                day_sched.insert(0,day)
+                day_sched.configure(state='readonly')
+                hr_strttime_sched.configure(state='readonly')
+                min_strttime_sched.configure(state='readonly')
+                sec_strttime_sched.configure(state='readonly')
+                p_strttime_sched.configure(state='readonly')
+                p_strttime_sched.configure(state='readonly')
+                hr_endtime_sched.configure(state='readonly')
+                min_endtime_sched.configure(state='readonly')
+                sec_endtime_sched.configure(state='readonly')
+                p_endtime_sched.configure(state='readonly')
+
+                conn.commit()
+                conn.close()
+
+                button_update_sched.configure(state='normal')
+            else:
+                messagebox.showinfo("Error", "There is no data on the table !!")
+
             # Data Table "TreeView"
         scrollbary_sched = Scrollbar(popupwindow_sched, orient=VERTICAL)
         scrollbary_sched.place(x=1030, y=230, height=350)
@@ -1166,6 +1275,8 @@ def new_win():
         data_table_sched.heading("Room", text="Room", anchor=CENTER)
         data_table_sched.heading("Section", text="Section", anchor=CENTER)
 
+        data_table_sched.bind("<ButtonRelease-1>", select_row_sched)
+
         refreshTable_sched()
 
             # Entry Employee Name
@@ -1189,15 +1300,17 @@ def new_win():
         # strttime_sched.place(x=545, y=209, width=150)
 
             # Entry Start Time Hour
-        hr_strttime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=12, format="%02.0f")
+        var = IntVar()
+        var.set("%02.0f".format(00))
+        hr_strttime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=12, format="%02.0f",textvariable=var)
         hr_strttime_sched.place(x=545, y=209, width=35)
 
             # Entry Start Time Minute
-        min_strttime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f")
+        min_strttime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f",textvariable=var)
         min_strttime_sched.place(x=585, y=209, width=35)
 
             # Entry Start Time Second
-        sec_strttime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f")
+        sec_strttime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f",textvariable=var)
         sec_strttime_sched.place(x=625, y=209, width=35)
 
             # ComboBox College Department
@@ -1214,15 +1327,15 @@ def new_win():
         # endtime_sched.place(x=810, y=209, width=150)
 
             # Entry End Time Hour
-        hr_endtime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=12, format="%02.0f")
+        hr_endtime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=12, format="%02.0f",textvariable=var)
         hr_endtime_sched.place(x=810, y=209, width=35)
 
             # Entry End Time Minute
-        min_endtime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f")
+        min_endtime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f",textvariable=var)
         min_endtime_sched.place(x=850, y=209, width=35)
 
             # Entry End Time Second
-        sec_endtime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f")
+        sec_endtime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f",textvariable=var)
         sec_endtime_sched.place(x=890, y=209, width=35)
 
             # ComboBox College Department
@@ -1250,13 +1363,13 @@ def new_win():
             # Updated Button
         update_pic = PhotoImage(file = "pic/btn_update.png")
         button_update_sched = customtkinter.CTkButton(master=popupwindow_sched,state='disabled',image=update_pic, text="" ,
-                                                    corner_radius=6, fg_color="#00436e",hover_color="#006699", command= Update_Data)
+                                                    corner_radius=6, fg_color="#00436e",hover_color="#006699", command='')
         button_update_sched.place(x=515, y=290, height=32,width=131)
 
             # Moday Button
         mon_btn = PhotoImage(file = "pic/btn_mon.png")
         btn_mon_sched = customtkinter.CTkButton(master=popupwindow_sched,image=mon_btn, text="" ,
-                                                    corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Monday)
+                                                    corner_radius=6, fg_color="#00436e",hover_color="#006699", command=Monday)
         btn_mon_sched.place(x=90, y=373, height=28,width=131)
 
             # Tuesday Button
@@ -1288,15 +1401,6 @@ def new_win():
         btn_sat_sched = customtkinter.CTkButton(master=popupwindow_sched,image=sat_btn, text="" ,
                                                     corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Saturday)
         btn_sat_sched.place(x=815, y=373, height=28,width=131)
-
-        #     # Entry Date
-        # date_summary = Entry(popupwindow_sched, state='disabled')
-        # date_summary.place(x=370, y=352, width=80)
-
-        #     # Total Present Label
-        # total_present_lb_summary = Label(popupwindow_sched, text='000', fg='white', bg ='#00436e', font = "Heltvetica 20 bold")
-        # total_present_lb_summary.place(x=225, y=136)
-
 
     # ============= Faculty Information Frame ===================================================================================================================================================
 
