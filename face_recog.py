@@ -214,7 +214,16 @@ def new_win():
     password_lbl_empl_log = Label(employee_login, text='Password', fg='Black', bg ='#1f2a76', font = "Heltvetica 27 bold")
     password_lbl_empl_log.place(x=116, y=370)
     empl_log_txtbox_pass = Entry(employee_login, borderwidth=0, width=16, font=('Arial', 30), show='*')
-    empl_log_txtbox_pass.place(x=116, y=422, height=90) 
+    empl_log_txtbox_pass.place(x=116, y=422, height=90)
+
+    def refreshTable_log():
+
+        for data_log in data_table_act.get_children():
+            data_table_act.delete(data_log)
+
+        for results_log in reverse(log_read()):
+            data_table_act.insert(parent='', index='end', iid=results_log, text="", values=(results_log), tag="orow")
+        data_table_act.tag_configure('orow', background='#EEEEEE') 
 
         # Account verification
     def verify():
@@ -282,7 +291,7 @@ def new_win():
                                 PRIMARY KEY("ID" AUTOINCREMENT)
                                 )""")
 
-                eName = att_mon_lb_name.cget("text")
+                eName = att_mon_lb_empnum.cget("text")
                 eDepartment = att_mon_lb_dept.cget("text")
 
                 insetdata = (eName,'login',eDepartment,currentDateTime)
@@ -450,7 +459,7 @@ def new_win():
                         PRIMARY KEY("ID" AUTOINCREMENT)
                         )""")
 
-        eName = att_mon_lb_name.cget("text")
+        eName = att_mon_lb_empnum.cget("text")
         eDepartment = att_mon_lb_dept.cget("text")
 
         insetdata = (eName,'Logout',eDepartment,currentDateTime)
@@ -502,6 +511,38 @@ def new_win():
     pg3_txtbox_pass = Entry(page3, borderwidth=0, width=16, font=('Arial', 30), show='*')
     # pg3_txtbox_pass.insert(0,"Password")
     pg3_txtbox_pass.place(x=116, y=422, height=90)
+
+    def check_duplicate_Username_admin():
+        Username = pg3_txtbox_username.get()
+
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(Username) + "'")
+        records = cursor.fetchone()
+
+        if records is not None:
+            return True
+        else:
+            return False
+
+        conn.commit()
+
+    def check_duplicate_Pass_admin():
+        Password = pg3_txtbox_pass.get()
+
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM faculty_data WHERE Password = '" + str(Password) + "'")
+        records = cursor.fetchone()
+
+        if records is not None:
+            return True
+        else:
+            return False
+
+        conn.commit()
  
         # Account verification
     def verify_admin():
@@ -527,7 +568,7 @@ def new_win():
         elif attemptadmin >=0 and attemptadmin <=2:
             cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(uname) + "' AND  Password = '" + str(pwd) + "' AND  Position = '" + str(adm) + "' AND Status ='" + str(state) + "'")
             if cursor.fetchone():
-                cursor.execute("SELECT Employee_Name FROM faculty_data WHERE Username = '"+ str(uname)+"' AND Password = '"+ str(pwd)+"'")
+                cursor.execute("SELECT Employee_No FROM faculty_data WHERE Username = '"+ str(uname)+"' AND Password = '"+ str(pwd)+"'")
                 get_Name = cursor.fetchone()
                 cursor.execute("SELECT College_Department FROM faculty_data WHERE Username = '"+ str(uname)+"' AND Password = '"+ str(pwd)+"'")
                 get_Department = cursor.fetchone()
@@ -564,6 +605,24 @@ def new_win():
 
             elif inactive:
                 messagebox.showinfo("Messgae", "Please inform the  Co-Admin to Activate your Account!!\nThank You!! ")
+            elif check_duplicate_Username_admin()==False:
+                # messagebox.showinfo("Error", "Username Is Incorrect!!")
+                attemptadmin += 1
+                count = 3 - attemptadmin
+                messagebox.showinfo("Messge", "Username Is Incorrect!!\n\nReamaining Attempt: "+ str(count))
+                pg3_txtbox_username.delete(0, END)
+                pg3_txtbox_pass.delete(0, END)
+                check_button.deselect()
+                return
+            elif check_duplicate_Pass_admin()==False:
+                # messagebox.showinfo("Error", "Password Is Incorrect!!")
+                attemptadmin += 1
+                count = 3 - attemptadmin
+                messagebox.showinfo("Messge", "Password Is Incorrect!!\n\nReamaining Attempt: "+ str(count))
+                pg3_txtbox_username.delete(0, END)
+                pg3_txtbox_pass.delete(0, END)
+                check_button.deselect()
+                return
             else:
                 attemptadmin += 1
                 count = 3 - attemptadmin
@@ -571,7 +630,7 @@ def new_win():
                 pg3_txtbox_username.delete(0, END)
                 pg3_txtbox_pass.delete(0, END)
                 check_button.deselect()
-
+            
         else:
             cursor.execute("UPDATE faculty_data SET Status='Deactivated' WHERE (Username = '" + str(uname) + "' or  Password = '" + str(pwd) + "') AND  Position = '" + str(adm) + "'")
             messagebox.showinfo("Error", "Access denied, Out of try!!\n\nYour Account has Deactivate!!\n\nPlease contact your Co-Admin!!")
@@ -579,6 +638,7 @@ def new_win():
             pg3_txtbox_pass.delete(0, END)
             check_button.deselect()
             attemptadmin = attemptadmin - 3
+            
 
         conn.commit()
         conn.close()
@@ -1326,6 +1386,55 @@ def new_win():
 
             conn.commit()
             conn.close()
+        def clear_sched():
+            day_sched.configure(state='normal')
+            hr_strttime_sched.configure(state='normal')
+            min_strttime_sched.configure(state='normal')
+            sec_strttime_sched.configure(state='normal')
+            p_strttime_sched.configure(state='normal')
+            hr_endtime_sched.configure(state='normal')
+            min_endtime_sched.configure(state='normal')
+            sec_endtime_sched.configure(state='normal')
+            p_endtime_sched.configure(state='normal')
+
+            day_sched.delete(0,END)
+            sub_sched.delete(0,END)
+            room_sched.delete(0,END)
+            section_sched.delete(0,END)
+            p_strttime_sched.delete(0,END)
+            p_endtime_sched.delete(0,END)
+            p_strttime_sched.insert(0,"AM")
+            p_endtime_sched.insert(0,"AM")
+
+            zero= "00"
+            HR_strttime = IntVar()
+            HR_strttime.set(zero)
+            MIN_strttime = IntVar()
+            MIN_strttime.set(zero)
+            SEC_strttime = IntVar()
+            SEC_strttime.set(zero)
+            hr_strttime_sched.configure(textvariable=HR_strttime)
+            min_strttime_sched.configure(textvariable=MIN_strttime)
+            sec_strttime_sched.configure(textvariable=SEC_strttime)
+            HR_endtime = IntVar()
+            HR_endtime.set(zero)
+            MIN_endtime = IntVar()
+            MIN_endtime.set(zero)
+            SEC_endtime = IntVar()
+            SEC_endtime.set(zero)
+            hr_endtime_sched.configure(textvariable=HR_endtime)
+            min_endtime_sched.configure(textvariable=MIN_endtime)
+            sec_endtime_sched.configure(textvariable=SEC_endtime)
+
+            day_sched.configure(state='readonly')
+            hr_strttime_sched.configure(state='readonly')
+            min_strttime_sched.configure(state='readonly')
+            sec_strttime_sched.configure(state='readonly')
+            p_strttime_sched.configure(state='readonly')
+            hr_endtime_sched.configure(state='readonly')
+            min_endtime_sched.configure(state='readonly')
+            sec_endtime_sched.configure(state='readonly')
+            p_endtime_sched.configure(state='readonly')
 
             # Data Table "TreeView"
         scrollbary_sched = Scrollbar(popupwindow_sched, orient=VERTICAL)
@@ -1385,17 +1494,21 @@ def new_win():
         # strttime_sched.place(x=545, y=209, width=150)
 
             # Entry Start Time Hour
-        var = IntVar()
-        var.set(00)
-        hr_strttime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=12, format="%02.0f",textvariable=var)
+        var_hr_strt = IntVar()
+        var_hr_strt.set(00)
+        hr_strttime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=12, format="%02.0f",textvariable=var_hr_strt)
         hr_strttime_sched.place(x=545, y=209, width=35)
 
             # Entry Start Time Minute
-        min_strttime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f",textvariable=var)
+        var_min_strt = IntVar()
+        var_min_strt.set(00)
+        min_strttime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f",textvariable=var_min_strt)
         min_strttime_sched.place(x=585, y=209, width=35)
 
             # Entry Start Time Second
-        sec_strttime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f",textvariable=var)
+        var_sec_strt = IntVar()
+        var_sec_strt.set(00)
+        sec_strttime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f",textvariable=var_sec_strt)
         sec_strttime_sched.place(x=625, y=209, width=35)
 
             # ComboBox College Department
@@ -1412,15 +1525,21 @@ def new_win():
         # endtime_sched.place(x=810, y=209, width=150)
 
             # Entry End Time Hour
-        hr_endtime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=12, format="%02.0f",textvariable=var)
+        var_hr_end = IntVar()
+        var_hr_end.set(00)
+        hr_endtime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=12, format="%02.0f",textvariable=var_hr_end)
         hr_endtime_sched.place(x=810, y=209, width=35)
 
             # Entry End Time Minute
-        min_endtime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f",textvariable=var)
+        var_min_end = IntVar()
+        var_min_end.set(00)
+        min_endtime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f",textvariable=var_min_end)
         min_endtime_sched.place(x=850, y=209, width=35)
 
             # Entry End Time Second
-        sec_endtime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f",textvariable=var)
+        var_sec_end = IntVar()
+        var_sec_end.set(00)
+        sec_endtime_sched = Spinbox(popupwindow_sched, state='readonly', from_=00, to=59, format="%02.0f",textvariable=var_sec_end)
         sec_endtime_sched.place(x=890, y=209, width=35)
 
             # ComboBox College Department
@@ -1443,13 +1562,19 @@ def new_win():
         save_pic = PhotoImage(file = "pic/btn_save.png")
         save_button_sched = customtkinter.CTkButton(master=popupwindow_sched,image=save_pic, text="" ,
                                                     corner_radius=6, fg_color="#00436e",hover_color="#006699", command=save_sched)
-        save_button_sched.place(x=370, y=290, height=32,width=131)
+        save_button_sched.place(x=315, y=290, height=32,width=131)
 
             # Updated Button
         update_pic = PhotoImage(file = "pic/btn_update.png")
         button_update_sched = customtkinter.CTkButton(master=popupwindow_sched,state='disabled',image=update_pic, text="" ,
                                                     corner_radius=6, fg_color="#00436e",hover_color="#006699", command=update_sched)
-        button_update_sched.place(x=515, y=290, height=32,width=131)
+        button_update_sched.place(x=460, y=290, height=32,width=131)
+
+            # Reset Button
+        reset_btnsched = PhotoImage(file = "pic/btn_reset.png")
+        button_resetsched = customtkinter.CTkButton(master=popupwindow_sched,image=reset_btnsched, text="" ,
+                                                    corner_radius=6, fg_color="#00436e",hover_color="#006699", command=clear_sched)
+        button_resetsched.place(x=605, y=290, height=32,width=131)
 
             # Moday Button
         mon_btn = PhotoImage(file = "pic/btn_mon.png")
@@ -1606,7 +1731,7 @@ def new_win():
         conn.commit()
 
         # Update data sql
-    def update(Employee_No,Email,Employee_Name,Gender,Age,Contact_Number,Address,College_Department,Username,Password,Position,Status,idEmployee_No):
+    def update(Employee_No,Email,Employee_Name,Gender,Age,Contact_Number,Address,College_Department,Username,Password,Position,idEmployee_No):
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
 
@@ -1615,15 +1740,15 @@ def new_win():
             Gender TEXT,Age TEXT,Contact_Number TEXT,Address TEXT,College_Department TEXT,
             Username TEXT, Password TEXT, Position TEXT, Status TEXT)""")
 
-        cursor.execute("UPDATE faculty_data SET Employee_No = '" + str(Employee_No) + "', Email = '" + str(Email) + "', Employee_Name = '" + str(Employee_Name) + "', Gender = '" + str(Gender) + "', Age = '" + str(Age) + "', Contact_Number = '" + str(Contact_Number) + "', Address = '" + str(Address) + "', College_Department = '" + str(College_Department) + "', Username = '" + str(Username) + "', Password = '" + str(Password) + "', Position = '" + str(Position) + "', Status = '" + str(Status) + "' WHERE Employee_No = '"+ str(idEmployee_No)+"'")
+        cursor.execute("UPDATE faculty_data SET Employee_No = '" + str(Employee_No) + "', Email = '" + str(Email) + "', Employee_Name = '" + str(Employee_Name) + "', Gender = '" + str(Gender) + "', Age = '" + str(Age) + "', Contact_Number = '" + str(Contact_Number) + "', Address = '" + str(Address) + "', College_Department = '" + str(College_Department) + "', Username = '" + str(Username) + "', Password = '" + str(Password) + "', Position = '" + str(Position) + "' WHERE Employee_No = '"+ str(idEmployee_No)+"'")
         conn.commit()
 
     def check_duplicate():
         Employee_No = employee_num_fac_inf.get()
-        Email = email_fac_inf.get()
-        Contact_Number = con_num_fac_inf.get()
-        Username = username_fac_inf.get()
-        Password = password_fac_inf.get()
+        # Email = email_fac_inf.get()
+        # Contact_Number = con_num_fac_inf.get()
+        # Username = username_fac_inf.get()
+        # Password = password_fac_inf.get()
 
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
@@ -1639,11 +1764,11 @@ def new_win():
         conn.commit()
 
     def check_duplicate_Email():
-        Employee_No = employee_num_fac_inf.get()
+        # Employee_No = employee_num_fac_inf.get()
         Email = email_fac_inf.get()
-        Contact_Number = con_num_fac_inf.get()
-        Username = username_fac_inf.get()
-        Password = password_fac_inf.get()
+        # Contact_Number = con_num_fac_inf.get()
+        # Username = username_fac_inf.get()
+        # Password = password_fac_inf.get()
 
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
@@ -1659,11 +1784,11 @@ def new_win():
         conn.commit()
 
     def check_duplicate_Con():
-        Employee_No = employee_num_fac_inf.get()
-        Email = email_fac_inf.get()
+        # Employee_No = employee_num_fac_inf.get()
+        # Email = email_fac_inf.get()
         Contact_Number = con_num_fac_inf.get()
-        Username = username_fac_inf.get()
-        Password = password_fac_inf.get()
+        # Username = username_fac_inf.get()
+        # Password = password_fac_inf.get()
 
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
@@ -1679,11 +1804,11 @@ def new_win():
         conn.commit()
 
     def check_duplicate_Username():
-        Employee_No = employee_num_fac_inf.get()
-        Email = email_fac_inf.get()
-        Contact_Number = con_num_fac_inf.get()
+        # Employee_No = employee_num_fac_inf.get()
+        # Email = email_fac_inf.get()
+        # Contact_Number = con_num_fac_inf.get()
         Username = username_fac_inf.get()
-        Password = password_fac_inf.get()
+        # Password = password_fac_inf.get()
 
         conn = sqlite3.connect("data/data.db")
         cursor = conn.cursor()
@@ -1699,10 +1824,10 @@ def new_win():
         conn.commit()
 
     def check_duplicate_Pass():
-        Employee_No = employee_num_fac_inf.get()
-        Email = email_fac_inf.get()
-        Contact_Number = con_num_fac_inf.get()
-        Username = username_fac_inf.get()
+        # Employee_No = employee_num_fac_inf.get()
+        # Email = email_fac_inf.get()
+        # Contact_Number = con_num_fac_inf.get()
+        # Username = username_fac_inf.get()
         Password = password_fac_inf.get()
 
         conn = sqlite3.connect("data/data.db")
@@ -1765,6 +1890,9 @@ def new_win():
                 return
             elif len(save_contact_number) > 11:
                 messagebox.showinfo("Error","Not a valid Contact Number, Please enter 11 numbers only!!")
+                return
+            elif not employee_num_fac_inf.isdigit():
+                messagebox.showinfo("Error","Not a valid Employee Number, Please enter numbers only!!")
                 return
             else:
                 messagebox.showinfo("Messgae", "Data Added!!")
@@ -1874,13 +2002,20 @@ def new_win():
             return
         else:
             messagebox.showinfo("Messgae", "Data Updated!!")
-            update(save_employee_number,save_email,save_employee_name,save_gender,save_age,save_contact_number,save_address,save_college_department,save_username,save_password,save_position,save_status,update_name)
+            update(save_employee_number,save_email,save_employee_name,save_gender,save_age,save_contact_number,save_address,save_college_department,save_username,save_password,save_position,update_name)
             
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            cursor.execute("UPDATE faculty_data SET  Status = '" + str(save_status) + "' WHERE Employee_No = '"+ str(save_employee_number)+"'")
+            conn.commit()
+            conn.close()
+
             department_combobox.configure(state='readonly')
             gender_combobox_fac_inf.configure(state='readonly')
             status_combobox_fac_inf.configure(state='readonly')
             position_fac_inf.configure(state='readonly')
-            clear()     
+            clear()
 
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
@@ -1895,7 +2030,7 @@ def new_win():
                             "Department"    TEXT,
                             "Date_Time" TIMESTAMP,
                             PRIMARY KEY("ID" AUTOINCREMENT)
-                            )""")
+                            )""")     
 
             eName = pg4_lb_name.cget("text")
             eDepartment = pg4_lb_dept.cget("text")
@@ -1903,6 +2038,19 @@ def new_win():
             insetdata = str(eName),'Update',str(eDepartment),currentDateTime
             cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
                                 VAlUES(?,?,?,?)""", insetdata)
+
+            
+            if save_status == 'Activated':
+                construct_1 = '#'+ save_employee_number + 'Account Activated'
+                insetdata_2 = str(eName),str(construct_1),str(eDepartment),currentDateTime
+                cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                                VAlUES(?,?,?,?)""", insetdata_2)
+            elif status_change != 'Deactivated':
+                construct = '#' + save_employee_number + ' Account Deactivated'
+                insetdata_1 = str(eName),str(construct),str(eDepartment),currentDateTime
+                cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                                VAlUES(?,?,?,?)""", insetdata_1)
+
             conn.commit()
             conn.close()
             loads_button_fac_inf.configure(state='disabled')
@@ -1926,21 +2074,21 @@ def new_win():
     scrollbarx.configure(command=data_table.xview)
     scrollbary.configure(command=data_table.yview)
 
-    data_table['columns'] = ("Status","Employee No.","Email","Employee Name","Gender","Age","Contact Number","Address","College Department","Username","Password","Position")
+    data_table['columns'] = ("Employee No.","Email","Employee Name","Gender","Age","Contact Number","Address","College Department","Username","Password","Position","Status")
     # Format Columns
     data_table.column("#0", width=0, stretch=NO)
-    data_table.column("Employee No.", anchor=W, width=150)
-    data_table.column("Email", anchor=W, width=100)
-    data_table.column("Employee Name", anchor=W, width=200)
-    data_table.column("Gender", anchor=W, width=100)
-    data_table.column("Age", anchor=W, width=100)
-    data_table.column("Contact Number", anchor=W, width=200)
-    data_table.column("Address", anchor=W, width=300)
-    data_table.column("College Department", anchor=W, width=150)
-    data_table.column("Username", anchor=W, width=100)
-    data_table.column("Password", anchor=W, width=100)
-    data_table.column("Position", anchor=W, width=100)
-    data_table.column("Status", anchor=W, width=50)
+    data_table.column("Employee No.", anchor=CENTER, width=150)
+    data_table.column("Email", anchor=CENTER, width=100)
+    data_table.column("Employee Name", anchor=CENTER, width=200)
+    data_table.column("Gender", anchor=CENTER, width=100)
+    data_table.column("Age", anchor=CENTER, width=100)
+    data_table.column("Contact Number", anchor=CENTER, width=200)
+    data_table.column("Address", anchor=CENTER, width=300)
+    data_table.column("College Department", anchor=CENTER, width=150)
+    data_table.column("Username", anchor=CENTER, width=100)
+    data_table.column("Password", anchor=CENTER, width=100)
+    data_table.column("Position", anchor=CENTER, width=100)
+    data_table.column("Status", anchor=CENTER, width=100)
 
     # Create Headings
     data_table.heading("Employee No.", text="Employee No.", anchor=CENTER)
