@@ -1644,7 +1644,7 @@ def new_win():
         # retype_password_fac_inf.delete(0, END)
         department_combobox.configure(state='readonly')
         gender_combobox_fac_inf.configure(state='readonly')
-        status_combobox_fac_inf.configure(state='readonly')
+        status_combobox_fac_inf.configure(state='disabled')
         position_fac_inf.configure(state='readonly')
         loads_button_fac_inf.configure(state='disabled')
 
@@ -1847,7 +1847,7 @@ def new_win():
     def Save_Data():
         department_combobox.configure(state='normal')
         gender_combobox_fac_inf.configure(state='normal')
-        status_combobox_fac_inf.configure(state='normal')
+        # status_combobox_fac_inf.configure(state='normal')
         position_fac_inf.configure(state='normal')
 
         save_employee_number = employee_num_fac_inf.get()
@@ -1861,9 +1861,10 @@ def new_win():
         save_username = username_fac_inf.get()
         save_password = password_fac_inf.get()
         save_position = position_fac_inf.get()
-        save_status = status_combobox_fac_inf.get()
+        # save_status = status_combobox_fac_inf.get()
+        save_status = 'Activated'
 
-        if save_status == "" or save_employee_number == "" or save_email == "" or save_employee_name == "" or save_gender == "" or save_age == "" or save_contact_number == "" or save_address == "" or save_college_department == "" or save_username == "" or save_password == "" or save_position == "":
+        if save_employee_number == "" or save_email == "" or save_employee_name == "" or save_gender == "" or save_age == "" or save_contact_number == "" or save_address == "" or save_college_department == "" or save_username == "" or save_password == "" or save_position == "":
             messagebox.showinfo("Error", "Please fill up the blank entry!!")
             return
         else:
@@ -1900,7 +1901,7 @@ def new_win():
                 
                 department_combobox.configure(state='readonly')
                 gender_combobox_fac_inf.configure(state='readonly')
-                status_combobox_fac_inf.configure(state='readonly')
+                # status_combobox_fac_inf.configure(state='readonly')
                 position_fac_inf.configure(state='readonly')
                 clear() 
 
@@ -2004,12 +2005,12 @@ def new_win():
             messagebox.showinfo("Messgae", "Data Updated!!")
             update(save_employee_number,save_email,save_employee_name,save_gender,save_age,save_contact_number,save_address,save_college_department,save_username,save_password,save_position,update_name)
             
-            conn = sqlite3.connect("data/data.db")
-            cursor = conn.cursor()
+            # conn = sqlite3.connect("data/data.db")
+            # cursor = conn.cursor()
 
-            cursor.execute("UPDATE faculty_data SET  Status = '" + str(save_status) + "' WHERE Employee_No = '"+ str(save_employee_number)+"'")
-            conn.commit()
-            conn.close()
+            # cursor.execute("UPDATE faculty_data SET  Status = '" + str(save_status) + "' WHERE Employee_No = '"+ str(save_employee_number)+"'")
+            # conn.commit()
+            # conn.close()
 
             department_combobox.configure(state='readonly')
             gender_combobox_fac_inf.configure(state='readonly')
@@ -2039,24 +2040,43 @@ def new_win():
             cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
                                 VAlUES(?,?,?,?)""", insetdata)
 
-            
-            if save_status == 'Activated':
-                construct_1 = '#'+ save_employee_number + 'Account Activated'
-                insetdata_2 = str(eName),str(construct_1),str(eDepartment),currentDateTime
-                cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
-                                VAlUES(?,?,?,?)""", insetdata_2)
-            elif status_change != 'Deactivated':
-                construct = '#' + save_employee_number + ' Account Deactivated'
-                insetdata_1 = str(eName),str(construct),str(eDepartment),currentDateTime
-                cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
-                                VAlUES(?,?,?,?)""", insetdata_1)
-
             conn.commit()
             conn.close()
             loads_button_fac_inf.configure(state='disabled')
             refreshTable_log()
-        refreshTable()
 
+
+        refreshTable()
+    def combobox_event(event):
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        save_status = status_combobox_fac_inf.get()
+        save_employee_number = employee_num_fac_inf.get()
+        
+        cursor.execute("UPDATE faculty_data SET  Status = '" + str(save_status) + "' WHERE Employee_No = '"+ str(save_employee_number)+"'")
+        
+        currentDateTime = datetime.datetime.now()
+        eName = pg4_lb_name.cget("text")
+        eDepartment = pg4_lb_dept.cget("text")
+        
+        if save_status == 'Activated':
+            construct_1 = '#'+ save_employee_number + ' Account Activated'
+            insetdata_2 = str(eName),str(construct_1),str(eDepartment),currentDateTime
+            cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                            VAlUES(?,?,?,?)""", insetdata_2)
+            messagebox.showinfo("Messgae", "Status Activated!!")
+            refreshTable_log()
+        elif save_status == 'Deactivated':
+            construct = '#' + save_employee_number + ' Account Deactivated'
+            insetdata_1 = str(eName),str(construct),str(eDepartment),currentDateTime
+            cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                            VAlUES(?,?,?,?)""", insetdata_1)
+            messagebox.showinfo("Messgae", "Status Deactivated!!")
+            refreshTable_log()
+        refreshTable_log()
+        conn.commit()
+        conn.close()
 
          # Data Table "TreeView"
     scrollbarx = Scrollbar(faculty_information, orient=HORIZONTAL)
@@ -2147,6 +2167,7 @@ def new_win():
 
         # Entry Status
     status_combobox_fac_inf = ttk.Combobox(faculty_information,state='disabled', values=["Activated", "Deactivated"])
+    status_combobox_fac_inf.bind("<<ComboboxSelected>>", combobox_event)
     status_combobox_fac_inf.place(x=385, y=405, width=125)
 
         # Label Position
@@ -5602,18 +5623,18 @@ def new_win():
 
     scrollbary_act.configure(command=data_table_act.yview)
 
-    data_table_act['columns'] = ("ID","Name","Activity","Department","Date & Time")
+    data_table_act['columns'] = ("ID","Employee Number","Activity","Department","Date & Time")
     # Format Columns
     data_table_act.column("#0", width=0, stretch=NO)
     data_table_act.column("ID", anchor=CENTER,width=0)
-    data_table_act.column("Name", anchor=CENTER, width=50)
+    data_table_act.column("Employee Number", anchor=CENTER, width=50)
     data_table_act.column("Activity", anchor=CENTER, width=50)
     data_table_act.column("Department", anchor=CENTER, width=50)
     data_table_act.column("Date & Time", anchor=CENTER, width=50)
 
     # Create Headings
     data_table_act.heading("ID", text="ID", anchor=CENTER)
-    data_table_act.heading("Name", text="Name", anchor=CENTER)
+    data_table_act.heading("Employee Number", text="Employee Number", anchor=CENTER)
     data_table_act.heading("Activity", text="Activity", anchor=CENTER)
     data_table_act.heading("Department", text="Department", anchor=CENTER)
     data_table_act.heading("Date & Time", text="Date & Time", anchor=CENTER)
