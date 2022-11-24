@@ -150,7 +150,7 @@ def new_win():
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(faculty_information)
+    show_frame(ite_att_record)
 
     # ============= Page 1 Frame =========================================================================================================================================
 
@@ -2288,7 +2288,7 @@ def new_win():
             time_lb_summary.configure(text = string_time)
             time_lb_summary.after(1000, time_report)
 
-            string_date = strftime('%d/%m/20%y')
+            string_date = strftime('%d-%m-20%y')
             date_lb_summary.configure(text = string_date)
 
         def display_info():
@@ -2368,7 +2368,7 @@ def new_win():
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
 
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            cursor.execute("SELECT Time_in,Time_out,_Date,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
             results_math_report = cursor.fetchall()
             conn.commit()
             return results_math_report
@@ -2619,19 +2619,21 @@ def new_win():
         scrollbarx_summary.configure(command=data_table_summary.xview)
         scrollbary_summary.configure(command=data_table_summary.yview)
 
-        data_table_summary['columns'] = ("Time in","Time out","Date","Remarks")
+        data_table_summary['columns'] = ("Time in","Time out","Date","Late","Early Dismissal")
         # Format Columns
         data_table_summary.column("#0", width=0, stretch=NO)
         data_table_summary.column("Time in", anchor=W, width=100)
         data_table_summary.column("Time out", anchor=W, width=100)
         data_table_summary.column("Date", anchor=W, width=100)
-        data_table_summary.column("Remarks", anchor=W, width=100)
+        data_table_summary.column("Late", anchor=W, width=100)
+        data_table_summary.column("Early Dismissal", anchor=W, width=100)
 
         # Create Headings
         data_table_summary.heading("Time in", text="Time in", anchor=CENTER)
         data_table_summary.heading("Time out", text="Time out", anchor=CENTER)
         data_table_summary.heading("Date", text="Date", anchor=CENTER)
-        data_table_summary.heading("Remarks", text="Remarks", anchor=CENTER)
+        data_table_summary.heading("Late", text="Late", anchor=CENTER)
+        data_table_summary.heading("Early Dismissal", text="Early Dismissal", anchor=CENTER)
 
         refreshTable_math_report()
 
@@ -2765,7 +2767,7 @@ def new_win():
         time_lb_math_rec.configure(text = string_time)
         time_lb_math_rec.after(1000, time)
 
-        string_date = strftime('%d/%m/20%y')
+        string_date = strftime('%d-%m-20%y')
         date_lb_math_rec.configure(text = string_date)
 
             # search Data
@@ -2804,15 +2806,29 @@ def new_win():
         cursor = conn.cursor()
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
-            attendance_record(ID INTEGER PRIMARY KEY,Employee_No INTEGER,Name TEXT,
-            Department TEXT,Time_in TEXT,Time_out TEXT,_Date TEXT,Status TEXT)""")
+                        attendance_record(
+                            "ID" INTEGER,
+                            "Employee_No" TEXT,
+                            "Name"  TEXT,
+                            "Department" TEXT,
+                            "Day" TEXT,
+                            "Subject" TEXT,
+                            "Room" TEXT,
+                            "Section" TEXT,
+                            "Time_in" TEXT,
+                            "Time_out" TEXT,
+                            "_Date" TEXT,
+                            "Status" TEXT,
+                            "Late" TEXT,
+                            "Early_Dismissal" TEXT,
+                            PRIMARY KEY("ID" AUTOINCREMENT))""")
 
-        # cursor.execute("""INSERT INTO attendance_record (ID,Employee_No,Name,Department,Time_in,Time_out,_Date,Status)
+        # cursor.execute("""INSERT INTO attendance_record (ID,Employee_No,Name,Department,Day,Subject,Room,Section,Time_in,Time_out,_Date,Status)
         #                 VAlUES
-        #                 (1,234,'neil','ite','8:23:45 AM','5:23:45 PM','26/10/2022','Present'),
-        #                 (2,345,'josel','ite','9:12:45 AM','6:23:45 PM','26/10/2022','Late') """)
+        #                 (1,234,'neil','ite','Monday','Math','401','4A','8:23:45 AM','5:23:45 PM','24/11/2022','Present'),
+        #                 (2,345,'josel','ite','Friday','Science','410','4C','9:12:45 AM','6:23:45 PM','24/11/2022','Late') """)
 
-        cursor.execute("SELECT Name,Department,Time_in,Time_out,_Date,Status FROM attendance_record WHERE Department='Mathematics'")
+        cursor.execute("SELECT Name,Department,Day,Subject,Room,Section,Time_in,Time_out,_Date,Status FROM attendance_record WHERE Department='Mathematics'")
         results_math = cursor.fetchall()
         conn.commit()
         return results_math
@@ -2880,11 +2896,15 @@ def new_win():
     scrollbarx_math_rec.configure(command=data_table_math_rec.xview)
     scrollbary_math_rec.configure(command=data_table_math_rec.yview)
 
-    data_table_math_rec['columns'] = ("Name","Department","Time in","Time out","Date","Status")
+    data_table_math_rec['columns'] = ("Name","Department","Day","Subject","Room","Section","Time in","Time out","Date","Status")
     # Format Columns
     data_table_math_rec.column("#0", width=0, stretch=NO)
     data_table_math_rec.column("Name", anchor=W, width=100)
     data_table_math_rec.column("Department", anchor=W, width=200)
+    data_table_math_rec.column("Day", anchor=W, width=100)
+    data_table_math_rec.column("Subject", anchor=W, width=100)
+    data_table_math_rec.column("Room", anchor=W, width=100)
+    data_table_math_rec.column("Section", anchor=W, width=100)
     data_table_math_rec.column("Time in", anchor=W, width=100)
     data_table_math_rec.column("Time out", anchor=W, width=100)
     data_table_math_rec.column("Date", anchor=W, width=100)
@@ -2893,6 +2913,10 @@ def new_win():
     # Create Headings
     data_table_math_rec.heading("Name", text="Name", anchor=CENTER)
     data_table_math_rec.heading("Department", text="Department", anchor=CENTER)
+    data_table_math_rec.heading("Day", text="Day", anchor=CENTER)
+    data_table_math_rec.heading("Subject", text="Subject", anchor=CENTER)
+    data_table_math_rec.heading("Room", text="Room", anchor=CENTER)
+    data_table_math_rec.heading("Section", text="Section", anchor=CENTER)
     data_table_math_rec.heading("Time in", text="Time in", anchor=CENTER)
     data_table_math_rec.heading("Time out", text="Time out", anchor=CENTER)
     data_table_math_rec.heading("Date", text="Date", anchor=CENTER)
@@ -3121,7 +3145,7 @@ def new_win():
             time_lb_summary_psyc.configure(text = string_time)
             time_lb_summary_psyc.after(1000, time_report)
 
-            string_date = strftime('%d/%m/20%y')
+            string_date = strftime('%d-%m-20%y')
             date_lb_summary_psyc.configure(text = string_date)
 
         def display_info():
@@ -3200,7 +3224,7 @@ def new_win():
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
 
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            cursor.execute("SELECT Time_in,Time_out,_Date,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
             results_report = cursor.fetchall()
             conn.commit()
             return results_report
@@ -3451,19 +3475,21 @@ def new_win():
         scrollbarx_summary_psyc.configure(command=data_table_summary_psyc.xview)
         scrollbary_summary_psyc.configure(command=data_table_summary_psyc.yview)
 
-        data_table_summary_psyc['columns'] = ("Time in","Time out","Date","Remarks")
+        data_table_summary_psyc['columns'] = ("Time in","Time out","Date","Late","Early Dismissal")
         # Format Columns
         data_table_summary_psyc.column("#0", width=0, stretch=NO)
         data_table_summary_psyc.column("Time in", anchor=W, width=100)
         data_table_summary_psyc.column("Time out", anchor=W, width=100)
         data_table_summary_psyc.column("Date", anchor=W, width=100)
-        data_table_summary_psyc.column("Remarks", anchor=W, width=100)
+        data_table_summary_psyc.column("Late", anchor=W, width=100)
+        data_table_summary_psyc.column("Early Dismissal", anchor=W, width=100)
 
         # Create Headings
         data_table_summary_psyc.heading("Time in", text="Time in", anchor=CENTER)
         data_table_summary_psyc.heading("Time out", text="Time out", anchor=CENTER)
         data_table_summary_psyc.heading("Date", text="Date", anchor=CENTER)
-        data_table_summary_psyc.heading("Remarks", text="Remarks", anchor=CENTER)
+        data_table_summary_psyc.heading("Late", text="Late", anchor=CENTER)
+        data_table_summary_psyc.heading("Early Dismissal", text="Early Dismissal", anchor=CENTER)
 
         refreshTable_psyc_report()
 
@@ -3597,7 +3623,7 @@ def new_win():
         time_lb_psyc.configure(text = string_time_psyc)
         time_lb_psyc.after(1000, time_psyc)
 
-        string_date_psyc = strftime('%d/%m/20%y')
+        string_date_psyc = strftime('%d-%m-20%y')
         date_lb_psyc.configure(text = string_date_psyc)
 
             # Get And Disply the data in the table
@@ -3606,10 +3632,24 @@ def new_win():
         cursor = conn.cursor()
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
-            attendance_record(ID INTEGER PRIMARY KEY,Employee_No INTEGER,Name TEXT,
-            Department TEXT,Time_in TEXT,Time_out TEXT,_Date TEXT,Status TEXT)""")
+            attendance_record(
+                            "ID" INTEGER,
+                            "Employee_No" TEXT,
+                            "Name"  TEXT,
+                            "Department" TEXT,
+                            "Day" TEXT,
+                            "Subject" TEXT,
+                            "Room" TEXT,
+                            "Section" TEXT,
+                            "Time_in" TEXT,
+                            "Time_out" TEXT,
+                            "_Date" TEXT,
+                            "Status" TEXT,
+                            "Late" TEXT,
+                            "Early_Dismissal" TEXT,
+                            PRIMARY KEY("ID" AUTOINCREMENT))""")
 
-        cursor.execute("SELECT Name,Department,Time_in,Time_out,_Date,Status FROM attendance_record WHERE Department='Psychology'")
+        cursor.execute("SELECT Name,Department,Day,Subject,Room,Section,Time_in,Time_out,_Date,Status FROM attendance_record WHERE Department='Psychology'")
         results_psyc = cursor.fetchall()
         conn.commit()
         return results_psyc
@@ -3695,11 +3735,15 @@ def new_win():
     scrollbarx_psyc.configure(command=data_table_psyc.xview)
     scrollbary_psyc.configure(command=data_table_psyc.yview)
 
-    data_table_psyc['columns'] = ("Name","Department","Time in","Time out","Date","Status")
+    data_table_psyc['columns'] = ("Name","Department","Day","Subject","Room","Section","Time in","Time out","Date","Status")
     # Format Columns
     data_table_psyc.column("#0", width=0, stretch=NO)
     data_table_psyc.column("Name", anchor=W, width=100)
     data_table_psyc.column("Department", anchor=W, width=200)
+    data_table_psyc.column("Day", anchor=W, width=100)
+    data_table_psyc.column("Subject", anchor=W, width=100)
+    data_table_psyc.column("Room", anchor=W, width=100)
+    data_table_psyc.column("Section", anchor=W, width=100)
     data_table_psyc.column("Time in", anchor=W, width=100)
     data_table_psyc.column("Time out", anchor=W, width=100)
     data_table_psyc.column("Date", anchor=W, width=100)
@@ -3708,6 +3752,10 @@ def new_win():
     # Create Headings
     data_table_psyc.heading("Name", text="Name", anchor=CENTER)
     data_table_psyc.heading("Department", text="Department", anchor=CENTER)
+    data_table_psyc.heading("Day", text="Day", anchor=CENTER)
+    data_table_psyc.heading("Subject", text="Subject", anchor=CENTER)
+    data_table_psyc.heading("Room", text="Room", anchor=CENTER)
+    data_table_psyc.heading("Section", text="Section", anchor=CENTER)
     data_table_psyc.heading("Time in", text="Time in", anchor=CENTER)
     data_table_psyc.heading("Time out", text="Time out", anchor=CENTER)
     data_table_psyc.heading("Date", text="Date", anchor=CENTER)
@@ -3936,7 +3984,7 @@ def new_win():
             time_lb_summary_applied.configure(text = string_time)
             time_lb_summary_applied.after(1000, time_report)
 
-            string_date = strftime('%d/%m/20%y')
+            string_date = strftime('%d-%m-20%y')
             date_lb_summary_applied.configure(text = string_date)
 
         def display_info():
@@ -4015,7 +4063,7 @@ def new_win():
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
 
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            cursor.execute("SELECT Time_in,Time_out,_Date,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
             results_report = cursor.fetchall()
             conn.commit()
             return results_report
@@ -4266,19 +4314,21 @@ def new_win():
         scrollbarx_summary_applied.configure(command=data_table_summary_applied.xview)
         scrollbary_summary_applied.configure(command=data_table_summary_applied.yview)
 
-        data_table_summary_applied['columns'] = ("Time in","Time out","Date","Remarks")
+        data_table_summary_applied['columns'] = ("Time in","Time out","Date","Late","Early Dismissal")
         # Format Columns
         data_table_summary_applied.column("#0", width=0, stretch=NO)
         data_table_summary_applied.column("Time in", anchor=W, width=100)
         data_table_summary_applied.column("Time out", anchor=W, width=100)
         data_table_summary_applied.column("Date", anchor=W, width=100)
-        data_table_summary_applied.column("Remarks", anchor=W, width=100)
+        data_table_summary_applied.column("Late", anchor=W, width=100)
+        data_table_summary_applied.column("Early Dismissal", anchor=W, width=100)
 
         # Create Headings
         data_table_summary_applied.heading("Time in", text="Time in", anchor=CENTER)
         data_table_summary_applied.heading("Time out", text="Time out", anchor=CENTER)
         data_table_summary_applied.heading("Date", text="Date", anchor=CENTER)
-        data_table_summary_applied.heading("Remarks", text="Remarks", anchor=CENTER)
+        data_table_summary_applied.heading("Late", text="Late", anchor=CENTER)
+        data_table_summary_applied.heading("Early Dismissal", text="Early Dismissal", anchor=CENTER)
 
         refreshTable_applied_report()
 
@@ -4412,7 +4462,7 @@ def new_win():
         time_lb_applied.configure(text = string_time_applied)
         time_lb_applied.after(1000, time_applied)
 
-        string_date_applied = strftime('%d/%m/20%y')
+        string_date_applied = strftime('%d-%m-20%y')
         date_lb_applied.configure(text = string_date_applied)
 
             # Get And Disply the data in the table
@@ -4421,10 +4471,24 @@ def new_win():
         cursor = conn.cursor()
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
-            attendance_record(ID INTEGER PRIMARY KEY,Employee_No INTEGER,Name TEXT,
-            Department TEXT,Time_in TEXT,Time_out TEXT,_Date TEXT,Status TEXT)""")
+            attendance_record(
+                            "ID" INTEGER,
+                            "Employee_No" TEXT,
+                            "Name"  TEXT,
+                            "Department" TEXT,
+                            "Day" TEXT,
+                            "Subject" TEXT,
+                            "Room" TEXT,
+                            "Section" TEXT,
+                            "Time_in" TEXT,
+                            "Time_out" TEXT,
+                            "_Date" TEXT,
+                            "Status" TEXT,
+                            "Late" TEXT,
+                            "Early_Dismissal" TEXT,
+                            PRIMARY KEY("ID" AUTOINCREMENT))""")
 
-        cursor.execute("SELECT Name,Department,Time_in,Time_out,_Date,Status FROM attendance_record WHERE Department='Applied Physics'")
+        cursor.execute("SELECT Name,Department,Day,Subject,Room,Section,Time_in,Time_out,_Date,Status FROM attendance_record WHERE Department='Applied Physics'")
         results_applied = cursor.fetchall()
         conn.commit()
         return results_applied
@@ -4510,11 +4574,15 @@ def new_win():
     scrollbarx_applied.configure(command=data_table_applied.xview)
     scrollbary_applied.configure(command=data_table_applied.yview)
 
-    data_table_applied['columns'] = ("Name","Department","Time in","Time out","Date","Status")
+    data_table_applied['columns'] = ("Name","Department","Day","Subject","Room","Section","Time in","Time out","Date","Status")
     # Format Columns
     data_table_applied.column("#0", width=0, stretch=NO)
     data_table_applied.column("Name", anchor=W, width=100)
     data_table_applied.column("Department", anchor=W, width=200)
+    data_table_applied.column("Day", anchor=W, width=100)
+    data_table_applied.column("Subject", anchor=W, width=100)
+    data_table_applied.column("Room", anchor=W, width=100)
+    data_table_applied.column("Section", anchor=W, width=100)
     data_table_applied.column("Time in", anchor=W, width=100)
     data_table_applied.column("Time out", anchor=W, width=100)
     data_table_applied .column("Date", anchor=W, width=100)
@@ -4523,6 +4591,10 @@ def new_win():
     # Create Headings
     data_table_applied.heading("Name", text="Name", anchor=CENTER)
     data_table_applied.heading("Department", text="Department", anchor=CENTER)
+    data_table_applied.heading("Day", text="Day", anchor=CENTER)
+    data_table_applied.heading("Subject", text="Subject", anchor=CENTER)
+    data_table_applied.heading("Room", text="Room", anchor=CENTER)
+    data_table_applied.heading("Section", text="Section", anchor=CENTER)
     data_table_applied.heading("Time in", text="Time in", anchor=CENTER)
     data_table_applied.heading("Time out", text="Time out", anchor=CENTER)
     data_table_applied.heading("Date", text="Date", anchor=CENTER)
@@ -4752,7 +4824,7 @@ def new_win():
             time_lb_summary_ite.configure(text = string_time)
             time_lb_summary_ite.after(1000, time_report)
 
-            string_date = strftime('%d/%m/20%y')
+            string_date = strftime('%d-%m-20%y')
             date_lb_summary_ite.configure(text = string_date)
 
         def display_info():
@@ -4832,7 +4904,7 @@ def new_win():
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
 
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            cursor.execute("SELECT Time_in,Time_out,_Date,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
             results_math_report = cursor.fetchall()
             conn.commit()
             return results_math_report
@@ -5034,7 +5106,7 @@ def new_win():
 
             writer = pd.ExcelWriter(excel_name)
             df = pd.read_csv(path)
-            df.to_excel(writer,'sheet1')
+            df.to_excel(writer,'sheet1', startrow = 2, index = False)
             writer.save()
             source = "excelfile/new_datasave_ite.xlsx"
             if file:
@@ -5083,19 +5155,21 @@ def new_win():
         scrollbarx_summary_ite.configure(command=data_table_summary_ite.xview)
         scrollbary_summary_ite.configure(command=data_table_summary_ite.yview)
 
-        data_table_summary_ite['columns'] = ("Time in","Time out","Date","Remarks")
+        data_table_summary_ite['columns'] = ("Time in","Time out","Date","Late","Early Dismissal")
         # Format Columns
         data_table_summary_ite.column("#0", width=0, stretch=NO)
         data_table_summary_ite.column("Time in", anchor=W, width=100)
         data_table_summary_ite.column("Time out", anchor=W, width=100)
         data_table_summary_ite.column("Date", anchor=W, width=100)
-        data_table_summary_ite.column("Remarks", anchor=W, width=100)
+        data_table_summary_ite.column("Late", anchor=W, width=100)
+        data_table_summary_ite.column("Early Dismissal", anchor=W, width=100)
 
         # Create Headings
         data_table_summary_ite.heading("Time in", text="Time in", anchor=CENTER)
         data_table_summary_ite.heading("Time out", text="Time out", anchor=CENTER)
         data_table_summary_ite.heading("Date", text="Date", anchor=CENTER)
-        data_table_summary_ite.heading("Remarks", text="Remarks", anchor=CENTER)
+        data_table_summary_ite.heading("Late", text="Late", anchor=CENTER)
+        data_table_summary_ite.heading("Early Dismissal", text="Early Dismissal", anchor=CENTER)
 
         refreshTable_ite_report()
 
@@ -5230,7 +5304,7 @@ def new_win():
         time_lb_ite.configure(text = string_time_ite)
         time_lb_ite.after(1000, time_ite)
 
-        string_date_ite = strftime('%d/%m/20%y')
+        string_date_ite = strftime('%d-%m-20%y')
         date_lb_ite.configure(text = string_date_ite)
 
             # Get And Disply the data in the table
@@ -5239,10 +5313,24 @@ def new_win():
         cursor = conn.cursor()
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
-            attendance_record(ID INTEGER PRIMARY KEY,Employee_No INTEGER,Name TEXT,
-            Department TEXT,Time_in TEXT,Time_out TEXT,_Date TEXT,Status TEXT)""")
+            attendance_record(
+                            "ID" INTEGER,
+                            "Employee_No" TEXT,
+                            "Name"  TEXT,
+                            "Department" TEXT,
+                            "Day" TEXT,
+                            "Subject" TEXT,
+                            "Room" TEXT,
+                            "Section" TEXT,
+                            "Time_in" TEXT,
+                            "Time_out" TEXT,
+                            "_Date" TEXT,
+                            "Status" TEXT,
+                            "Late" TEXT,
+                            "Early_Dismissal" TEXT,
+                            PRIMARY KEY("ID" AUTOINCREMENT))""")
 
-        cursor.execute("SELECT Name,Department,Time_in,Time_out,_Date,Status FROM attendance_record WHERE Department='ITE'")
+        cursor.execute("SELECT Name,Department,Day,Subject,Room,Section,Time_in,Time_out,_Date,Status FROM attendance_record WHERE Department='ITE'")
         results_ite = cursor.fetchall()
         conn.commit()
         return results_ite
@@ -5329,11 +5417,15 @@ def new_win():
     scrollbarx_ite.configure(command=data_table_ite.xview)
     scrollbary_ite.configure(command=data_table_ite.yview)
 
-    data_table_ite['columns'] = ("Name","Department","Time in","Time out","Date","Status")
+    data_table_ite['columns'] = ("Name","Department","Day","Subject","Room","Section","Time in","Time out","Date","Status")
     # Format Columns
     data_table_ite.column("#0", width=0, stretch=NO)
     data_table_ite.column("Name", anchor=W, width=100)
     data_table_ite.column("Department", anchor=W, width=200)
+    data_table_ite.column("Day", anchor=W, width=100)
+    data_table_ite.column("Subject", anchor=W, width=100)
+    data_table_ite.column("Room", anchor=W, width=100)
+    data_table_ite.column("Section", anchor=W, width=100)
     data_table_ite.column("Time in", anchor=W, width=100)
     data_table_ite.column("Time out", anchor=W, width=100)
     data_table_ite.column("Date", anchor=W, width=100)
@@ -5342,6 +5434,10 @@ def new_win():
     # Create Headings
     data_table_ite.heading("Name", text="Name", anchor=CENTER)
     data_table_ite.heading("Department", text="Department", anchor=CENTER)
+    data_table_ite.heading("Day", text="Day", anchor=CENTER)
+    data_table_ite.heading("Subject", text="Subject", anchor=CENTER)
+    data_table_ite.heading("Room", text="Room", anchor=CENTER)
+    data_table_ite.heading("Section", text="Section", anchor=CENTER)
     data_table_ite.heading("Time in", text="Time in", anchor=CENTER)
     data_table_ite.heading("Time out", text="Time out", anchor=CENTER)
     data_table_ite.heading("Date", text="Date", anchor=CENTER)
