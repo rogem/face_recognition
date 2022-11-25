@@ -2263,10 +2263,14 @@ def new_win():
 
         # Clear Text Field
     def clear():
+        button_update.configure(state='disabled')
+        
         department_combobox.configure(state='normal')
         gender_combobox_fac_inf.configure(state='normal')
         status_combobox_fac_inf.configure(state='normal')
         position_fac_inf.configure(state='normal')
+        password_fac_inf.configure(state='normal')
+        username_fac_inf.configure(state='normal')
 
         department_combobox.delete(0, END)
         employee_num_fac_inf.delete(0, END)
@@ -2287,6 +2291,7 @@ def new_win():
         status_combobox_fac_inf.configure(state='disabled')
         position_fac_inf.configure(state='readonly')
         loads_button_fac_inf.configure(state='disabled')
+
 
     def search_data():
         lookup_record = search_fac_inf.get()
@@ -2592,10 +2597,17 @@ def new_win():
         values = data_table.item(selected, 'values')
 
         if values:
+            button_update.configure(state='normal')
+
             department_combobox.configure(state='normal')
             gender_combobox_fac_inf.configure(state='normal')
             status_combobox_fac_inf.configure(state='normal')
             position_fac_inf.configure(state='normal')
+            password_fac_inf.configure(state='normal')
+            username_fac_inf.configure(state='normal')
+
+            password_fac_inf.delete(0,END)
+            username_fac_inf.delete(0,END)
 
             employee_num_fac_inf.insert(0, values[0])
             email_fac_inf.insert(0, values[1])
@@ -2615,6 +2627,8 @@ def new_win():
             status_combobox_fac_inf.configure(state='readonly')
             position_fac_inf.configure(state='readonly')
             loads_button_fac_inf.configure(state='normal')
+            password_fac_inf.configure(state='disabled')
+            username_fac_inf.configure(state='disabled')
         else:
             messagebox.showinfo("Error", "There is no data on the table !!")
         
@@ -2707,6 +2721,7 @@ def new_win():
             conn.commit()
             conn.close()
             loads_button_fac_inf.configure(state='disabled')
+            button_update.configure(state='disabled')
             refreshTable_log()
 
 
@@ -2900,7 +2915,7 @@ def new_win():
     # def Update():
     #     print("update")
     update_btn = PhotoImage(file = "pic/btn_update.png")
-    button_update = customtkinter.CTkButton(master=faculty_information,image=update_btn, text="" ,
+    button_update = customtkinter.CTkButton(master=faculty_information,image=update_btn, text="", state='disabled',
                                                 corner_radius=6, fg_color="#00436e",hover_color="#006699", command= Update_Data)
     button_update.place(x=212, y=506, height=32,width=131)
 
