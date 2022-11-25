@@ -223,7 +223,39 @@ def new_win():
 
         for results_log in reverse(log_read()):
             data_table_act.insert(parent='', index='end', iid=results_log, text="", values=(results_log), tag="orow")
-        data_table_act.tag_configure('orow', background='#EEEEEE') 
+        data_table_act.tag_configure('orow', background='#EEEEEE')
+
+    def check_duplicate_Username_emp():
+        Username = empl_log_txtbox_username.get()
+
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM faculty_data WHERE Username = '" + str(Username) + "'")
+        records = cursor.fetchone()
+
+        if records is not None:
+            return True
+        else:
+            return False
+
+        conn.commit()
+
+    def check_duplicate_Pass_emp():
+        Password = empl_log_txtbox_pass.get()
+
+        conn = sqlite3.connect("data/data.db")
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM faculty_data WHERE Password = '" + str(Password) + "'")
+        records = cursor.fetchone()
+
+        if records is not None:
+            return True
+        else:
+            return False
+
+        conn.commit() 
 
         # Account verification
     def verify():
@@ -300,6 +332,25 @@ def new_win():
                 refreshTable_log()
             elif inactive:
                 messagebox.showinfo("Messgae", "Please inform the Admin to Activate your account!!\nThank You!! ")
+
+            elif check_duplicate_Username_emp()==False:
+                # messagebox.showinfo("Error", "Username Is Incorrect!!")
+                attempuser += 1
+                count = 3 - attempuser
+                messagebox.showinfo("Messge", "Username Is Incorrect!!\n\nReamaining Attempt: "+ str(count))
+                empl_log_txtbox_username.delete(0, END)
+                empl_log_txtbox_pass.delete(0, END)
+                check_button_empl_log.deselect()
+                return
+            elif check_duplicate_Pass_emp()==False:
+                # messagebox.showinfo("Error", "Password Is Incorrect!!")
+                attempuser += 1
+                count = 3 - attempuser
+                messagebox.showinfo("Messge", "Password Is Incorrect!!\n\nReamaining Attempt: "+ str(count))
+                empl_log_txtbox_username.delete(0, END)
+                empl_log_txtbox_pass.delete(0, END)
+                check_button_empl_log.deselect()
+                return
             else:
                 attempuser += 1
                 count = 3 - attempuser
