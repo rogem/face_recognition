@@ -150,7 +150,7 @@ def new_win():
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(employee_login)
+    show_frame(faculty_information)
 
     # ============= Page 1 Frame =========================================================================================================================================
 
@@ -2535,6 +2535,18 @@ def new_win():
             elif not employee_num_fac_inf.isdigit():
                 messagebox.showinfo("Error","Not a valid Employee Number, Please enter numbers only!!")
                 return
+            elif not any(ch.isupper() for ch in save_password):
+                messagebox.showinfo("Error","Password Atleast 1 uppercase character required!")
+                return
+            elif not any(ch.islower() for ch in save_password):
+                messagebox.showinfo("Error","Password Atleast 1 lowercase character required!")
+                return
+            elif not any(ch.isdigit() for ch in save_password):
+                messagebox.showinfo("Error","Password Atleast 1 number required!")
+                return
+            elif len(save_password) < 8:
+                messagebox.showinfo("Error","Password must be minimum of 8 characters!")
+                return
             else:
                 messagebox.showinfo("Messgae", "Data Added!!")
                 insert(str(save_employee_number),str(save_email),str(save_employee_name),str(save_gender),str(save_age),str(save_contact_number),str(save_address),str(save_college_department),str(save_username),str(save_password),str(save_position),str(save_status)) 
@@ -2641,6 +2653,18 @@ def new_win():
         elif len(save_contact_number) > 11:
             messagebox.showinfo("Error","Not a valid Contact Number, Please enter 11 numbers only!!")
             return
+        # elif not any(ch.isupper() for ch in save_password):
+        #     messagebox.showinfo("Error","Password Atleast 1 uppercase character required!")
+        #     return
+        # elif not any(ch.islower() for ch in save_password):
+        #     messagebox.showinfo("Error","Password Atleast 1 lowercase character required!")
+        #     return
+        # elif not any(ch.isdigit() for ch in save_password):
+        #     messagebox.showinfo("Error","Password Atleast 1 number required!")
+        #     return
+        # elif len(save_password) < 8:
+        #     messagebox.showinfo("Error","Password must be minimum of 8 characters!")
+        #     return
         else:
             messagebox.showinfo("Messgae", "Data Updated!!")
             update(save_employee_number,save_email,save_employee_name,save_gender,save_age,save_contact_number,save_address,save_college_department,save_username,save_password,save_position,update_name)
