@@ -1,2 +1,2 @@
-Name,Department,Day,Subject,Room,Section,Time in,Time out,Date,Remarks,Late,Early Dismissal
-neil,ITE,Monday,Math,401,4A,8:23:45 AM,5:23:45 PM,25-11-2022,Present,0,0
+Date,Time in,Time out,Late,Early Dismissal
+25-11-2022,8:23:45 AM,5:23:45 PM,0,0

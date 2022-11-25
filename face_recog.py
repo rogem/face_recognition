@@ -2264,7 +2264,7 @@ def new_win():
         # Clear Text Field
     def clear():
         button_update.configure(state='disabled')
-        
+
         department_combobox.configure(state='normal')
         gender_combobox_fac_inf.configure(state='normal')
         status_combobox_fac_inf.configure(state='normal')
@@ -3209,7 +3209,8 @@ def new_win():
             for record in data_table_summary.get_children():
                 data_table_summary.delete(record)
             
-            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Mathematics' AND _Date='"+ str(date_mathematics) +"'")
+            consdate = '%' +date_IT+'%'
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Mathematics' AND (_Date='"+ str(date_mathematics) +"' or _Date LIKE '"+ str(consdate) +"')")
             records = cursor.fetchall()
 
             global count
@@ -3715,7 +3716,7 @@ def new_win():
             attendance_record(ID INTEGER PRIMARY KEY,Employee_No INTEGER,Name TEXT,
             Department TEXT,Time_in TEXT,Time_out TEXT,_Date TEXT,Status TEXT)""")
 
-        cursor.execute("SELECT Employee_No,Name FROM attendance_record WHERE Department='Mathematics'")
+        cursor.execute("SELECT DISTINCT Employee_No,Name FROM attendance_record WHERE Department='Mathematics'")
         results_math_IR = cursor.fetchall()
         conn.commit()
         return results_math_IR
@@ -4153,7 +4154,8 @@ def new_win():
             for record in data_table_summary_psyc.get_children():
                 data_table_summary_psyc.delete(record)
             
-            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Psychology' AND _Date='"+ str(date_psychology) +"'")
+            consdate = '%' +date_psychology+'%'
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Psychology' AND (_Date='"+ str(date_psychology) +"' or _Date LIKE '"+ str(consdate) +"')")
             records = cursor.fetchall()
 
             global count
@@ -4642,7 +4644,7 @@ def new_win():
             attendance_record(ID INTEGER PRIMARY KEY,Employee_No INTEGER,Name TEXT,
             Department TEXT,Time_in TEXT,Time_out TEXT,_Date TEXT,Status TEXT)""")
 
-        cursor.execute("SELECT Employee_No,Name FROM attendance_record WHERE Department='Psychology'")
+        cursor.execute("SELECT DISTINCT Employee_No,Name FROM attendance_record WHERE Department='Psychology'")
         results_psyc_IR = cursor.fetchall()
         conn.commit()
         return results_psyc_IR
@@ -5078,8 +5080,9 @@ def new_win():
             # Clear the Treeview
             for record in data_table_summary_applied.get_children():
                 data_table_summary_applied.delete(record)
-            
-            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Applied Physics' AND _Date='"+ str(date_physics) +"'")
+
+            consdate = '%' +date_physics+'%'
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Applied Physics' AND (_Date='"+ str(date_physics) +"' or _Date LIKE '"+ str(consdate) +"')")
             records = cursor.fetchall()
 
             global count
@@ -5569,7 +5572,7 @@ def new_win():
             attendance_record(ID INTEGER PRIMARY KEY,Employee_No INTEGER,Name TEXT,
             Department TEXT,Time_in TEXT,Time_out TEXT,_Date TEXT,Status TEXT)""")
 
-        cursor.execute("SELECT Employee_No,Name FROM attendance_record WHERE Department='Applied Physics'")
+        cursor.execute("SELECT DISTINCT Employee_No,Name FROM attendance_record WHERE Department='Applied Physics'")
         results_applied_IR = cursor.fetchall()
         conn.commit()
         return results_applied_IR
@@ -6007,8 +6010,9 @@ def new_win():
             # Clear the Treeview
             for record in data_table_summary_ite.get_children():
                 data_table_summary_ite.delete(record)
-            
-            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Name ='"+ str(sname) +"' AND Department='ITE' AND _Date='"+ str(date_IT) +"'")
+
+            consdate = '%' +date_IT+'%'
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Name ='"+ str(sname) +"' AND Department='ITE' AND (_Date='"+ str(date_IT) +"' or _Date LIKE '"+ str(consdate) +"')")
             records = cursor.fetchall()
 
             global count
@@ -6304,7 +6308,7 @@ def new_win():
             data_table_ite.delete(data_ite)
 
         for results_ite_rec in reverse(ite_read()):
-            data_table_ite.insert(parent='', index='end', iid=results_ite_rec, text="", values=(results_ite_rec), tag="orow")
+            data_table_ite.insert(parent='', index='end', text="", values=(results_ite_rec), tag="orow")
         data_table_ite.tag_configure('orow', background='#EEEEEE')
 
             # GET the Count of Total Faculty, Total Present, Total Late and Total Absent
@@ -6498,10 +6502,10 @@ def new_win():
         cursor = conn.cursor()
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS 
-            attendance_record(ID INTEGER PRIMARY KEY,Employee_No INTEGER,Name TEXT,
+            attendance_record(ID INTEGER PRIMARY KEY,Employee_No TEXT,Name TEXT,
             Department TEXT,Time_in TEXT,Time_out TEXT,_Date TEXT,Status TEXT)""")
 
-        cursor.execute("SELECT Employee_No,Name FROM attendance_record WHERE Department='ITE'")
+        cursor.execute("SELECT DISTINCT Employee_No,Name FROM attendance_record WHERE Department='ITE'")
         results_ite_IR = cursor.fetchall()
         conn.commit()
         return results_ite_IR
@@ -6513,7 +6517,7 @@ def new_win():
             data_table_ite_IR.delete(data_ite_IR)
 
         for results_ite_rec_IR in reverse(ite_read_IR()):
-            data_table_ite_IR.insert(parent='', index='end', iid=results_ite_rec_IR, text="", values=(results_ite_rec_IR), tag="orow")
+            data_table_ite_IR.insert(parent='', index='end', text="", values=(results_ite_rec_IR), tag="orow")
         data_table_ite_IR.tag_configure('orow', background='#EEEEEE')
 
     def search_data_ite_IR():
@@ -6534,9 +6538,9 @@ def new_win():
 
         for record in records:
             if count % 2 == 0:
-                data_table_ite_IR.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],), tag="evenrow")
+                data_table_ite_IR.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1]), tag="evenrow")
             else:
-                data_table_ite_IR.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],), tag="oddrow")
+                data_table_ite_IR.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1]), tag="oddrow")
             count += 1
             data_table_ite_IR.tag_configure('evenrow', background='#EEEEEE')
             data_table_ite_IR.tag_configure('oddrow', background='#EEEEEE')
