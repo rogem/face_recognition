@@ -4934,7 +4934,7 @@ def new_win():
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
 
-            cursor.execute("SELECT Time_in,Time_out,_Date,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
             results_math_report = cursor.fetchall()
             conn.commit()
             return results_math_report
@@ -4959,7 +4959,7 @@ def new_win():
             for record in data_table_summary_ite.get_children():
                 data_table_summary_ite.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Name ='"+ str(sname) +"' AND Department='ITE' AND Status='Present' AND _Date='"+ str(date_IT) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Name ='"+ str(sname) +"' AND Department='ITE' AND Status='Present' AND _Date='"+ str(date_IT) +"'")
             records = cursor.fetchall()
 
             global count
@@ -4967,9 +4967,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary_ite.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_ite.tag_configure('oddrow', background='#EEEEEE')
@@ -4993,7 +4993,7 @@ def new_win():
             for record in data_table_summary_ite.get_children():
                 data_table_summary_ite.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Name ='"+ str(sname) +"' AND Department='ITE' AND Status='Late' AND _Date='"+ str(date_IT) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Name ='"+ str(sname) +"' AND Department='ITE' AND Status='Late' AND _Date='"+ str(date_IT) +"'")
             records = cursor.fetchall()
 
             global count
@@ -5001,9 +5001,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary_ite.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_ite.tag_configure('oddrow', background='#EEEEEE')
@@ -5027,7 +5027,7 @@ def new_win():
             for record in data_table_summary_ite.get_children():
                 data_table_summary_ite.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Name ='"+ str(sname) +"' AND Department='ITE' AND Status='Absent' AND _Date='"+ str(date_IT) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Name ='"+ str(sname) +"' AND Department='ITE' AND Status='Absent' AND _Date='"+ str(date_IT) +"'")
             records = cursor.fetchall()
 
             global count
@@ -5035,9 +5035,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary_ite.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_ite.tag_configure('oddrow', background='#EEEEEE')
@@ -5061,7 +5061,7 @@ def new_win():
             for record in data_table_summary_ite.get_children():
                 data_table_summary_ite.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Name ='"+ str(sname) +"' AND Department='ITE' AND Status='Early Dismissal' AND _Date='"+ str(date_IT) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Name ='"+ str(sname) +"' AND Department='ITE' AND Status='Early Dismissal' AND _Date='"+ str(date_IT) +"'")
             records = cursor.fetchall()
 
             global count
@@ -5069,9 +5069,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary_ite.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_ite.tag_configure('oddrow', background='#EEEEEE')
@@ -5095,7 +5095,7 @@ def new_win():
             for record in data_table_summary_ite.get_children():
                 data_table_summary_ite.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Name ='"+ str(sname) +"' AND Department='ITE' AND _Date='"+ str(date_IT) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Name ='"+ str(sname) +"' AND Department='ITE' AND _Date='"+ str(date_IT) +"'")
             records = cursor.fetchall()
 
             global count
@@ -5103,9 +5103,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary_ite.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_ite.tag_configure('oddrow', background='#EEEEEE')
@@ -5118,9 +5118,17 @@ def new_win():
             conn.close()
 
         def print_data_ite():
+            summary_department_combobox_ite.configure(state='normal')
+            employee_name_summary_ite.configure(state='normal')
+            employee_num_summary_ite.configure(state='normal')
+
+            dep = summary_department_combobox_ite.get()
+            name = employee_name_summary_ite.get()
+            num =employee_num_summary_ite.get()
+
             file = filedialog.asksaveasfilename(title="Select file",initialfile="datafile.xlsx", defaultextension=".xlsx",filetypes=[("Execl file","*.xlsx")])
 
-            cols = ['Time in','Time out','Date','Status']
+            cols = ['Date','Time in','Time out','Late','Early Dismissal']
             path = 'excelfile/read_data_employee_ite.csv'
             excel_name = 'excelfile/new_datasave_ite.xlsx'
             lst = []
@@ -5136,7 +5144,14 @@ def new_win():
 
             writer = pd.ExcelWriter(excel_name)
             df = pd.read_csv(path)
-            df.to_excel(writer,'sheet1', startrow = 2, index = False)
+            df.to_excel(writer,'sheet1', startrow = 3, index = False)
+            
+            workbook = writer.book
+            worksheet = writer.sheets['sheet1']
+            worksheet.write(0,0,'Departmet:  ' + dep, workbook.add_format({'bold': True}))
+            worksheet.write(1,0,'Name:  ' + name, workbook.add_format({'bold': True}))
+            worksheet.write(1,3,'Employee No:  ' + num, workbook.add_format({'bold': True}))
+
             writer.save()
             source = "excelfile/new_datasave_ite.xlsx"
             if file:
@@ -5169,6 +5184,10 @@ def new_win():
             else:
                 messagebox.showinfo("Message", "You did not save the file!!")
 
+            summary_department_combobox_ite.configure(state='disabled')
+            employee_name_summary_ite.configure(state='disabled')
+            employee_num_summary_ite.configure(state='disabled')
+
                  # Data Table "TreeView"
         scrollbarx_summary_ite = Scrollbar(popupwindow_ite, orient=HORIZONTAL)
         scrollbarx_summary_ite.place(x=500, y=584, width=367)
@@ -5185,19 +5204,19 @@ def new_win():
         scrollbarx_summary_ite.configure(command=data_table_summary_ite.xview)
         scrollbary_summary_ite.configure(command=data_table_summary_ite.yview)
 
-        data_table_summary_ite['columns'] = ("Time in","Time out","Date","Late","Early Dismissal")
+        data_table_summary_ite['columns'] = ("Date","Time in","Time out","Late","Early Dismissal")
         # Format Columns
         data_table_summary_ite.column("#0", width=0, stretch=NO)
+        data_table_summary_ite.column("Date", anchor=W, width=100)
         data_table_summary_ite.column("Time in", anchor=W, width=100)
         data_table_summary_ite.column("Time out", anchor=W, width=100)
-        data_table_summary_ite.column("Date", anchor=W, width=100)
         data_table_summary_ite.column("Late", anchor=W, width=100)
         data_table_summary_ite.column("Early Dismissal", anchor=W, width=100)
 
         # Create Headings
+        data_table_summary_ite.heading("Date", text="Date", anchor=CENTER)
         data_table_summary_ite.heading("Time in", text="Time in", anchor=CENTER)
         data_table_summary_ite.heading("Time out", text="Time out", anchor=CENTER)
-        data_table_summary_ite.heading("Date", text="Date", anchor=CENTER)
         data_table_summary_ite.heading("Late", text="Late", anchor=CENTER)
         data_table_summary_ite.heading("Early Dismissal", text="Early Dismissal", anchor=CENTER)
 
