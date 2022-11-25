@@ -150,7 +150,7 @@ def new_win():
     def show_frame(frame):
         frame.tkraise()
 
-    show_frame(ite_att_record)
+    show_frame(employee_login)
 
     # ============= Page 1 Frame =========================================================================================================================================
 
@@ -337,6 +337,589 @@ def new_win():
                                                 corner_radius=5,bg_color='#e4b50b', fg_color="#e4b50b",hover_color="#006699", command=lambda: show_frame(page2))
     empl_log_button_back.place(x=5, y=5, height=40,width=70)
 
+    # ============= Schedule ========================================================================================================================
+
+    def Schedule_Employee():
+        popupwindow_sched_emp = Toplevel(main_window)
+        popupwindow_sched_emp.title("Schedule")
+        popupwindow_sched_emp.geometry('1020x670')
+        popupwindow_sched_emp.grab_set()
+        popupwindow_sched_emp.resizable(False,False)
+
+            # open background image
+        popupwindow_sched_emp.sched_image = Image.open('pic/12.png')
+        popupwindow_sched_emp.sched_resize_image = popupwindow_sched_emp.sched_image.resize((1020,670))
+        popupwindow_sched_emp.photo = ImageTk.PhotoImage(popupwindow_sched_emp.sched_resize_image)
+        popupwindow_sched_emp.sched_bg_img_lb = Label(popupwindow_sched_emp, image = popupwindow_sched_emp.photo)
+        popupwindow_sched_emp.sched_bg_img_lb.pack()
+
+        name_emp = att_mon_lb_name.cget("text")
+        depart = att_mon_lb_dept.cget("text")
+
+        def sched_read():
+            # sched_name.configure(state='normal')
+            # sched_department_combobox.configure(state='normal')
+
+            # nm = sched_name.get()
+            # dpt = sched_department_combobox.get()
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT Start_Time,End_Time,Subject,Room,Section FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Day='Monday'")
+            results_sched = cursor.fetchall()
+            conn.commit()
+            return results_sched
+
+        def refreshTable_sched_emp():
+            for data_sched in data_table_sched_emp.get_children():
+                data_table_sched_emp.delete(data_sched)
+
+            for results_sched in reverse(sched_read()):
+                data_table_sched_emp.insert(parent='', index='end', iid=results_sched, text="", values=(results_sched), tag="orow")
+            data_table_sched_emp.tag_configure('orow', background='#EEEEEE')
+
+        def select_row_sched_emp(e):
+
+            selected = data_table_sched_emp.focus()
+            values = data_table_sched_emp.item(selected, 'values')
+
+            if values:
+                conn = sqlite3.connect("data/data.db")
+                cursor = conn.cursor()
+
+                day_sched_emp.configure(state='normal')
+                hr_strttime_sched_emp.configure(state='normal')
+                min_strttime_sched_emp.configure(state='normal')
+                sec_strttime_sched_emp.configure(state='normal')
+                p_strttime_sched_emp.configure(state='normal')
+                hr_endtime_sched_emp.configure(state='normal')
+                min_endtime_sched_emp.configure(state='normal')
+                sec_endtime_sched_emp.configure(state='normal')
+                p_endtime_sched_emp.configure(state='normal')
+
+                sub_sched_emp.configure(state='normal')
+                room_sched_emp.configure(state='normal')
+                section_sched_emp.configure(state='normal')
+
+                day_sched_emp.delete(0,END)
+                sub_sched_emp.delete(0,END)
+                room_sched_emp.delete(0,END)
+                section_sched_emp.delete(0,END)
+                p_strttime_sched_emp.delete(0,END)
+                p_endtime_sched_emp.delete(0,END)
+                
+                sub_sched_emp.insert(0,values[2])
+                room_sched_emp.insert(0,values[3])
+                section_sched_emp.insert(0,values[4])
+
+                subject = sub_sched_emp.get()
+
+                cursor.execute("SELECT Day FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                day = cursor.fetchone()
+
+                cursor.execute("SELECT DISTINCT SUBSTR(Start_Time,1,2) FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                hr_strttime = cursor.fetchone()
+
+                cursor.execute("SELECT DISTINCT SUBSTR(Start_Time,4,2) FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                min_strttime = cursor.fetchone()
+
+                cursor.execute("SELECT DISTINCT SUBSTR(Start_Time,7,2) FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                sec_strttime = cursor.fetchone()
+
+                cursor.execute("SELECT DISTINCT SUBSTR(Start_Time,10,2) FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                p_strttime = cursor.fetchone()
+
+                cursor.execute("SELECT DISTINCT SUBSTR(End_Time,1,2) FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                hr_endtime = cursor.fetchone()
+
+                cursor.execute("SELECT DISTINCT SUBSTR(End_Time,4,2) FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                min_endtime = cursor.fetchone()
+
+                cursor.execute("SELECT DISTINCT SUBSTR(End_Time,7,2) FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                sec_endtime = cursor.fetchone()
+
+                cursor.execute("SELECT DISTINCT SUBSTR(End_Time,10,2) FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Subject='"+ str(subject) +"'")
+                p_endtime = cursor.fetchone()
+
+                HR_strttime_emp = IntVar()
+                HR_strttime_emp.set(hr_strttime)
+                MIN_strttime_emp = IntVar()
+                MIN_strttime_emp.set(min_strttime)
+                SEC_strttime_emp = IntVar()
+                SEC_strttime_emp.set(sec_strttime)
+                hr_strttime_sched_emp.configure(textvariable=HR_strttime_emp)
+                min_strttime_sched_emp.configure(textvariable=MIN_strttime_emp)
+                sec_strttime_sched_emp.configure(textvariable=SEC_strttime_emp)
+                p_strttime_sched_emp.insert(0,p_strttime)
+
+                HR_endtime_emp = IntVar()
+                HR_endtime_emp.set(hr_endtime)
+                MIN_endtime_emp = IntVar()
+                MIN_endtime_emp.set(min_endtime)
+                SEC_endtime_emp = IntVar()
+                SEC_endtime_emp.set(sec_endtime)
+                hr_endtime_sched_emp.configure(textvariable=HR_endtime_emp)
+                min_endtime_sched_emp.configure(textvariable=MIN_endtime_emp)
+                sec_endtime_sched_emp.configure(textvariable=SEC_endtime_emp)
+                p_endtime_sched_emp.insert(0,p_strttime)
+                
+                day_sched_emp.insert(0,day)
+
+                sub_sched_lb_emp.configure(text=subject)
+
+                day_sched_emp.configure(state='disabled')
+                hr_strttime_sched_emp.configure(state='disabled')
+                min_strttime_sched_emp.configure(state='disabled')
+                sec_strttime_sched_emp.configure(state='disabled')
+                p_strttime_sched_emp.configure(state='disabled')
+                hr_endtime_sched_emp.configure(state='disabled')
+                min_endtime_sched_emp.configure(state='disabled')
+                sec_endtime_sched_emp.configure(state='disabled')
+                p_endtime_sched_emp.configure(state='disabled')
+
+                sub_sched_emp.configure(state='disabled')
+                room_sched_emp.configure(state='disabled')
+                section_sched_emp.configure(state='disabled')
+
+                conn.commit()
+                conn.close()
+
+            else:
+                messagebox.showinfo("Error", "There is no data on the table !!")
+
+        def clear_sched_emp():
+            day_sched_emp.configure(state='normal')
+            hr_strttime_sched_emp.configure(state='normal')
+            min_strttime_sched_emp.configure(state='normal')
+            sec_strttime_sched_emp.configure(state='normal')
+            p_strttime_sched_emp.configure(state='normal')
+            hr_endtime_sched_emp.configure(state='normal')
+            min_endtime_sched_emp.configure(state='normal')
+            sec_endtime_sched_emp.configure(state='normal')
+            p_endtime_sched_emp.configure(state='normal')
+
+            sub_sched_emp.configure(state='normal')
+            room_sched_emp.configure(state='normal')
+            section_sched_emp.configure(state='normal')
+
+            day_sched_emp.delete(0,END)
+            sub_sched_emp.delete(0,END)
+            room_sched_emp.delete(0,END)
+            section_sched_emp.delete(0,END)
+            p_strttime_sched_emp.delete(0,END)
+            p_endtime_sched_emp.delete(0,END)
+            p_strttime_sched_emp.insert(0,"AM")
+            p_endtime_sched_emp.insert(0,"AM")
+
+            zero= "00"
+            HR_strttime = IntVar()
+            HR_strttime.set(zero)
+            MIN_strttime = IntVar()
+            MIN_strttime.set(zero)
+            SEC_strttime = IntVar()
+            SEC_strttime.set(zero)
+            hr_strttime_sched_emp.configure(textvariable=HR_strttime)
+            min_strttime_sched_emp.configure(textvariable=MIN_strttime)
+            sec_strttime_sched_emp.configure(textvariable=SEC_strttime)
+            HR_endtime = IntVar()
+            HR_endtime.set(zero)
+            MIN_endtime = IntVar()
+            MIN_endtime.set(zero)
+            SEC_endtime = IntVar()
+            SEC_endtime.set(zero)
+            hr_endtime_sched_emp.configure(textvariable=HR_endtime)
+            min_endtime_sched_emp.configure(textvariable=MIN_endtime)
+            sec_endtime_sched_emp.configure(textvariable=SEC_endtime)
+
+            day_sched_emp.configure(state='disabled')
+            hr_strttime_sched_emp.configure(state='disabled')
+            min_strttime_sched_emp.configure(state='disabled')
+            sec_strttime_sched_emp.configure(state='disabled')
+            p_strttime_sched_emp.configure(state='disabled')
+            hr_endtime_sched_emp.configure(state='disabled')
+            min_endtime_sched_emp.configure(state='disabled')
+            sec_endtime_sched_emp.configure(state='disabled')
+            p_endtime_sched_emp.configure(state='disabled')
+
+            sub_sched_emp.configure(state='disabled')
+            room_sched_emp.configure(state='disabled')
+            section_sched_emp.configure(state='disabled')
+
+        def Monday_emp():
+            btn_mon_sched_emp.configure(fg_color="#00436e")
+            btn_tue_sched_emp.configure(fg_color="#ffb000")
+            btn_wed_sched_emp.configure(fg_color="#ffb000")
+            btn_thur_sched_emp.configure(fg_color="#ffb000")
+            btn_fri_sched_emp.configure(fg_color="#ffb000")
+            btn_sat_sched_emp.configure(fg_color="#ffb000")
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_sched_emp.get_children():
+                data_table_sched_emp.delete(record)
+            
+            cursor.execute("SELECT Start_Time,End_Time,Subject,Room,Section FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Day='Monday'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_sched_emp.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
+                else:
+                    data_table_sched_emp.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
+                count += 1
+                data_table_sched_emp.tag_configure('evenrow', background='#EEEEEE')
+                data_table_sched_emp.tag_configure('oddrow', background='#EEEEEE')
+
+            conn.commit()
+            conn.close()
+
+        def Tuesday_emp():
+            btn_mon_sched_emp.configure(fg_color="#ffb000")
+            btn_tue_sched_emp.configure(fg_color="#00436e")
+            btn_wed_sched_emp.configure(fg_color="#ffb000")
+            btn_thur_sched_emp.configure(fg_color="#ffb000")
+            btn_fri_sched_emp.configure(fg_color="#ffb000")
+            btn_sat_sched_emp.configure(fg_color="#ffb000")
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_sched_emp.get_children():
+                data_table_sched_emp.delete(record)
+            
+            cursor.execute("SELECT Start_Time,End_Time,Subject,Room,Section FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Day='Tuesday'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_sched_emp.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
+                else:
+                    data_table_sched_emp.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
+                count += 1
+                data_table_sched_emp.tag_configure('evenrow', background='#EEEEEE')
+                data_table_sched_emp.tag_configure('oddrow', background='#EEEEEE')
+
+            conn.commit()
+            conn.close()
+
+        def Wednesday_emp():
+            btn_mon_sched_emp.configure(fg_color="#ffb000")
+            btn_tue_sched_emp.configure(fg_color="#ffb000")
+            btn_wed_sched_emp.configure(fg_color="#00436e")
+            btn_thur_sched_emp.configure(fg_color="#ffb000")
+            btn_fri_sched_emp.configure(fg_color="#ffb000")
+            btn_sat_sched_emp.configure(fg_color="#ffb000")
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_sched_emp.get_children():
+                data_table_sched_emp.delete(record)
+            
+            cursor.execute("SELECT Start_Time,End_Time,Subject,Room,Section FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Day='Wednesday'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_sched_emp.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
+                else:
+                    data_table_sched_emp.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
+                count += 1
+                data_table_sched_emp.tag_configure('evenrow', background='#EEEEEE')
+                data_table_sched_emp.tag_configure('oddrow', background='#EEEEEE')
+
+            conn.commit()
+            conn.close()
+
+        def Thursday_emp():
+            btn_mon_sched_emp.configure(fg_color="#ffb000")
+            btn_tue_sched_emp.configure(fg_color="#ffb000")
+            btn_wed_sched_emp.configure(fg_color="#ffb000")
+            btn_thur_sched_emp.configure(fg_color="#00436e")
+            btn_fri_sched_emp.configure(fg_color="#ffb000")
+            btn_sat_sched_emp.configure(fg_color="#ffb000")
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_sched_emp.get_children():
+                data_table_sched_emp.delete(record)
+            
+            cursor.execute("SELECT Start_Time,End_Time,Subject,Room,Section FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Day='Thursday'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_sched_emp.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
+                else:
+                    data_table_sched_emp.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
+                count += 1
+                data_table_sched_emp.tag_configure('evenrow', background='#EEEEEE')
+                data_table_sched_emp.tag_configure('oddrow', background='#EEEEEE')
+
+            conn.commit()
+            conn.close()
+
+        def Friday_emp():
+            btn_mon_sched_emp.configure(fg_color="#ffb000")
+            btn_tue_sched_emp.configure(fg_color="#ffb000")
+            btn_wed_sched_emp.configure(fg_color="#ffb000")
+            btn_thur_sched_emp.configure(fg_color="#ffb000")
+            btn_fri_sched_emp.configure(fg_color="#00436e")
+            btn_sat_sched_emp.configure(fg_color="#ffb000")
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_sched_emp.get_children():
+                data_table_sched_emp.delete(record)
+            
+            cursor.execute("SELECT Start_Time,End_Time,Subject,Room,Section FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Day='Friday'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_sched_emp.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
+                else:
+                    data_table_sched_emp.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
+                count += 1
+                data_table_sched_emp.tag_configure('evenrow', background='#EEEEEE')
+                data_table_sched_emp.tag_configure('oddrow', background='#EEEEEE')
+
+            conn.commit()
+            conn.close()
+
+        def Saturday_emp():
+            btn_mon_sched_emp.configure(fg_color="#ffb000")
+            btn_tue_sched_emp.configure(fg_color="#ffb000")
+            btn_wed_sched_emp.configure(fg_color="#ffb000")
+            btn_thur_sched_emp.configure(fg_color="#ffb000")
+            btn_fri_sched_emp.configure(fg_color="#ffb000")
+            btn_sat_sched_emp.configure(fg_color="#00436e")
+
+            conn = sqlite3.connect("data/data.db")
+            cursor = conn.cursor()
+
+            # Clear the Treeview
+            for record in data_table_sched_emp.get_children():
+                data_table_sched_emp.delete(record)
+            
+            cursor.execute("SELECT Start_Time,End_Time,Subject,Room,Section FROM schedule WHERE Name='"+ str(name_emp) +"' AND Department='"+ str(depart) +"' AND Day='Saturday'")
+            records = cursor.fetchall()
+
+            global count
+            count = 0
+
+            for record in records:
+                if count % 2 == 0:
+                    data_table_sched_emp.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
+                else:
+                    data_table_sched_emp.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
+                count += 1
+                data_table_sched_emp.tag_configure('evenrow', background='#EEEEEE')
+                data_table_sched_emp.tag_configure('oddrow', background='#EEEEEE')
+
+            conn.commit()
+            conn.close()
+
+            # Data Table "TreeView"
+        scrollbary_sched_emp = Scrollbar(popupwindow_sched_emp, orient=VERTICAL)
+        scrollbary_sched_emp.place(x=1030, y=230, height=350)
+
+        # style = ttk.Style()
+        # style.configure("Treeview.Heading", font=("yu gothic ui", 10, "bold"))
+
+        data_table_sched_emp = ttk.Treeview(popupwindow_sched_emp)
+        data_table_sched_emp.place(x=145, y=415, width=740, height=215)
+        data_table_sched_emp.configure(yscrollcommand=scrollbary_sched_emp.set)
+
+        scrollbary_sched_emp.configure(command=data_table_sched_emp.yview)
+
+        data_table_sched_emp['columns'] = ("Start Time","End Time","Subject","Room","Section")
+        # Format Columns
+        data_table_sched_emp.column("#0", width=0, stretch=NO)
+        data_table_sched_emp.column("Start Time", anchor=CENTER,width=0)
+        data_table_sched_emp.column("End Time", anchor=CENTER, width=50)
+        data_table_sched_emp.column("Subject", anchor=CENTER, width=50)
+        data_table_sched_emp.column("Room", anchor=CENTER, width=50)
+        data_table_sched_emp.column("Section", anchor=CENTER, width=50)
+
+        # Create Headings
+        data_table_sched_emp.heading("Start Time", text="Start Time", anchor=CENTER)
+        data_table_sched_emp.heading("End Time", text="End Time", anchor=CENTER)
+        data_table_sched_emp.heading("Subject", text="Subject", anchor=CENTER)
+        data_table_sched_emp.heading("Room", text="Room", anchor=CENTER)
+        data_table_sched_emp.heading("Section", text="Section", anchor=CENTER)
+
+        data_table_sched_emp.bind("<ButtonRelease-1>", select_row_sched_emp)
+
+        refreshTable_sched_emp()
+
+            # Entry Employee Name
+        sched_name_emp = Entry(popupwindow_sched_emp, state='disabled')
+        sched_name_emp.place(x=180, y=172, width=150)
+
+            # Entry Day
+        day_sched_emp = ttk.Combobox(popupwindow_sched_emp, state='disabled', values=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
+        day_sched_emp.place(x=180, y=209, width=150)
+
+            # Subject Label
+        sub_sched_lb_emp = Label(popupwindow_sched_emp, fg='#f0f0f0', font = "Heltvetica 9")
+        sub_sched_lb_emp.place(x=180, y=235)
+
+            # Entry Subject
+        sub_sched_emp = Entry(popupwindow_sched_emp, state='disabled')
+        sub_sched_emp.place(x=180, y=258, width=150)
+
+            # ComboBox College Department
+        sched_department_combobox_emp = ttk.Combobox(popupwindow_sched_emp, state='disabled', values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
+        sched_department_combobox_emp.place(x=545, y=172, width=150)
+        
+        #     # Entry Start Time
+        # strttime_sched= Entry(popupwindow_sched,textvariable=time_format)
+        # strttime_sched.place(x=545, y=209, width=150)
+
+            # Entry Start Time Hour
+        var_hr_strt_emp = IntVar()
+        var_hr_strt_emp.set(00)
+        hr_strttime_sched_emp = Spinbox(popupwindow_sched_emp, state='disabled', from_=00, to=12, format="%02.0f",textvariable=var_hr_strt_emp)
+        hr_strttime_sched_emp.place(x=545, y=209, width=35)
+
+            # Entry Start Time Minute
+        var_min_strt_emp = IntVar()
+        var_min_strt_emp.set(00)
+        min_strttime_sched_emp = Spinbox(popupwindow_sched_emp, state='disabled', from_=00, to=59, format="%02.0f",textvariable=var_min_strt_emp)
+        min_strttime_sched_emp.place(x=585, y=209, width=35)
+
+            # Entry Start Time Second
+        var_sec_strt_emp = IntVar()
+        var_sec_strt_emp.set(00)
+        sec_strttime_sched_emp = Spinbox(popupwindow_sched_emp, state='disabled', from_=00, to=59, format="%02.0f",textvariable=var_sec_strt_emp)
+        sec_strttime_sched_emp.place(x=625, y=209, width=35)
+
+            # ComboBox College Department
+        p_strttime_sched_emp = ttk.Combobox(popupwindow_sched_emp, state='disabled', values=["AM", "PM",])
+        p_strttime_sched_emp.set("AM")
+        p_strttime_sched_emp.place(x=665, y=209, width=45)
+
+            # Entry Room
+        room_sched_emp = Entry(popupwindow_sched_emp, state='disabled')
+        room_sched_emp.place(x=545, y=258, width=150)
+
+        #     # Entry End Time
+        # endtime_sched = Entry(popupwindow_sched)
+        # endtime_sched.place(x=810, y=209, width=150)
+
+            # Entry End Time Hour
+        var_hr_end_emp = IntVar()
+        var_hr_end_emp.set(00)
+        hr_endtime_sched_emp = Spinbox(popupwindow_sched_emp, state='disabled', from_=00, to=12, format="%02.0f",textvariable=var_hr_end_emp)
+        hr_endtime_sched_emp.place(x=810, y=209, width=35)
+
+            # Entry End Time Minute
+        var_min_end_emp = IntVar()
+        var_min_end_emp.set(00)
+        min_endtime_sched_emp = Spinbox(popupwindow_sched_emp, state='disabled', from_=00, to=59, format="%02.0f",textvariable=var_min_end_emp)
+        min_endtime_sched_emp.place(x=850, y=209, width=35)
+
+            # Entry End Time Second
+        var_sec_end_emp = IntVar()
+        var_sec_end_emp.set(00)
+        sec_endtime_sched_emp = Spinbox(popupwindow_sched_emp, state='disabled', from_=00, to=59, format="%02.0f",textvariable=var_sec_end_emp)
+        sec_endtime_sched_emp.place(x=890, y=209, width=35)
+
+            # ComboBox College Department
+        p_endtime_sched_emp = ttk.Combobox(popupwindow_sched_emp, state='disabled', values=["AM", "PM",])
+        p_endtime_sched_emp.set("AM")
+        p_endtime_sched_emp.place(x=930, y=209, width=45)
+
+            # Entry Section
+        section_sched_emp = Entry(popupwindow_sched_emp, state='disabled')
+        section_sched_emp.place(x=810, y=258, width=150)
+
+        sched_name_emp.configure(state='normal')
+        sched_department_combobox_emp.configure(state='normal')
+        sched_name_emp.insert(0, name_emp)
+        sched_department_combobox_emp.insert(0, depart)
+        sched_name_emp.configure(state='disabled')
+        sched_department_combobox_emp.configure(state='disabled')
+
+        #     # Save Data Button
+        # save_pic_emp = PhotoImage(file = "pic/btn_save.png")
+        # save_button_sched_emp = customtkinter.CTkButton(master=popupwindow_sched_emp,image=save_pic_emp, text="" ,
+        #                                             corner_radius=6, fg_color="#00436e",hover_color="#006699", command='save_sched')
+        # save_button_sched_emp.place(x=315, y=290, height=32,width=131)
+
+        #     # Updated Button
+        # update_pic_emp = PhotoImage(file = "pic/btn_update.png")
+        # button_update_sched_emp = customtkinter.CTkButton(master=popupwindow_sched_emp,state='disabled',image=update_pic_emp, text="" ,
+        #                                             corner_radius=6, fg_color="#00436e",hover_color="#006699", command='update_sched')
+        # button_update_sched_emp.place(x=460, y=290, height=32,width=131)
+
+            # Reset Button
+        reset_btnsched_emp = PhotoImage(file = "pic/btn_reset.png")
+        button_resetsched_emp = customtkinter.CTkButton(master=popupwindow_sched_emp,image=reset_btnsched_emp, text="" ,
+                                                    corner_radius=6, fg_color="#00436e",hover_color="#006699", command=clear_sched_emp)
+        button_resetsched_emp.place(x=460, y=290, height=32,width=131)
+
+            # Moday Button
+        mon_btn_emp = PhotoImage(file = "pic/btn_mon.png")
+        btn_mon_sched_emp = customtkinter.CTkButton(master=popupwindow_sched_emp,image=mon_btn_emp, text="" ,
+                                                    corner_radius=6, fg_color="#00436e",hover_color="#006699", command=Monday_emp)
+        btn_mon_sched_emp.place(x=90, y=373, height=28,width=131)
+
+            # Tuesday Button
+        tue_btn_emp = PhotoImage(file = "pic/btn_tue.png")
+        btn_tue_sched_emp = customtkinter.CTkButton(master=popupwindow_sched_emp,image=tue_btn_emp, text="" ,
+                                                    corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Tuesday_emp)
+        btn_tue_sched_emp.place(x=235, y=373, height=28,width=131)
+
+             # Wednesday Button
+        wed_btn_emp = PhotoImage(file = "pic/btn_wed.png")
+        btn_wed_sched_emp = customtkinter.CTkButton(master=popupwindow_sched_emp,image=wed_btn_emp, text="" ,
+                                                    corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Wednesday_emp)
+        btn_wed_sched_emp.place(x=380, y=373, height=28,width=131)
+
+             # Thursday Button
+        thur_btn_emp = PhotoImage(file = "pic/btn_thu.png")
+        btn_thur_sched_emp = customtkinter.CTkButton(master=popupwindow_sched_emp,image=thur_btn_emp, text="" ,
+                                                    corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Thursday_emp)
+        btn_thur_sched_emp.place(x=525, y=373, height=28,width=131)
+
+             # Friday Button
+        fri_btn_emp = PhotoImage(file = "pic/btn_fri.png")
+        btn_fri_sched_emp = customtkinter.CTkButton(master=popupwindow_sched_emp,image=fri_btn_emp, text="" ,
+                                                    corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Friday_emp)
+        btn_fri_sched_emp.place(x=670, y=373, height=28,width=131)
+
+             # Saturday Button
+        sat_btn_emp = PhotoImage(file = "pic/btn_sat.png")
+        btn_sat_sched_emp = customtkinter.CTkButton(master=popupwindow_sched_emp,image=sat_btn_emp, text="" ,
+                                                    corner_radius=6, fg_color="#ffb000",hover_color="#006699", command=Saturday_emp)
+        btn_sat_sched_emp.place(x=815, y=373, height=28,width=131)
+
     # ============= Employee Attendance Record In Frame ========================================================================================================================
 
         # open background image
@@ -441,6 +1024,12 @@ def new_win():
     att_mon_button_showall = customtkinter.CTkButton(master=attendance_monitoring,image=showall_btn_att_mon, text="" ,
                                                 corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=refreshTable_attrec)
     att_mon_button_showall.place(x=680, y=655, height=27,width=110)
+
+        # Schedule Button
+    textsched_btn = PhotoImage(file = "pic/btn_schedule.png")
+    sched_btn = customtkinter.CTkButton(master=attendance_monitoring,image=textsched_btn, text="" ,
+                                                corner_radius=6, bg_color="#ffd636", fg_color="#00436e",hover_color="#006699", command=Schedule_Employee)
+    sched_btn.place(x=960, y=100, height=40,width=210)
 
     def logout_employee():
         show_frame(employee_login)
