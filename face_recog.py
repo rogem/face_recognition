@@ -2130,6 +2130,7 @@ def new_win():
 
         # ComboBox College Department
     department_combobox = ttk.Combobox(faculty_information,state='readonly', values=["Mathematics", "ITE", "Psychology", "Applied Physics"])
+    department_combobox.set('NONE')
     department_combobox.place(x=382, y=202, width=200)
     # state="readonly"
     
@@ -2368,7 +2369,7 @@ def new_win():
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
 
-            cursor.execute("SELECT Time_in,Time_out,_Date,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
             results_math_report = cursor.fetchall()
             conn.commit()
             return results_math_report
@@ -2393,7 +2394,7 @@ def new_win():
             for record in data_table_summary.get_children():
                 data_table_summary.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Mathematics' AND Status='Present' AND _Date='"+ str(date_mathematics) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Mathematics' AND Status='Present' AND _Date='"+ str(date_mathematics) +"'")
             records = cursor.fetchall()
 
             global count
@@ -2401,9 +2402,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary.tag_configure('oddrow', background='#EEEEEE')
@@ -2427,7 +2428,7 @@ def new_win():
             for record in data_table_summary.get_children():
                 data_table_summary.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Mathematics' AND Status='Late' AND _Date='"+ str(date_mathematics) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Mathematics' AND Status='Late' AND _Date='"+ str(date_mathematics) +"'")
             records = cursor.fetchall()
 
             global count
@@ -2435,9 +2436,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary.tag_configure('oddrow', background='#EEEEEE')
@@ -2461,7 +2462,7 @@ def new_win():
             for record in data_table_summary.get_children():
                 data_table_summary.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Mathematics' AND Status='Absent' AND _Date='"+ str(date_mathematics) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Mathematics' AND Status='Absent' AND _Date='"+ str(date_mathematics) +"'")
             records = cursor.fetchall()
 
             global count
@@ -2469,9 +2470,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary.tag_configure('oddrow', background='#EEEEEE')
@@ -2495,7 +2496,7 @@ def new_win():
             for record in data_table_summary.get_children():
                 data_table_summary.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Mathematics' AND Status='Early Dismissal' AND _Date='"+ str(date_mathematics) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Mathematics' AND Status='Early Dismissal' AND _Date='"+ str(date_mathematics) +"'")
             records = cursor.fetchall()
 
             global count
@@ -2503,9 +2504,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary.tag_configure('oddrow', background='#EEEEEE')
@@ -2529,7 +2530,7 @@ def new_win():
             for record in data_table_summary.get_children():
                 data_table_summary.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Mathematics' AND _Date='"+ str(date_mathematics) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Mathematics' AND _Date='"+ str(date_mathematics) +"'")
             records = cursor.fetchall()
 
             global count
@@ -2537,9 +2538,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary.tag_configure('oddrow', background='#EEEEEE')
@@ -2552,9 +2553,17 @@ def new_win():
             conn.close()
 
         def print_data_math_report():
+            summary_department_combobox.configure(state='normal')
+            employee_name_summary.configure(state='normal')
+            employee_num_summary.configure(state='normal')
+
+            dep = summary_department_combobox.get()
+            name = employee_name_summary.get()
+            num = employee_num_summary.get()
+
             file = filedialog.asksaveasfilename(title="Select file",initialfile="datafile.xlsx", defaultextension=".xlsx",filetypes=[("Execl file","*.xlsx")])
 
-            cols = ['Time in','Time out','Date','Status']
+            cols = ['Date','Time in','Time out','Late','Early Dismissal']
             path = 'excelfile/read_data_employee_mathematics.csv'
             excel_name = 'excelfile/new_datasave.xlsx'
             lst = []
@@ -2570,7 +2579,14 @@ def new_win():
 
             writer = pd.ExcelWriter(excel_name)
             df = pd.read_csv(path)
-            df.to_excel(writer,'sheet1')
+            df.to_excel(writer,'sheet1', startrow = 3, index = False)
+            
+            workbook = writer.book
+            worksheet = writer.sheets['sheet1']
+            worksheet.write(0,0,'Departmet:  ' + dep, workbook.add_format({'bold': True}))
+            worksheet.write(1,0,'Name:  ' + name, workbook.add_format({'bold': True}))
+            worksheet.write(1,3,'Employee No:  ' + num, workbook.add_format({'bold': True}))
+
             writer.save()
             source = "excelfile/new_datasave.xlsx"
             if file:
@@ -2603,6 +2619,10 @@ def new_win():
             else:
                 messagebox.showinfo("Message", "You did not save the file!!")
 
+            summary_department_combobox.configure(state='disabled')
+            employee_name_summary.configure(state='disabled')
+            employee_num_summary.configure(state='disabled')
+
                  # Data Table "TreeView"
         scrollbarx_summary = Scrollbar(popupwindow, orient=HORIZONTAL)
         scrollbarx_summary.place(x=500, y=584, width=367)
@@ -2619,19 +2639,19 @@ def new_win():
         scrollbarx_summary.configure(command=data_table_summary.xview)
         scrollbary_summary.configure(command=data_table_summary.yview)
 
-        data_table_summary['columns'] = ("Time in","Time out","Date","Late","Early Dismissal")
+        data_table_summary['columns'] = ("Date","Time in","Time out","Late","Early Dismissal")
         # Format Columns
         data_table_summary.column("#0", width=0, stretch=NO)
+        data_table_summary.column("Date", anchor=W, width=100)
         data_table_summary.column("Time in", anchor=W, width=100)
         data_table_summary.column("Time out", anchor=W, width=100)
-        data_table_summary.column("Date", anchor=W, width=100)
         data_table_summary.column("Late", anchor=W, width=100)
         data_table_summary.column("Early Dismissal", anchor=W, width=100)
 
         # Create Headings
+        data_table_summary.heading("Date", text="Date", anchor=CENTER)
         data_table_summary.heading("Time in", text="Time in", anchor=CENTER)
         data_table_summary.heading("Time out", text="Time out", anchor=CENTER)
-        data_table_summary.heading("Date", text="Date", anchor=CENTER)
         data_table_summary.heading("Late", text="Late", anchor=CENTER)
         data_table_summary.heading("Early Dismissal", text="Early Dismissal", anchor=CENTER)
 
@@ -2880,6 +2900,65 @@ def new_win():
         conn.commit()
         conn.close()
 
+    def print_math():
+            file = filedialog.asksaveasfilename(title="Select file",initialfile="datafile.xlsx", defaultextension=".xlsx",filetypes=[("Execl file","*.xlsx")])
+
+            cols = ['Name','Department','Day','Subject','Room','Section','Time in','Time out','Date','Remarks','Late','Early Dismissal']
+            path = 'excelfile/read_data_employee_mathematics.csv'
+            excel_name = 'excelfile/new_datasave.xlsx'
+            lst = []
+            with open(path,"w",newline='') as myfile:
+                csvwriter = csv.writer(myfile, delimiter=',')
+                for row_id in data_table_math_rec.get_children():
+                    row = data_table_math_rec.item(row_id,'values')
+                    lst.append(row)
+                lst = list(map(list,lst))
+                lst.insert(0,cols)
+                for row in lst:
+                    csvwriter.writerow(row)
+
+            writer = pd.ExcelWriter(excel_name)
+            df = pd.read_csv(path)
+            df.to_excel(writer,'sheet1', startrow = 3, index = False)
+            
+            workbook = writer.book
+            worksheet = writer.sheets['sheet1']
+            worksheet.write(0,0,'Departmet:_Mathematics_ ', workbook.add_format({'bold': True}))
+            worksheet.write(1,0,'Name:________________ ', workbook.add_format({'bold': True}))
+            worksheet.write(1,3,'Employee No:________________ ', workbook.add_format({'bold': True}))
+
+            writer.save()
+            source = "excelfile/new_datasave.xlsx"
+            if file:
+                shutil.copy(source,file)
+                conn = sqlite3.connect("data/data.db")
+                cursor = conn.cursor()
+
+                currentDateTime = datetime.datetime.now()
+
+                cursor.execute("""CREATE TABLE IF NOT EXISTS 
+                    activity_log(
+                                "ID"    INTEGER,
+                                "Name"  TEXT,
+                                "Activity"  TEXT,
+                                "Department"    TEXT,
+                                "Date_Time" TIMESTAMP,
+                                PRIMARY KEY("ID" AUTOINCREMENT)
+                                )""")
+
+                eName = pg4_lb_name.cget("text")
+                eDepartment = pg4_lb_dept.cget("text")
+
+                insetdata = str(eName),'Print',str(eDepartment),currentDateTime
+                cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                                    VAlUES(?,?,?,?)""", insetdata)
+                conn.commit()
+                conn.close()
+                refreshTable_log()
+                
+            else:
+                messagebox.showinfo("Message", "You did not save the file!!")
+
          # Data Table "TreeView"
     scrollbarx_math_rec = Scrollbar(mathematics_att_record, orient=HORIZONTAL)
     scrollbarx_math_rec.place(x=710, y=584, width=347)
@@ -3118,7 +3197,7 @@ def new_win():
         # Print Button
     print_btn_math_rec = PhotoImage(file = "pic/btn_print.png")
     math_rec_button_print = customtkinter.CTkButton(master=mathematics_att_record,image=print_btn_math_rec, text="",
-                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command='')
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command=print_math)
     math_rec_button_print.place(x=785, y=608, height=20,width=80)
 
         # Back Button
@@ -3234,7 +3313,7 @@ def new_win():
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
 
-            cursor.execute("SELECT Time_in,Time_out,_Date,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
             results_report = cursor.fetchall()
             conn.commit()
             return results_report
@@ -3259,7 +3338,7 @@ def new_win():
             for record in data_table_summary_psyc.get_children():
                 data_table_summary_psyc.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Psychology' AND Status='Present' AND _Date='"+ str(date_psychology) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Psychology' AND Status='Present' AND _Date='"+ str(date_psychology) +"'")
             records = cursor.fetchall()
 
             global count
@@ -3267,9 +3346,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary_psyc.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_psyc.tag_configure('oddrow', background='#EEEEEE')
@@ -3293,7 +3372,7 @@ def new_win():
             for record in data_table_summary_psyc.get_children():
                 data_table_summary_psyc.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Psychology' AND Status='Late' AND _Date='"+ str(date_psychology) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Psychology' AND Status='Late' AND _Date='"+ str(date_psychology) +"'")
             records = cursor.fetchall()
 
             global count
@@ -3301,9 +3380,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary_psyc.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_psyc.tag_configure('oddrow', background='#EEEEEE')
@@ -3327,7 +3406,7 @@ def new_win():
             for record in data_table_summary_psyc.get_children():
                 data_table_summary_psyc.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Psychology' AND Status='Absent' AND _Date='"+ str(date_psychology) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Psychology' AND Status='Absent' AND _Date='"+ str(date_psychology) +"'")
             records = cursor.fetchall()
 
             global count
@@ -3335,9 +3414,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary_psyc.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_psyc.tag_configure('oddrow', background='#EEEEEE')
@@ -3361,7 +3440,7 @@ def new_win():
             for record in data_table_summary_psyc.get_children():
                 data_table_summary_psyc.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Psychology' AND Status='Early Dismissal' AND _Date='"+ str(date_psychology) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Psychology' AND Status='Early Dismissal' AND _Date='"+ str(date_psychology) +"'")
             records = cursor.fetchall()
 
             global count
@@ -3369,9 +3448,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary_psyc.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_psyc.tag_configure('oddrow', background='#EEEEEE')
@@ -3395,7 +3474,7 @@ def new_win():
             for record in data_table_summary_psyc.get_children():
                 data_table_summary_psyc.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Psychology' AND _Date='"+ str(date_psychology) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Psychology' AND _Date='"+ str(date_psychology) +"'")
             records = cursor.fetchall()
 
             global count
@@ -3403,9 +3482,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary_psyc.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_psyc.tag_configure('oddrow', background='#EEEEEE')
@@ -3418,9 +3497,17 @@ def new_win():
             conn.close()
 
         def print_data_psyc():
+            summary_department_combobox_psyc.configure(state='normal')
+            employee_name_summary_psyc.configure(state='normal')
+            employee_num_summary_psyc.configure(state='normal')
+
+            dep = summary_department_combobox_psyc.get()
+            name = employee_name_summary_psyc.get()
+            num = employee_num_summary_psyc.get()
+
             file = filedialog.asksaveasfilename(title="Select file",initialfile="datafile.xlsx", defaultextension=".xlsx",filetypes=[("Execl file","*.xlsx")])
 
-            cols = ['Time in','Time out','Date','Status']
+            cols = ['Date','Time in','Time out','Late','Early Dismissal']
             path = 'excelfile/read_data_employee_psychology.csv'
             excel_name = 'excelfile/new_datasave_psychology.xlsx'
             lst = []
@@ -3436,7 +3523,14 @@ def new_win():
 
             writer = pd.ExcelWriter(excel_name)
             df = pd.read_csv(path)
-            df.to_excel(writer,'sheet1')
+            df.to_excel(writer,'sheet1', startrow = 3, index = False)
+            
+            workbook = writer.book
+            worksheet = writer.sheets['sheet1']
+            worksheet.write(0,0,'Departmet:  ' + dep, workbook.add_format({'bold': True}))
+            worksheet.write(1,0,'Name:  ' + name, workbook.add_format({'bold': True}))
+            worksheet.write(1,3,'Employee No:  ' + num, workbook.add_format({'bold': True}))
+
             writer.save()
             source = "excelfile/new_datasave_psychology.xlsx"
             if file:
@@ -3469,6 +3563,10 @@ def new_win():
             else:
                 messagebox.showinfo("Message", "You did not save the file!!")
 
+            summary_department_combobox_psyc.configure(state='disabled')
+            employee_name_summary_psyc.configure(state='disabled')
+            employee_num_summary_psyc.configure(state='disabled')
+
                  # Data Table "TreeView"
         scrollbarx_summary_psyc = Scrollbar(popupwindow_psyc, orient=HORIZONTAL)
         scrollbarx_summary_psyc.place(x=500, y=584, width=367)
@@ -3485,19 +3583,19 @@ def new_win():
         scrollbarx_summary_psyc.configure(command=data_table_summary_psyc.xview)
         scrollbary_summary_psyc.configure(command=data_table_summary_psyc.yview)
 
-        data_table_summary_psyc['columns'] = ("Time in","Time out","Date","Late","Early Dismissal")
+        data_table_summary_psyc['columns'] = ("Date","Time in","Time out","Late","Early Dismissal")
         # Format Columns
         data_table_summary_psyc.column("#0", width=0, stretch=NO)
+        data_table_summary_psyc.column("Date", anchor=W, width=100)
         data_table_summary_psyc.column("Time in", anchor=W, width=100)
         data_table_summary_psyc.column("Time out", anchor=W, width=100)
-        data_table_summary_psyc.column("Date", anchor=W, width=100)
         data_table_summary_psyc.column("Late", anchor=W, width=100)
         data_table_summary_psyc.column("Early Dismissal", anchor=W, width=100)
 
         # Create Headings
+        data_table_summary_psyc.heading("Date", text="Date", anchor=CENTER)
         data_table_summary_psyc.heading("Time in", text="Time in", anchor=CENTER)
         data_table_summary_psyc.heading("Time out", text="Time out", anchor=CENTER)
-        data_table_summary_psyc.heading("Date", text="Date", anchor=CENTER)
         data_table_summary_psyc.heading("Late", text="Late", anchor=CENTER)
         data_table_summary_psyc.heading("Early Dismissal", text="Early Dismissal", anchor=CENTER)
 
@@ -3728,6 +3826,64 @@ def new_win():
 
         conn.commit()
         conn.close()
+    def print_psyc():
+            file = filedialog.asksaveasfilename(title="Select file",initialfile="datafile.xlsx", defaultextension=".xlsx",filetypes=[("Execl file","*.xlsx")])
+
+            cols = ['Name','Department','Day','Subject','Room','Section','Time in','Time out','Date','Remarks','Late','Early Dismissal']
+            path = 'excelfile/read_data_employee_psychology.csv'
+            excel_name = 'excelfile/new_datasave_psychology.xlsx'
+            lst = []
+            with open(path,"w",newline='') as myfile:
+                csvwriter = csv.writer(myfile, delimiter=',')
+                for row_id in data_table_psyc.get_children():
+                    row = data_table_psyc.item(row_id,'values')
+                    lst.append(row)
+                lst = list(map(list,lst))
+                lst.insert(0,cols)
+                for row in lst:
+                    csvwriter.writerow(row)
+
+            writer = pd.ExcelWriter(excel_name)
+            df = pd.read_csv(path)
+            df.to_excel(writer,'sheet1', startrow = 3, index = False)
+            
+            workbook = writer.book
+            worksheet = writer.sheets['sheet1']
+            worksheet.write(0,0,'Departmet:_Psychology_ ', workbook.add_format({'bold': True}))
+            worksheet.write(1,0,'Name:________________ ', workbook.add_format({'bold': True}))
+            worksheet.write(1,3,'Employee No:________________ ', workbook.add_format({'bold': True}))
+
+            writer.save()
+            source = "excelfile/new_datasave_psychology.xlsx"
+            if file:
+                shutil.copy(source,file)
+                conn = sqlite3.connect("data/data.db")
+                cursor = conn.cursor()
+
+                currentDateTime = datetime.datetime.now()
+
+                cursor.execute("""CREATE TABLE IF NOT EXISTS 
+                    activity_log(
+                                "ID"    INTEGER,
+                                "Name"  TEXT,
+                                "Activity"  TEXT,
+                                "Department"    TEXT,
+                                "Date_Time" TIMESTAMP,
+                                PRIMARY KEY("ID" AUTOINCREMENT)
+                                )""")
+
+                eName = pg4_lb_name.cget("text")
+                eDepartment = pg4_lb_dept.cget("text")
+
+                insetdata = str(eName),'Print',str(eDepartment),currentDateTime
+                cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                                    VAlUES(?,?,?,?)""", insetdata)
+                conn.commit()
+                conn.close()
+                refreshTable_log()
+                
+            else:
+                messagebox.showinfo("Message", "You did not save the file!!")
 
          # Data Table "TreeView"
     scrollbarx_psyc = Scrollbar(psychology_att_record, orient=HORIZONTAL)
@@ -3968,7 +4124,7 @@ def new_win():
         # Print Button
     print_btn_psyc = PhotoImage(file = "pic/btn_print.png")
     psyc_button_print = customtkinter.CTkButton(master=psychology_att_record,image=print_btn_psyc, text="",
-                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command='')
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command=print_psyc)
     psyc_button_print.place(x=785, y=608, height=20,width=80)
 
         # Back Button
@@ -4083,7 +4239,7 @@ def new_win():
             conn = sqlite3.connect("data/data.db")
             cursor = conn.cursor()
 
-            cursor.execute("SELECT Time_in,Time_out,_Date,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emp_num) +"' AND Name='"+ str(emp_name) +"'")
             results_report = cursor.fetchall()
             conn.commit()
             return results_report
@@ -4108,7 +4264,7 @@ def new_win():
             for record in data_table_summary_applied.get_children():
                 data_table_summary_applied.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Applied Physics' AND Status='Present' AND _Date='"+ str(date_physics) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Applied Physics' AND Status='Present' AND _Date='"+ str(date_physics) +"'")
             records = cursor.fetchall()
 
             global count
@@ -4116,9 +4272,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary_applied.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_applied.tag_configure('oddrow', background='#EEEEEE')
@@ -4142,7 +4298,7 @@ def new_win():
             for record in data_table_summary_applied.get_children():
                 data_table_summary_applied.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Applied Physics' AND Status='Late' AND _Date='"+ str(date_physics) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Applied Physics' AND Status='Late' AND _Date='"+ str(date_physics) +"'")
             records = cursor.fetchall()
 
             global count
@@ -4150,9 +4306,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary_applied.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_applied.tag_configure('oddrow', background='#EEEEEE')
@@ -4176,7 +4332,7 @@ def new_win():
             for record in data_table_summary_applied.get_children():
                 data_table_summary_applied.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Applied Physics' AND Status='Absent' AND _Date='"+ str(date_physics) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Applied Physics' AND Status='Absent' AND _Date='"+ str(date_physics) +"'")
             records = cursor.fetchall()
 
             global count
@@ -4184,9 +4340,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary_applied.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_applied.tag_configure('oddrow', background='#EEEEEE')
@@ -4210,7 +4366,7 @@ def new_win():
             for record in data_table_summary_applied.get_children():
                 data_table_summary_applied.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Applied Physics' AND Status='Early Dismissal' AND _Date='"+ str(date_physics) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Applied Physics' AND Status='Early Dismissal' AND _Date='"+ str(date_physics) +"'")
             records = cursor.fetchall()
 
             global count
@@ -4218,9 +4374,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary_applied.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_applied.tag_configure('oddrow', background='#EEEEEE')
@@ -4244,7 +4400,7 @@ def new_win():
             for record in data_table_summary_applied.get_children():
                 data_table_summary_applied.delete(record)
             
-            cursor.execute("SELECT Time_in,Time_out,_Date,Status FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Applied Physics' AND _Date='"+ str(date_physics) +"'")
+            cursor.execute("SELECT _Date,Time_in,Time_out,Late,Early_Dismissal FROM attendance_record WHERE Employee_No='"+ str(emplno) +"' AND Department='Applied Physics' AND _Date='"+ str(date_physics) +"'")
             records = cursor.fetchall()
 
             global count
@@ -4252,9 +4408,9 @@ def new_win():
 
             for record in records:
                 if count % 2 == 0:
-                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="evenrow")
+                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="evenrow")
                 else:
-                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3]), tag="oddrow")
+                    data_table_summary_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4]), tag="oddrow")
                 count += 1
                 data_table_summary_applied.tag_configure('evenrow', background='#EEEEEE')
                 data_table_summary_applied.tag_configure('oddrow', background='#EEEEEE')
@@ -4267,9 +4423,17 @@ def new_win():
             conn.close()
 
         def print_data_applied():
+            summary_department_combobox_applied.configure(state='normal')
+            employee_name_summary_applied.configure(state='normal')
+            employee_num_summary_applied.configure(state='normal')
+
+            dep = summary_department_combobox_applied.get()
+            name = employee_name_summary_applied.get()
+            num = employee_num_summary_applied.get()
+
             file = filedialog.asksaveasfilename(title="Select file",initialfile="datafile.xlsx", defaultextension=".xlsx",filetypes=[("Execl file","*.xlsx")])
 
-            cols = ['Time in','Time out','Date','Status']
+            cols = ['Date','Time in','Time out','Late','Early Dismissal']
             path = 'excelfile/read_data_employee_appliedphysics.csv'
             excel_name = 'excelfile/new_datasave_appliedphysics.xlsx'
             lst = []
@@ -4285,7 +4449,14 @@ def new_win():
 
             writer = pd.ExcelWriter(excel_name)
             df = pd.read_csv(path)
-            df.to_excel(writer,'sheet1')
+            df.to_excel(writer,'sheet1', startrow = 3, index = False)
+            
+            workbook = writer.book
+            worksheet = writer.sheets['sheet1']
+            worksheet.write(0,0,'Departmet:  ' + dep, workbook.add_format({'bold': True}))
+            worksheet.write(1,0,'Name:  ' + name, workbook.add_format({'bold': True}))
+            worksheet.write(1,3,'Employee No:  ' + num, workbook.add_format({'bold': True}))
+
             writer.save()
             source = "excelfile/new_datasave_appliedphysics.xlsx"
             if file:
@@ -4318,6 +4489,10 @@ def new_win():
             else:
                 messagebox.showinfo("Message", "You did not save the file!!")
 
+            summary_department_combobox_applied.configure(state='disabled')
+            employee_name_summary_applied.configure(state='disabled')
+            employee_num_summary_applied.configure(state='disabled')
+
                  # Data Table "TreeView"
         scrollbarx_summary_applied = Scrollbar(popupwindow_applied, orient=HORIZONTAL)
         scrollbarx_summary_applied.place(x=500, y=584, width=367)
@@ -4334,19 +4509,19 @@ def new_win():
         scrollbarx_summary_applied.configure(command=data_table_summary_applied.xview)
         scrollbary_summary_applied.configure(command=data_table_summary_applied.yview)
 
-        data_table_summary_applied['columns'] = ("Time in","Time out","Date","Late","Early Dismissal")
+        data_table_summary_applied['columns'] = ("Date","Time in","Time out","Late","Early Dismissal")
         # Format Columns
         data_table_summary_applied.column("#0", width=0, stretch=NO)
+        data_table_summary_applied.column("Date", anchor=W, width=100)
         data_table_summary_applied.column("Time in", anchor=W, width=100)
         data_table_summary_applied.column("Time out", anchor=W, width=100)
-        data_table_summary_applied.column("Date", anchor=W, width=100)
         data_table_summary_applied.column("Late", anchor=W, width=100)
         data_table_summary_applied.column("Early Dismissal", anchor=W, width=100)
 
         # Create Headings
+        data_table_summary_applied.heading("Date", text="Date", anchor=CENTER)
         data_table_summary_applied.heading("Time in", text="Time in", anchor=CENTER)
         data_table_summary_applied.heading("Time out", text="Time out", anchor=CENTER)
-        data_table_summary_applied.heading("Date", text="Date", anchor=CENTER)
         data_table_summary_applied.heading("Late", text="Late", anchor=CENTER)
         data_table_summary_applied.heading("Early Dismissal", text="Early Dismissal", anchor=CENTER)
 
@@ -4577,6 +4752,65 @@ def new_win():
 
         conn.commit()
         conn.close()
+
+    def print_applied():
+            file = filedialog.asksaveasfilename(title="Select file",initialfile="datafile.xlsx", defaultextension=".xlsx",filetypes=[("Execl file","*.xlsx")])
+
+            cols =  ['Name','Department','Day','Subject','Room','Section','Time in','Time out','Date','Remarks','Late','Early Dismissal']
+            path = 'excelfile/read_data_employee_appliedphysics.csv'
+            excel_name = 'excelfile/new_datasave_appliedphysics.xlsx'
+            lst = []
+            with open(path,"w",newline='') as myfile:
+                csvwriter = csv.writer(myfile, delimiter=',')
+                for row_id in data_table_applied.get_children():
+                    row = data_table_applied.item(row_id,'values')
+                    lst.append(row)
+                lst = list(map(list,lst))
+                lst.insert(0,cols)
+                for row in lst:
+                    csvwriter.writerow(row)
+
+            writer = pd.ExcelWriter(excel_name)
+            df = pd.read_csv(path)
+            df.to_excel(writer,'sheet1', startrow = 3, index = False)
+            
+            workbook = writer.book
+            worksheet = writer.sheets['sheet1']
+            worksheet.write(0,0,'Departmet:_Applied Physics_ ', workbook.add_format({'bold': True}))
+            worksheet.write(1,0,'Name:________________ ', workbook.add_format({'bold': True}))
+            worksheet.write(1,3,'Employee No:________________ ', workbook.add_format({'bold': True}))
+
+            writer.save()
+            source = "excelfile/new_datasave_appliedphysics.xlsx"
+            if file:
+                shutil.copy(source,file)
+                conn = sqlite3.connect("data/data.db")
+                cursor = conn.cursor()
+
+                currentDateTime = datetime.datetime.now()
+
+                cursor.execute("""CREATE TABLE IF NOT EXISTS 
+                    activity_log(
+                                "ID"    INTEGER,
+                                "Name"  TEXT,
+                                "Activity"  TEXT,
+                                "Department"    TEXT,
+                                "Date_Time" TIMESTAMP,
+                                PRIMARY KEY("ID" AUTOINCREMENT)
+                                )""")
+
+                eName = pg4_lb_name.cget("text")
+                eDepartment = pg4_lb_dept.cget("text")
+
+                insetdata = str(eName),'Print',str(eDepartment),currentDateTime
+                cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                                    VAlUES(?,?,?,?)""", insetdata)
+                conn.commit()
+                conn.close()
+                refreshTable_log()
+                
+            else:
+                messagebox.showinfo("Message", "You did not save the file!!")
 
          # Data Table "TreeView"
     scrollbarx_applied = Scrollbar(applied_physics_att_record, orient=HORIZONTAL)
@@ -4817,7 +5051,7 @@ def new_win():
         # Print Button
     print_btn_applied = PhotoImage(file = "pic/btn_print.png")
     applied_button_print = customtkinter.CTkButton(master=applied_physics_att_record,image=print_btn_applied, text="",
-                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command='')
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command=print_applied)
     applied_button_print.place(x=785, y=608, height=20,width=80)
 
         # Back Button
@@ -5450,6 +5684,65 @@ def new_win():
         conn.commit()
         conn.close()
 
+    def print_ite():
+            file = filedialog.asksaveasfilename(title="Select file",initialfile="datafile.xlsx", defaultextension=".xlsx",filetypes=[("Execl file","*.xlsx")])
+
+            cols = ['Name','Department','Day','Subject','Room','Section','Time in','Time out','Date','Remarks','Late','Early Dismissal']
+            path = 'excelfile/read_data_employee_ite.csv'
+            excel_name = 'excelfile/new_datasave_ite.xlsx'
+            lst = []
+            with open(path,"w",newline='') as myfile:
+                csvwriter = csv.writer(myfile, delimiter=',')
+                for row_id in data_table_ite.get_children():
+                    row = data_table_ite.item(row_id,'values')
+                    lst.append(row)
+                lst = list(map(list,lst))
+                lst.insert(0,cols)
+                for row in lst:
+                    csvwriter.writerow(row)
+
+            writer = pd.ExcelWriter(excel_name)
+            df = pd.read_csv(path)
+            df.to_excel(writer,'sheet1', startrow = 3, index = False)
+            
+            workbook = writer.book
+            worksheet = writer.sheets['sheet1']
+            worksheet.write(0,0,'Departmet:_ITE_ ', workbook.add_format({'bold': True}))
+            worksheet.write(1,0,'Name:________________ ', workbook.add_format({'bold': True}))
+            worksheet.write(1,3,'Employee No:________________ ', workbook.add_format({'bold': True}))
+
+            writer.save()
+            source = "excelfile/new_datasave_ite.xlsx"
+            if file:
+                shutil.copy(source,file)
+                conn = sqlite3.connect("data/data.db")
+                cursor = conn.cursor()
+
+                currentDateTime = datetime.datetime.now()
+
+                cursor.execute("""CREATE TABLE IF NOT EXISTS 
+                    activity_log(
+                                "ID"    INTEGER,
+                                "Name"  TEXT,
+                                "Activity"  TEXT,
+                                "Department"    TEXT,
+                                "Date_Time" TIMESTAMP,
+                                PRIMARY KEY("ID" AUTOINCREMENT)
+                                )""")
+
+                eName = pg4_lb_name.cget("text")
+                eDepartment = pg4_lb_dept.cget("text")
+
+                insetdata = str(eName),'Print',str(eDepartment),currentDateTime
+                cursor.execute("""INSERT INTO activity_log (Name,Activity,Department,Date_Time) 
+                                    VAlUES(?,?,?,?)""", insetdata)
+                conn.commit()
+                conn.close()
+                refreshTable_log()
+                
+            else:
+                messagebox.showinfo("Message", "You did not save the file!!")
+
          # Data Table "TreeView"
     scrollbarx_ite = Scrollbar(ite_att_record, orient=HORIZONTAL)
     scrollbarx_ite.place(x=710, y=584, width=347)
@@ -5695,7 +5988,7 @@ def new_win():
          # Print Button
     print_btn_ite = PhotoImage(file = "pic/btn_print.png")
     ite_button_print = customtkinter.CTkButton(master=ite_att_record,image=print_btn_ite, text="",
-                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command='')
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command=print_ite)
     ite_button_print.place(x=785, y=608, height=20,width=80)
 
         # Back Button
