@@ -2781,7 +2781,7 @@ def new_win():
         for record in data_table_math_rec.get_children():
             data_table_math_rec.delete(record)
         
-        cursor.execute("SELECT Name,Department,Time_in,Time_out,_Date,Status FROM attendance_record WHERE (Name = '" + str(lookup_record) + "' or Time_in = '" + str(lookup_record) + "' or Time_out = '" + str(lookup_record) + "' or _Date = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "') AND Department='Mathematics'")
+        cursor.execute("SELECT Name,Department,Day,Subject,Room,Section,Time_in,Time_out,_Date,Status,Late,Early_Dismissal FROM attendance_record WHERE (Name = '" + str(lookup_record) + "' or Day = '" + str(lookup_record) + "' or Subject = '" + str(lookup_record) + "' or Room = '" + str(lookup_record) + "' or Section = '" + str(lookup_record) + "' or Time_in = '" + str(lookup_record) + "' or Time_out = '" + str(lookup_record) + "' or _Date = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "' or Late = '" + str(lookup_record) + "' or Early_Dismissal = '" + str(lookup_record) + "') AND Department='Mathematics'")
         records = cursor.fetchall()
 
         global count
@@ -2789,9 +2789,9 @@ def new_win():
 
         for record in records:
             if count % 2 == 0:
-                data_table_math_rec.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5]), tag="evenrow")
+                data_table_math_rec.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7],record[8],record[9],record[10],record[11]), tag="evenrow")
             else:
-                data_table_math_rec.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5]), tag="oddrow")
+                data_table_math_rec.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7],record[8],record[9],record[10],record[11]), tag="oddrow")
             count += 1
             data_table_math_rec.tag_configure('evenrow', background='#EEEEEE')
             data_table_math_rec.tag_configure('oddrow', background='#EEEEEE')
@@ -2828,7 +2828,7 @@ def new_win():
         #                 (1,234,'neil','ite','Monday','Math','401','4A','8:23:45 AM','5:23:45 PM','24/11/2022','Present'),
         #                 (2,345,'josel','ite','Friday','Science','410','4C','9:12:45 AM','6:23:45 PM','24/11/2022','Late') """)
 
-        cursor.execute("SELECT Name,Department,Day,Subject,Room,Section,Time_in,Time_out,_Date,Status FROM attendance_record WHERE Department='Mathematics'")
+        cursor.execute("SELECT Name,Department,Day,Subject,Room,Section,Time_in,Time_out,_Date,Status,Late,Early_Dismissal FROM attendance_record WHERE Department='Mathematics'")
         results_math = cursor.fetchall()
         conn.commit()
         return results_math
@@ -2896,7 +2896,7 @@ def new_win():
     scrollbarx_math_rec.configure(command=data_table_math_rec.xview)
     scrollbary_math_rec.configure(command=data_table_math_rec.yview)
 
-    data_table_math_rec['columns'] = ("Name","Department","Day","Subject","Room","Section","Time in","Time out","Date","Status")
+    data_table_math_rec['columns'] = ("Name","Department","Day","Subject","Room","Section","Time in","Time out","Date","Remarks","Late","Early Dismissal")
     # Format Columns
     data_table_math_rec.column("#0", width=0, stretch=NO)
     data_table_math_rec.column("Name", anchor=W, width=100)
@@ -2908,7 +2908,9 @@ def new_win():
     data_table_math_rec.column("Time in", anchor=W, width=100)
     data_table_math_rec.column("Time out", anchor=W, width=100)
     data_table_math_rec.column("Date", anchor=W, width=100)
-    data_table_math_rec.column("Status", anchor=W, width=100)
+    data_table_math_rec.column("Remarks", anchor=W, width=100)
+    data_table_math_rec.column("Late", anchor=W, width=100)
+    data_table_math_rec.column("Early Dismissal", anchor=W, width=100)
 
     # Create Headings
     data_table_math_rec.heading("Name", text="Name", anchor=CENTER)
@@ -2920,7 +2922,9 @@ def new_win():
     data_table_math_rec.heading("Time in", text="Time in", anchor=CENTER)
     data_table_math_rec.heading("Time out", text="Time out", anchor=CENTER)
     data_table_math_rec.heading("Date", text="Date", anchor=CENTER)
-    data_table_math_rec.heading("Status", text="Status", anchor=CENTER)
+    data_table_math_rec.heading("Remarks", text="Remarks", anchor=CENTER)
+    data_table_math_rec.heading("Late", text="Late", anchor=CENTER)
+    data_table_math_rec.heading("Early Dismissal", text="Early Dismissal", anchor=CENTER)
 
     # data_table_math_rec.bind("<ButtonRelease-1>", select_row_math)
 
@@ -3109,7 +3113,13 @@ def new_win():
     showall_btn_math_rec = PhotoImage(file = "pic/btn_showall_small.png")
     math_rec_button_showall = customtkinter.CTkButton(master=mathematics_att_record,image=showall_btn_math_rec, text="" ,
                                                 corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=refreshTable_math)
-    math_rec_button_showall.place(x=843, y=608, height=21,width=90)
+    math_rec_button_showall.place(x=885, y=608, height=21,width=90)
+
+        # Print Button
+    print_btn_math_rec = PhotoImage(file = "pic/btn_print.png")
+    math_rec_button_print = customtkinter.CTkButton(master=mathematics_att_record,image=print_btn_math_rec, text="",
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command='')
+    math_rec_button_print.place(x=785, y=608, height=20,width=80)
 
         # Back Button
     math_rec_back = PhotoImage(file = "pic/btn_back_page.png")
@@ -3649,7 +3659,7 @@ def new_win():
                             "Early_Dismissal" TEXT,
                             PRIMARY KEY("ID" AUTOINCREMENT))""")
 
-        cursor.execute("SELECT Name,Department,Day,Subject,Room,Section,Time_in,Time_out,_Date,Status FROM attendance_record WHERE Department='Psychology'")
+        cursor.execute("SELECT Name,Department,Day,Subject,Room,Section,Time_in,Time_out,_Date,Status,Late,Early_Dismissal FROM attendance_record WHERE Department='Psychology'")
         results_psyc = cursor.fetchall()
         conn.commit()
         return results_psyc
@@ -3700,7 +3710,7 @@ def new_win():
         for record in data_table_psyc.get_children():
             data_table_psyc.delete(record)
         
-        cursor.execute("SELECT Name,Department,Time_in,Time_out,_Date,Status FROM attendance_record WHERE (Name = '" + str(lookup_record) + "' or  Department = '" + str(lookup_record) + "' or Time_in = '" + str(lookup_record) + "' or Time_out = '" + str(lookup_record) + "' or _Date = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "') AND Department='Psychology'")
+        cursor.execute("SELECT Name,Department,Day,Subject,Room,Section,Time_in,Time_out,_Date,Status,Late,Early_Dismissal FROM attendance_record WHERE (Name = '" + str(lookup_record) + "' or Day = '" + str(lookup_record) + "' or Subject = '" + str(lookup_record) + "' or Room = '" + str(lookup_record) + "' or Section = '" + str(lookup_record) + "' or Time_in = '" + str(lookup_record) + "' or Time_out = '" + str(lookup_record) + "' or _Date = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "' or Late = '" + str(lookup_record) + "' or Early_Dismissal = '" + str(lookup_record) + "') AND Department='Psychology'")
         records = cursor.fetchall()
 
         global count
@@ -3708,9 +3718,9 @@ def new_win():
 
         for record in records:
             if count % 2 == 0:
-                data_table_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5]), tag="evenrow")
+                data_table_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7],record[8],record[9],record[10],record[11]), tag="evenrow")
             else:
-                data_table_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5]), tag="oddrow")
+                data_table_psyc.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7],record[8],record[9],record[10],record[11]), tag="oddrow")
             count += 1
             data_table_psyc.tag_configure('evenrow', background='#EEEEEE')
             data_table_psyc.tag_configure('oddrow', background='#EEEEEE')
@@ -3735,7 +3745,7 @@ def new_win():
     scrollbarx_psyc.configure(command=data_table_psyc.xview)
     scrollbary_psyc.configure(command=data_table_psyc.yview)
 
-    data_table_psyc['columns'] = ("Name","Department","Day","Subject","Room","Section","Time in","Time out","Date","Status")
+    data_table_psyc['columns'] = ("Name","Department","Day","Subject","Room","Section","Time in","Time out","Date","Remarks","Late","Early Dismissal")
     # Format Columns
     data_table_psyc.column("#0", width=0, stretch=NO)
     data_table_psyc.column("Name", anchor=W, width=100)
@@ -3747,7 +3757,9 @@ def new_win():
     data_table_psyc.column("Time in", anchor=W, width=100)
     data_table_psyc.column("Time out", anchor=W, width=100)
     data_table_psyc.column("Date", anchor=W, width=100)
-    data_table_psyc.column("Status", anchor=W, width=100)
+    data_table_psyc.column("Remarks", anchor=W, width=100)
+    data_table_psyc.column("Late", anchor=W, width=100)
+    data_table_psyc.column("Early Dismissal", anchor=W, width=100)
 
     # Create Headings
     data_table_psyc.heading("Name", text="Name", anchor=CENTER)
@@ -3759,7 +3771,9 @@ def new_win():
     data_table_psyc.heading("Time in", text="Time in", anchor=CENTER)
     data_table_psyc.heading("Time out", text="Time out", anchor=CENTER)
     data_table_psyc.heading("Date", text="Date", anchor=CENTER)
-    data_table_psyc.heading("Status", text="Status", anchor=CENTER)
+    data_table_psyc.heading("Remarks", text="Remarks", anchor=CENTER)
+    data_table_psyc.heading("Late", text="Late", anchor=CENTER)
+    data_table_psyc.heading("Early Dismissal", text="Early Dismissal", anchor=CENTER)
 
     # data_table_psyc.bind("<ButtonRelease-1>", select_row_psyc)
 
@@ -3949,7 +3963,13 @@ def new_win():
     showall_btn_psyc = PhotoImage(file = "pic/btn_showall_small.png")
     psyc_button_showall = customtkinter.CTkButton(master=psychology_att_record,image=showall_btn_psyc, text="" ,
                                                 corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command= refreshTable_psyc)
-    psyc_button_showall.place(x=843, y=608, height=21,width=90)
+    psyc_button_showall.place(x=885, y=608, height=21,width=90)
+
+        # Print Button
+    print_btn_psyc = PhotoImage(file = "pic/btn_print.png")
+    psyc_button_print = customtkinter.CTkButton(master=psychology_att_record,image=print_btn_psyc, text="",
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command='')
+    psyc_button_print.place(x=785, y=608, height=20,width=80)
 
         # Back Button
     psyc_back = PhotoImage(file = "pic/btn_back_page.png")
@@ -4488,7 +4508,7 @@ def new_win():
                             "Early_Dismissal" TEXT,
                             PRIMARY KEY("ID" AUTOINCREMENT))""")
 
-        cursor.execute("SELECT Name,Department,Day,Subject,Room,Section,Time_in,Time_out,_Date,Status FROM attendance_record WHERE Department='Applied Physics'")
+        cursor.execute("SELECT Name,Department,Day,Subject,Room,Section,Time_in,Time_out,_Date,Status,Late,Early_Dismissal FROM attendance_record WHERE Department='Applied Physics'")
         results_applied = cursor.fetchall()
         conn.commit()
         return results_applied
@@ -4539,7 +4559,7 @@ def new_win():
         for record in data_table_applied.get_children():
             data_table_applied.delete(record)
         
-        cursor.execute("SELECT Name,Department,Time_in,Time_out,_Date,Status FROM attendance_record WHERE (Name = '" + str(lookup_record) + "' or  Department = '" + str(lookup_record) + "' or Time_in = '" + str(lookup_record) + "' or Time_out = '" + str(lookup_record) + "' or _Date = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "') AND Department='Applied Physics'")
+        cursor.execute("SELECT Name,Department,Day,Subject,Room,Section,Time_in,Time_out,_Date,Status,Late,Early_Dismissal FROM attendance_record WHERE (Name = '" + str(lookup_record) + "' or Day = '" + str(lookup_record) + "' or Subject = '" + str(lookup_record) + "' or Room = '" + str(lookup_record) + "' or Section = '" + str(lookup_record) + "' or Time_in = '" + str(lookup_record) + "' or Time_out = '" + str(lookup_record) + "' or _Date = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "' or Late = '" + str(lookup_record) + "' or Early_Dismissal = '" + str(lookup_record) + "') AND Department='Applied Physics'")
         records = cursor.fetchall()
 
         global count
@@ -4547,9 +4567,9 @@ def new_win():
 
         for record in records:
             if count % 2 == 0:
-                data_table_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5]), tag="evenrow")
+                data_table_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7],record[8],record[9],record[10],record[11]), tag="evenrow")
             else:
-                data_table_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5]), tag="oddrow")
+                data_table_applied.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7],record[8],record[9],record[10],record[11]), tag="oddrow")
             count += 1
             data_table_applied.tag_configure('evenrow', background='#EEEEEE')
             data_table_applied.tag_configure('oddrow', background='#EEEEEE')
@@ -4574,7 +4594,7 @@ def new_win():
     scrollbarx_applied.configure(command=data_table_applied.xview)
     scrollbary_applied.configure(command=data_table_applied.yview)
 
-    data_table_applied['columns'] = ("Name","Department","Day","Subject","Room","Section","Time in","Time out","Date","Status")
+    data_table_applied['columns'] = ("Name","Department","Day","Subject","Room","Section","Time in","Time out","Date","Remarks","Late","Early Dismissal")
     # Format Columns
     data_table_applied.column("#0", width=0, stretch=NO)
     data_table_applied.column("Name", anchor=W, width=100)
@@ -4586,7 +4606,9 @@ def new_win():
     data_table_applied.column("Time in", anchor=W, width=100)
     data_table_applied.column("Time out", anchor=W, width=100)
     data_table_applied .column("Date", anchor=W, width=100)
-    data_table_applied .column("Status", anchor=W, width=100)
+    data_table_applied.column("Remarks", anchor=W, width=100)
+    data_table_applied.column("Late", anchor=W, width=100)
+    data_table_applied.column("Early Dismissal", anchor=W, width=100)
 
     # Create Headings
     data_table_applied.heading("Name", text="Name", anchor=CENTER)
@@ -4598,7 +4620,9 @@ def new_win():
     data_table_applied.heading("Time in", text="Time in", anchor=CENTER)
     data_table_applied.heading("Time out", text="Time out", anchor=CENTER)
     data_table_applied.heading("Date", text="Date", anchor=CENTER)
-    data_table_applied.heading("Status", text="Status", anchor=CENTER)
+    data_table_applied.heading("Remarks", text="Remarks", anchor=CENTER)
+    data_table_applied.heading("Late", text="Late", anchor=CENTER)
+    data_table_applied.heading("Early Dismissal", text="Early Dismissal", anchor=CENTER)
 
     # data_table_applied.bind("<ButtonRelease-1>", select_row_applied)
 
@@ -4788,7 +4812,13 @@ def new_win():
     showall_btn_applied = PhotoImage(file = "pic/btn_showall_small.png")
     applied_button_showall = customtkinter.CTkButton(master=applied_physics_att_record,image=showall_btn_applied, text="" ,
                                                 corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=refreshTable_applied)
-    applied_button_showall.place(x=843, y=608, height=21,width=90)
+    applied_button_showall.place(x=885, y=608, height=21,width=90)
+
+        # Print Button
+    print_btn_applied = PhotoImage(file = "pic/btn_print.png")
+    applied_button_print = customtkinter.CTkButton(master=applied_physics_att_record,image=print_btn_applied, text="",
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command='')
+    applied_button_print.place(x=785, y=608, height=20,width=80)
 
         # Back Button
     applied_back = PhotoImage(file = "pic/btn_back_page.png")
@@ -5330,7 +5360,7 @@ def new_win():
                             "Early_Dismissal" TEXT,
                             PRIMARY KEY("ID" AUTOINCREMENT))""")
 
-        cursor.execute("SELECT Name,Department,Day,Subject,Room,Section,Time_in,Time_out,_Date,Status FROM attendance_record WHERE Department='ITE'")
+        cursor.execute("SELECT Name,Department,Day,Subject,Room,Section,Time_in,Time_out,_Date,Status,Late,Early_Dismissal FROM attendance_record WHERE Department='ITE'")
         results_ite = cursor.fetchall()
         conn.commit()
         return results_ite
@@ -5382,7 +5412,7 @@ def new_win():
         for record in data_table_ite.get_children():
             data_table_ite.delete(record)
         
-        cursor.execute("SELECT Name,Department,Time_in,Time_out,_Date,Status FROM attendance_record WHERE (Name = '" + str(lookup_record) + "'or Time_in = '" + str(lookup_record) + "' or Time_out = '" + str(lookup_record) + "' or _Date = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "') AND Department='ITE'")
+        cursor.execute("SELECT Name,Department,Day,Subject,Room,Section,Time_in,Time_out,_Date,Status,Late,Early_Dismissal FROM attendance_record WHERE (Name = '" + str(lookup_record) + "' or Day = '" + str(lookup_record) + "' or Subject = '" + str(lookup_record) + "' or Room = '" + str(lookup_record) + "' or Section = '" + str(lookup_record) + "' or Time_in = '" + str(lookup_record) + "' or Time_out = '" + str(lookup_record) + "' or _Date = '" + str(lookup_record) + "' or Status = '" + str(lookup_record) + "' or Late = '" + str(lookup_record) + "' or Early_Dismissal = '" + str(lookup_record) + "') AND Department='ITE'")
         records = cursor.fetchall()
 
         global count
@@ -5390,9 +5420,9 @@ def new_win():
 
         for record in records:
             if count % 2 == 0:
-                data_table_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5]), tag="evenrow")
+                data_table_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7],record[8],record[9],record[10],record[11]), tag="evenrow")
             else:
-                data_table_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5]), tag="oddrow")
+                data_table_ite.insert(parent='', index='end', iid=count, text="", values=(record[0],record[1],record[2],record[3],record[4],record[5],record[6],record[7],record[8],record[9],record[10],record[11]), tag="oddrow")
             count += 1
             data_table_ite.tag_configure('evenrow', background='#EEEEEE')
             data_table_ite.tag_configure('oddrow', background='#EEEEEE')
@@ -5417,7 +5447,7 @@ def new_win():
     scrollbarx_ite.configure(command=data_table_ite.xview)
     scrollbary_ite.configure(command=data_table_ite.yview)
 
-    data_table_ite['columns'] = ("Name","Department","Day","Subject","Room","Section","Time in","Time out","Date","Status")
+    data_table_ite['columns'] = ("Name","Department","Day","Subject","Room","Section","Time in","Time out","Date","Remarks","Late","Early Dismissal")
     # Format Columns
     data_table_ite.column("#0", width=0, stretch=NO)
     data_table_ite.column("Name", anchor=W, width=100)
@@ -5429,7 +5459,9 @@ def new_win():
     data_table_ite.column("Time in", anchor=W, width=100)
     data_table_ite.column("Time out", anchor=W, width=100)
     data_table_ite.column("Date", anchor=W, width=100)
-    data_table_ite.column("Status", anchor=W, width=100)
+    data_table_ite.column("Remarks", anchor=W, width=100)
+    data_table_ite.column("Late", anchor=W, width=100)
+    data_table_ite.column("Early Dismissal", anchor=W, width=100)
 
     # Create Headings
     data_table_ite.heading("Name", text="Name", anchor=CENTER)
@@ -5441,7 +5473,9 @@ def new_win():
     data_table_ite.heading("Time in", text="Time in", anchor=CENTER)
     data_table_ite.heading("Time out", text="Time out", anchor=CENTER)
     data_table_ite.heading("Date", text="Date", anchor=CENTER)
-    data_table_ite.heading("Status", text="Status", anchor=CENTER)
+    data_table_ite.heading("Remarks", text="Remarks", anchor=CENTER)
+    data_table_ite.heading("Late", text="Late", anchor=CENTER)
+    data_table_ite.heading("Early Dismissal", text="Early Dismissal", anchor=CENTER)
 
     # data_table_ite.bind("<ButtonRelease-1>", select_row_ite)
 
@@ -5637,7 +5671,13 @@ def new_win():
     showall_btn_ite = PhotoImage(file = "pic/btn_showall_small.png")
     ite_button_showall = customtkinter.CTkButton(master=ite_att_record,image=showall_btn_ite, text="" ,
                                                 corner_radius=3,bg='#ffffff', fg_color="#00436e",hover_color="#006699", command=refreshTable_ite)
-    ite_button_showall.place(x=843, y=608, height=21,width=90)
+    ite_button_showall.place(x=885, y=608, height=21,width=90)
+
+         # Print Button
+    print_btn_ite = PhotoImage(file = "pic/btn_print.png")
+    ite_button_print = customtkinter.CTkButton(master=ite_att_record,image=print_btn_ite, text="",
+                                                    corner_radius=3, fg_color="#00436e",hover_color="#006699", command='')
+    ite_button_print.place(x=785, y=608, height=20,width=80)
 
         # Back Button
     ite_back = PhotoImage(file = "pic/btn_back_page.png")
